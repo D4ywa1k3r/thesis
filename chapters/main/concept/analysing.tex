@@ -82,18 +82,19 @@ Also here when the targets are examined, the special interrelation between folde
 
 When no optional endpoint is specified for a program, the current WORKDIR is used. This belongs to the COPY or ADD and to the RUN command.
 \graffito{The WORKDIR instruction sets the working directory for any RUN, COPY and ADD command in the Dockerfile}
-The WORKDIR variable is set to the root(/) folder on the target system if no other specification has been made by the developer. The variable has to be checked before. 
+The WORKDIR variable is set to the root(/) folder on the target system if no other specification has been made by the developer. 
 It must also be ensured when using the keyword WORKDIR, the correct relative base path is considered. 
 The following snippet shows the effect of using the WORKDIR variable:
 \begin{lstlisting}
 	ADD test relativeDir/          # adds "test" to `WORKDIR`/relativeDir/
 	ADD test /absoluteDir/         # adds "test" to /absoluteDir/
 \end{lstlisting}
-If ADD, COPY and RUN are recognized, the WORKDIR variable must finally be taken into account. Unless an absolute path was used when creating the image.
+It can be seen that The WORKDIR variable is simply used as prefix when a relative Unix path is used.
+If the target path of an ADD, COPY and RUN command is recognized, the WORKDIR variable must finally be taken into account, unless an absolute path was used.
 However, it is a special use case when the WORKDIR variable is set as root directory. In this case everything should be scanned except for the default root files and folders.
 This behavior might be confusing and is demonstrated with the following listing:
 \lstinputlisting[caption={Ubuntu 18.04 root folder}, captionpos=b, label={ch:concept:linux_tree}]{chapters/main/concept/listings/linuxroot.txt}
-Before the final targets can be defined by the preprocessing module, the root files and folders of a plain linux system has to be examined. This must be done dynamically, since the amount of kernel modules (in this case the vmlinuz symbol links) differs depending on the maintenance work of the system owner. Every folder is which is not listed from the dynamic examined root folder, like the listing \ref{ch:concept:linux_tree} shows exemplary, deviates from the original file system and sets a certain difference. This difference sets finally the target path(s) to scan. 
+Before the final targets can be defined by the preprocessing module, the root files and folders of a plain Linux system has to be examined. This must be done dynamically, since the amount of kernel modules (in this case the vmlinuz symbol links) or other system files differs depending on the maintenance work of the system owner. Every folder which is not listed from the dynamic examined root folder, deviates from the original file system and sets a certain difference. An example Linux root structure can be seen in the listing \ref{ch:concept:linux_tree}. This difference sets finally the target path(s) to scan. 
 
 In general this scanning of certain areas enables a higher analysis speed and reduces the false-positive rate significantly instead of scanning a whole bulk of data. Unfortunately the advantage is a disadvantage at the same time. When secrets are already in upper images, they can't be discovered, because associated meta informations are only available starting from the latest base image. That requires an already trusted base image, as they are marked on container registries as official or trusted. It is a must do to use only trustworthy base images, since not only key problems exist. Also other types of security vulnerabilities may be included such as manipulated application packages as an example. 
 Also It is important to note that no manipulation on the history can be recognised with this module. This would be an important function extend, otherwise the manipulation allows to bypass this pre-processing module. 
@@ -102,19 +103,21 @@ However, this work belongs to normal development processes without manipulations
 
 \subsection{Image-mount}
 \label{ch:theory:analysing_process:imgmount}
-The destination folders are determined. In this current state, the file system contains only folders of the layers that belong to the selected image.
+In the current state, the file system contains only folders of the layers that belong to the selected image.
 Due to the nature of images, it is not possible to map the determined folders to the layers on file system level. In other words, there is no assignment of the identified folders to be scanned to the really existing folders on the file system.
 Since this module mainly takes care of providing the real data, this is an important point. In fact, this would have reduced the number of folders in the folder-chain to mount. 
 
-Due to this reason, the ultimate goal of this module is to provide good access to all folders for the scan module. Since Docker creates an overlay over the folders, this module will to that too. This overlay leads in theory to an access point for the scanning module. The important information about the required lower folders how they are chained originally will be extracted through the Docker API. This chain is the base to create an overlay mount point, but also the 'writeable' folder is a prerequisite and has to be created accordingly. Finally the merged and work directory are created for a fully working overlay. The according elements of an overlay2 file system are described in \ref{sec:intro:docker_image:unionfs}. When the mounting process fails, this mounting point has to be removed completely and the mounting procedure is repeated once. If there are still problems, the mount process is aborted and the termination of the program is initiated. If the mount process was successful the scan module can be triggered in order to detect potentially secrets. This module will be explained next.
+Due to this reason, the ultimate goal of this module is to provide good access to all folders for the scan module. Since Docker creates an overlay over the folders, this module will to that too. This overlay leads to an access point for the scanning module. The important information about the required lower folders how they are chained originally will be extracted through the local provided informations of the image. The basis builds the lowerfile in each overlay layer. This image mount module must examine and compare the files. The lower file with the highest amount of lower-directories is the most upper and the highest parent layer.
+The lowerfile of the highest level of the image contains the most lower directories in a correct order and has to be used for the chain of the overlay mount-point
+This chain is the base to create an overlay mount point, but also the 'writeable' folder is a prerequisite and has to be created accordingly. Finally the merged and work directory are created for a fully working overlay. The according elements of an overlay2 file system are described in \ref{sec:intro:docker_image:unionfs}. When the mounting process fails, this mounting point has to be removed completely and the mounting procedure is repeated once. If there are still problems, the mount process is aborted and the termination of the program is initiated. If the mount process was successful the scan module can be triggered in order to detect potentially secrets. This module will be explained next.
 
 \subsection{File-scan}
 \label{ch:theory:analysing_process:scan}
-The file scan module is responsible for determining which files need to be analyzed where and how. It's known that this module must detect RSA private keys in a dedicated file itself and Amazon AWS tokens in source code files, since it is the goal of this paper.
+The file scan module is responsible for analyzing specific files for secrets. It's known that this module must detect RSA private keys and Amazon AWS tokens, since it is the goal of this paper.
 
-In case of the AWS tokens, the amount of existing programming languages makes it difficult to include all technologies in a prototype. The idea is rather to start specific to get exactly comprehensible results. This means that not every type of source-code can be examined immediately and this module must be built scalable to support more environments in future.
+In case of the AWS tokens, the amount of existing programming languages makes it difficult to include all technologies in a prototype. The idea is rather to start with specific files to get exactly comprehensible results. This means that not every type of source-code can be examined immediately and this module must be built scalable to support more environments in future.
 To be more specific, the module will not strive for archives (like jars) but will instead refer to pure source code files.
-In order to find the Amazon AWS token, the module will check the files for the following pattern. In the practical realization, a more detail of source-code files will be set to make it prototypical.
+In order to find the Amazon AWS token, the module will check the files for the following pattern.
 According to Amazon an access token is built upon a fixed schema which has to be used by this scanning module.
 \begin{lstlisting}
 AKIA[0-9A-Z]{16}
@@ -133,7 +136,7 @@ The file scan module will search for this fixed prefix at context level in the r
 \end{lstlisting}
 
 In both cases, the analysis must be done recursively, because within a folder there can be further folders in which there can be nested folders again.
-The analysis is performed programmatically with Linux tools like grep and, if necessary, with file operations to browse the specific files.
+The analysis is performed programmatically with Linux tools like grep and with file operations to browse through files.
 When the module determines a hit, this result is added to a data structure. At the end of the scan the result is returned to the requested client.
 
 To finish off the analysing process, Figure \ref{ch:theory:analysing process detail} shows a more detailed sequence of analysis.
