@@ -1,7 +1,9 @@
 \section{Implementation core modules}
 \label{ch:practical_realization:implementation}
-This section demonstrates the prototypical realization of the main modules, namely obtain, preprocessing, mount, scan and their interaction through the associated manager. Each module is dedicated to one section to provide a logical structure. The order of the modules to be described is based on that of procedure of the analysing process from the theory chapter \ref{ch:theory:analysing_process}.
+This section demonstrates the prototypical realization of the main modules, namely obtain, preprocessing, mount, scan and their interaction through the associated manager. Each module is dedicated to one section. The order of the modules to be described is based on the sequence of the analysis process from the theory chapter \ref{ch:theory:analysing_process}.
 The prototypical realization of each module is shown with an overview of the methods used in combination with a practical implementation meaning code snippets in order to archive the desired goals. 
+
+First it starts with the obaint module.
 
 \subsection{obtain.py}
 \label{ch:practical_realization:implementation:obtain}
@@ -17,7 +19,7 @@ The code-snippet itself is explanation enough. It is just important to note that
 
 Second, the Docker pull command is simply used to download the target image. The module expects a string as an argument, which tries to download the image with the given name.	
 If the image was not found, the request is repeated. 
-If no tag is specified, the latest tag of the image will be used. This is achieved by simple string manipulation since it is known that the image name and tag are separated by colon.
+If no tag is specified, the latest tag of the image will be used. This is achieved by simple string manipulation since it is known that the image name and tag are separated by colon as described in \ref{sec:intro:docker_image:docker_img:architecture}.
 It is necessary to specify an image tag for the download. If no tag is specified every image will be downloaded with all available tags. The corresponding code snippet to this function can be seen in the code-snippet \ref{ch:practical_realization:implementation:obtain:code} as well.
 \lstinputlisting[language=Python,caption={Python snippet - obtaining image}, captionpos=b,label={ch:practical_realization:implementation:obtain:code}]{chapters/main/practical/listings/code/garbage.py}
 
@@ -33,14 +35,14 @@ This corresponding python module needs a bit more logic to work properly. To get
 \item clearup\_targets(self)
 \end{itemize}
 
-The collect\_metadata function is the first important method. It initilizes the Docker environment in order to fetch the locally provided target image. Afterwards the extraction of this fetched image takes place. This is done through the equivalent Docker history command from the Docker SDK. The history provides metadata informations, which are explained in \ref{sec:intro:docker_image}. This metadata will be saved in an instance attribute to provide a global access to these metadata. This code-snippet below \ref{ch:practical_realization:implementation:preprocessing:code_collect} shows how this is achieved by this method. 
+The collect\_metadata function is the first important method. It initilizes the Docker environment in order to fetch the locally provided target image. Afterwards the extraction of this fetched image takes place. This is done through the equivalent Docker history command from the Docker SDK. The history provides metadata informations, which are explained in \ref{sec:intro:docker_image:docker_img:meta}. This metadata will be saved in an instance attribute to provide a global access to these metadata. This code-snippet \ref{ch:practical_realization:implementation:preprocessing:code_collect} below shows how this is achieved by this method. 
 \lstinputlisting[language=Python,caption={Python snippet - metadata collection}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_collect}]{chapters/main/practical/listings/code/collectmetadata.py}
 
-The decision whether the target image has to be scanned or not will be made in the contains\_key\_actions method. 
+The decision whether the target image has to be scanned or not is made in the contains\_key\_actions method. 
 As developed in the concept in \ref{ch:theory:analysing_process:prepro}, an image has to be scanned when keywords such as ADD, COPY or any RUN commands have been used during the building process.
 This can be determined with help of a proper data-structure compared against the metadata information of the image.
 That data-structure includes proper keywords and an additional related variable if this keyword has been used.
-The Python dictionary is a data-structure to provide one or more key:value pairs. The key value pair represents the keyword with a status respectively.
+The Python dictionary is a data-structure to provide one or more key:value pairs. The key:value pair represents the keyword with a status respectively.
 The key part of the data-structure is derived from the concept. The value of each key is set by default to False. The final data-structure is shown below.
 \lstset{language=Python}          % Set your language (you can change the language for each code-block optionally)
 \begin{lstlisting}[]  % Start your code-block
@@ -55,32 +57,35 @@ The key part of the data-structure is derived from the concept. The value of eac
     }
     
 \end{lstlisting}
-The comparison implemented in Python can be seen in \ref{ch:practical_realization:implementation:preprocessing:code_collect}. When an entry from the dictionary is detected, the corresponding value will be updated to true.
-Finally the whole data\_structure will be checked and a boolean is set and returned. The contains\_key\_actions(self) returns true if any key values are set to true. That means in general that a further investigation of the image is mandatory. Only when every value is still false, the boolean is set to False too and no further investigation is necessary.
-\lstinputlisting[language=Python,caption={Python snippet - scanning decision}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_collect}]{chapters/main/practical/listings/code/contains.py}
+The comparison implemented in Python can be seen in \ref{ch:practical_realization:implementation:preprocessing:code_contains}. When an entry from the dictionary is detected, the corresponding value will be updated to true.
+Finally the whole data\_structure will be checked and a boolean is set and returned. The method contains\_key\_actions(self) returns true if any key values are set to true. That means in general that a further investigation of the image is mandatory. Only when every value is still false, the boolean is set to False too and no further investigation is necessary.
+\lstinputlisting[language=Python,caption={Python snippet - scanning decision}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_contains}]{chapters/main/practical/listings/code/contains.py}
 
 The next important functions of this preprocessing module are fetch\_direct\_copy\_targets and fetch\_indirect\_copy\_targets. Both functions have in common to extract and to return detected path(s). The direct copy function takes care about fetching targets which has been integrated via ADD and COPY. The indirect methods takes care about the indirect integration via openssl, wget, git clone and ssh-keygen. The implementation of both methods looks different.
-The method for direct copying searches in the meta information for this following regex pattern.
+The method for direct copying searches in the meta information for this following regex pattern which was determined in the theoretical concept \ref{ch:theory:analysing_process:prepro}.
 \begin{lstlisting}
 "(dir|file):[a-f0-9]{64}\sin\s"
 \end{lstlisting}
-This pattern is the representation of the COPY or ADD Docker command for files and directories in the meta-data. The pattern was already in \ref{ch:practical_realization:implementation:preprocessing:code_fetchdirect} evaluated. If this pattern matches in the meta information, a string slicing takes place in order to extract the target path. Simple string slicing with determination of the position of special delimiter signs is possible. This belongs to the fixed syntax in the meta information.
+If this pattern matches in the meta information, a string slicing takes place in order to extract the target path. Simple string slicing with determination of the position of special delimiter signs is possible. This belongs to the fixed syntax in the meta information. The syntax is readable because of the JSON similarity.
 The examination of the target path realised in Python can be seen in the code-snippet below.
+This developed algorithm deserves a tiny explanation.
 \lstinputlisting[language=Python,caption={Python snippet - fetch COPY/ADD targets}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_fetchdirect}]{chapters/main/practical/listings/code/fetchdirect.py}
 In principle, each match from the Regex pattern is processed further. A list forms the data structure to which the determining target folders are appended. The determination starts with the last character position of the match. This position forms the starting point and string slicing takes place from this position to the next delimiter character. The position of the separator is omitted. The position before the separator is therefore included as the last character. This character is a simple apostrophe. The examined target is appended finally to the list. When all targets are examined, the root folder (/) is removed from the array. This belongs to the last entry, which is always an ADD command for the base image layer. This has no effect on a copy action from a developer who explicitly chose the root directory as target, because duplicates are not considered at this point. After this processing, the array is returned.
 
-As already known fetch\_indirect\_copy\_targets(self) searches in the meta information for special programs. These programs are handled in a regex pattern which is shown below.
+As already known fetch\_indirect\_copy\_targets(self) searches in the meta information for special programs. These programs are recognized in a regex pattern which was defined in the theoretical concept \ref{ch:theory:analysing_process:prepro}.
 \begin{lstlisting}
 "(/bin/sh\s-c|&&)\s(openssl genrsa|wget|git clone|ssh-keygen)"
 \end{lstlisting}
 When any of these commands are recognized, a helper function to this associated command is called. The helper function is mainly responsible for the string slicing.
-It expects the output option of the related tool and the current index of the option, where the option has been found. The output option may differ depending on the command. Thats is why a helper function comes in place which is called by the parent method. The helper function will determine and return the output path finally like it is seen in the code below \ref{ch:practical_realization:implementation:preprocessing:code_fetchindirectcase}.
+It expects the output option of the related tool and the current index of the option, where the option has been found. The output option may differ depending on the command. Thats is why a helper function comes in place which is called by the parent method. The helper function will determine and return the output path finally like it is seen in the code \ref{ch:practical_realization:implementation:preprocessing:code_fetchindirectcase} below.
 \lstinputlisting[language=Python,caption={Python snippet - fetch RUN targets}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_fetchindirectcase}]{chapters/main/practical/listings/code/fetchindirectcase.py}
 In the first two lines the examine\_string variable is set to a temporary string. This string is sliced from the starting point where the option has been found until to the end of the metainformation.
-Then the position of next whitespace is searched, which will appear after the parameter of the option. Finally the examin\_string can be sliced correctly in order to get the correct path. Since the last character can contain a comma, this must be removed. This is what the case distinction takes care of.
-The cause of the comma is due to the arbitrary arrangement of linux commands.
+Then the position of next whitespace is searched, which will appear after the parameter of the option. Finally the examine\_string variable can be sliced correctly in order to get the correct path. Since the last character can contain a comma, this must be removed. This is what the case distinction takes care of.
+The cause of the comma is due to the metadata representation of arbitrary arrangement of linux commands.
 
-The helper function may be called multiple times, depending of the amount of matches in the meta-data. That is why an examined target from the helper function is appended to an array. A special case takes place when no output argument is given. In that case the current WORKDIR has to be checked and returned.
+The helper function may be called multiple times, depending of the amount of matches in the meta-data. That is why an examined target from the helper function is appended to an array. 
+
+A special case takes place when no output argument is given. In that case the current WORKDIR has to be checked and returned. As already known, this applies to COPY, ADD and RUN commands.
 A full in depth insight of the corresponding work between the fetch\_indirect\_copy\_targets(self) and the helper functions can be seen in source code of the attached CD.
 
 Finally this module holds a clearup\_targets method. This method (shown in \ref{ch:practical_realization:implementation:preprocessing:code_clearup}) takes care about the data structure which holds the targets globally. The global data structure is transformed in a Python set. This set automatically removes duplicates. Apart from that a dissolving about possible child-parent hierarchies is done by comparing the parents recursively, which can represent a technical bottleneck. 
@@ -101,14 +106,18 @@ The structure of the mount module is built straight forward. Only core functions
 The functions create\_overlay\_dirs and remove\_overlay\_dirs are responsible for creating the working directory environment. As written in \ref{sec:intro:docker_image:unionfs} there are a couple of working directories necessary to mount an Overlay2 file system.
 Every folder in except of the lower directories, which represents the image itself will be created or deleted. The creation and deletion is programmatically done via the available os package and is not worth to show at this point, since it is just a creation and delete process triggered. It is important to note that the lower directories are not created or deleted. The lower directories are automatically deleted when the obtaining module starts the cleaning up the garbage.
  
-The mount\_overlay first examines trough helper functions the lower directories of the overlay hierarchy. When these are examined, every information to mount an overlay is provided. The examination is shown in the code-snippet below \ref{ch:practical_realization:implementation:preprocessing:code_getlowerdirs}.
-An additional Python package called "path" helps to walk through the local provided Docker layers.
-As known from the background chapter, every Docker image is connected through a lowerfile.
-The lowerfile of the highest level of the image contains the most lower directories.
-The helper functions calculates and compares the amount of lower directories from every lowerfile.
-If the parent is found, the information of the lowerfile can be directly used as a parameter for the mounting process after.
-\lstinputlisting[language=Python,caption={Python snippet - get lowerdirs}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_getlowerdirs}]{chapters/main/practical/listings/code/getlowerdirs.py}
+The method mount\_overlay first examines the lower directories of the overlay hierarchy. When these are examined, every information to mount an overlay is provided.
+The examination of the lower directories is done by a helper function.
+As known from the background chapter, every Docker image-layer is connected through a lowerfile.
+The lowerfile of the highest level of the image contains the most lower directories. 
+The main task of the helper function is to determines this lowerfile.
+An additional Python package called "path" helps to walk through the local provided Docker layers in order to provide access to all lowerfiles. The helper function returns finally the content of the lowerfile of the highest layer of the Docker image.
+The examination is shown in the code-snippet \ref{ch:practical_realization:implementation:preprocessing:code_getlowerdirs} below and deserves an explanation.
 
+\lstinputlisting[language=Python,caption={Python snippet - get lowerdirs}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_getlowerdirs}]{chapters/main/practical/listings/code/getlowerdirs.py}
+Initially an empty array is created. Afterwards a loop goes over every Docker image layer on the filesystem, which is represented by the overlay\_path variable.
+In each folder exists this lowerfile. This lowerfile will opened in read-only mode and the raw content finally appended to the array. When the for loop is finished, a quantity calculation of the characters in each array entry can be performed. The entry with the most characters represents the final lowerfile.	
+If this is examined and the content returned, the information of the lowerfile can be directly used as a parameter for the mounting process after by the method mount\_overlay(self).
 The mount command can be finally by a system call which looks like below.
 \lstinputlisting[language=Python,caption={Python snippet - mount}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_mount}]{chapters/main/practical/listings/code/mount.py}
 It can be seen that remove\_overlay\_dirs(self) and create\_overlay\_dirs(self) are triggered first. Afterwards a helper function to get a correct order of lower directories is called. With that gained information the actual mount process can be executed. The name of that overlay\_name variable is important since it is used to unmount the process like the following snippet \ref{ch:practical_realization:implementation:preprocessing:code_umount} shows.

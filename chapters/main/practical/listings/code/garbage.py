@@ -11,4 +11,7 @@ def remove_old_images(self):
 
 #   pull image
 def pull_image(self):
-    self.client.images.pull(self.img_name + ':latest')
+    if ':' in self.img_name:
+        self.client.images.pull(self.img_name)
+    else:
+        self.client.images.pull(self.img_name + ':latest')

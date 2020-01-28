@@ -70,15 +70,19 @@ The following list shows some commands which must be inserted into a suitable da
 This list is not complete, but it provides a first step to extract useful informations from originally RUN commands. All of these programs are ubiquitous.
 Ssh-keygen and openssl are able to create many types of keys and most of all RSA key pairs. In this context the private part is the interesting part.
 Wget and git clone are common utils to request and download a bunch of files, folder and archives from an endpoint. Especially git clone is ubiquitous, since git is a very common for developers.
-For each program in the list, the syntax must be taken into account. Each program specifies an optional target path that must be extracted. That forms the next potential targets, which must be considered by the scanning module.
 Also it is important to recognize only these programs when they are used and not installed! A developer might install a openssl via a package manager like apt when openssl is not available.
 This installation doesn't lead to a integration of secrets and has to be omitted.
 Furthermore a concatenation of tools is possible and has to be considered by this module. The concatenation looks like the following:
 \begin{lstlisting}
-git clone https://github.com/blackbird71SR/Hello-World && wget https://lorempixel/secret.jpg
+	git clone https://github.com/blackbird71SR/Hello-World && wget https://lorempixel/secret.jpg
 \end{lstlisting}
 
-Also here when the targets are examined, the special interrelation between folders like duplicated folders, parent-child relations has to be considered as well like mentioned previously.
+These requirements finally lead to a potentially valid pattern derived from the metadata information.
+\begin{lstlisting}
+	"(/bin/sh\s-c|&&)\s(openssl genrsa|wget|git clone|ssh-keygen)"
+\end{lstlisting}
+
+For each detected program, the syntax must be taken into account. Each program specifies an optional target path that must be extracted. That forms the next potential targets, which must be considered by the scanning module.Also here when the targets are examined, the special interrelation between folders like duplicated folders, parent-child relations has to be considered as well like mentioned previously.
 
 When no optional endpoint is specified for a program, the current WORKDIR is used. This belongs to the COPY or ADD and to the RUN command.
 \graffito{The WORKDIR instruction sets the working directory for any RUN, COPY and ADD command in the Dockerfile}
