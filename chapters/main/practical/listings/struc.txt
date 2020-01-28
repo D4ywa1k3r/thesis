@@ -1,0 +1,14 @@
+.
+|-- __pycache__
+|-- analysing_manager.py
+|-- modules
+|   |-- __pycache__
+|   |-- mount.py
+|   |-- obtain.py
+|   |-- preprocessing.py
+|   `-- scan.py
+`-- venv
+    |-- bin	
+    |-- include
+    |-- lib
+    `-- pyvenv.cfg

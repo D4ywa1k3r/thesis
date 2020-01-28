@@ -1,0 +1,21 @@
+Step 1/4 : FROM ubuntu:18.04
+18.04: Pulling from library/ubuntu
+7ddbc47eeb70: Pull complete
+c1bbdc448b72: Pull complete
+8c3b70e39044: Pull complete
+45d437916d57: Pull complete
+Digest: sha256:6e9f67fa63b0323e9a1e587fd71c561ba48a034504fb804fd26fd8800039835d
+Status: Downloaded newer image for ubuntu:18.04
+ ---> 775349758637
+Step 2/4 : COPY app.sh /opt/
+ ---> b4505d1e1290
+Step 3/4 : RUN chmod +x /opt/app.sh
+ ---> Running in b0a34672e549
+Removing intermediate container b0a34672e549
+ ---> 92938892ab5e
+Step 4/4 : CMD sh /opt/app.sh
+ ---> Running in a2ecf6ab64e1
+Removing intermediate container a2ecf6ab64e1
+ ---> 18c42544f1df
+Successfully built 18c42544f1df
+Successfully tagged myapp:latest

@@ -1,0 +1,11 @@
+%*******************************************************
+% Abstract in German
+%*******************************************************
+\begin{otherlanguage}{ngerman}
+\pdfbookmark[1]{Zusammenfassung}{Zusammenfassung}
+\chapter*{Zusammenfassung}
+Heutzutage wird Cloud Native Computing immer beliebter. Insbesondere Docker's Applikations Container sind im Cloud native Computing ein wesentlicher Bestandteil und ein kritisches Mitglied des Ökosystems. 
+Docker-Images werden manchmal willkürlich in Cloud Umgebungen oder temporär in anderen öffentlichen oder privaten Container-Registern verteilt. Dies führt zu Problemen, wenn der Entwickler einige symmetrische oder asymmetrische eingebettete Geheimnisse wie SSH-Schlüssel, Klartext-Passwörter, Zertifikate  und viele weitere integriert hat.
+
+Die Idee hinter dieser Arbeit ist die Entwicklung eines Ansatzes zur Erkennung eines geheimen privaten RSA-Schlüssels und eines Amazon-Zugriffstokens, die beide von Entwicklern in einem Anwendungscontainer-Image verwendet werden. Verwandte Arbeiten stehen zur Verfügung, um Geheimnisse im Quellcode im Allgemeinen, aber nicht direkt in Container-Bildern zu entdecken. Diese Arbeit zeigt am Beispiel von Docker, dass eine Anwendung bekannter Key-Leak-Techniken zur Erkennung eingebetteter Geheimnisse möglich ist.
+\end{otherlanguage}

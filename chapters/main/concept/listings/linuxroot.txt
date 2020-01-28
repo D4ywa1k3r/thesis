@@ -1,0 +1,25 @@
+\
+|-- bin\
+|-- boot\
+|-- dev\
+|-- etc\
+|-- home\
+|-- initrd.img -> boot/initrd.img-4.9.0-11-amd64\
+|-- initrd.img.old -> boot/initrd.img-4.9.0-9-amd64\
+|-- lib\
+|-- lib64\
+|-- lost+found\
+|-- media\
+|-- mnt\
+|-- opt\
+|-- proc\
+|-- root\
+|-- run\
+|-- sbin\
+|-- srv\
+|-- sys\
+|-- tmp\
+|-- usr\
+|-- var\
+|-- vmlinuz -> boot/vmlinuz-4.9.0-11-amd64\
+`-- vmlinuz.old -> boot/vmlinuz-4.9.0-9-amd64}

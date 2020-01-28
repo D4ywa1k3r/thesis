@@ -1,0 +1,13 @@
+somedir/
+|-- lower1
+|   `-- lower1_file
+|-- lower2
+|   `-- lower2_file
+|-- merged
+|   |-- lower1_file
+|   |-- lower2_file
+|   `-- upper_file
+|-- upper
+|   `-- upper_file
+`-- work
+    `-- work

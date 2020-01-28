@@ -1,0 +1,6 @@
+String ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE";
+String SECRET_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
+
+AWSCredentials creds = new BasicAWSCredentials(ACCESS_KEY_ID, SECRET_KEY);
+
+AmazonSimpleDBClient(creds);

@@ -1,0 +1,188 @@
+%% This BibTeX bibliography file was created using BibDesk.
+%% https://bibdesk.sourceforge.io/
+
+%% Created for Christoph Linse at 2020-01-25 16:14:29 +0100 
+
+
+%% Saved with string encoding Unicode (UTF-8) 
+
+
+
+@url{dockerfile_ref,
+	Author = {Docker Inc.},
+	Date-Added = {2020-01-20 09:16:39 +0100},
+	Date-Modified = {2020-01-20 09:21:25 +0100},
+	Lastchecked = {2020-01-20},
+	Title = {Dockerfile reference}}
+
+@url{python_deprecated,
+	Author = {Python Software Foundation},
+	Date-Added = {2020-01-15 10:07:00 +0100},
+	Date-Modified = {2020-01-15 10:08:44 +0100},
+	Lastchecked = {15th of January 2020},
+	Title = {PEP 373 -- Python 2.7 Release Schedule},
+	Urldate = {3-Nov-2008}}
+
+@article{z3,
+	Author = {Zheng, Yunhui and Zhang, Xiangyu and Ganesh, Vijay},
+	Date-Added = {2019-12-02 14:04:40 +0100},
+	Date-Modified = {2019-12-02 14:05:17 +0100},
+	Doi = {10.1145/2491411.2491456},
+	Isbn = {978-1-4503-2237-9},
+	Month = {08},
+	Title = {Z3-str: a z3-based string solver for web application analysis},
+	Year = {2013},
+	Bdsk-Url-1 = {https://doi.org/10.1145/2491411.2491456}}
+
+@url{docker_storage_driver,
+	Author = {Docker Inc.},
+	Date-Added = {2019-11-28 09:42:37 +0100},
+	Date-Modified = {2019-11-28 09:43:22 +0100},
+	Keywords = {Docker, Storage Driver},
+	Lastchecked = {November 22},
+	Title = {Docker storage drivers},
+	Urldate = {November 22}}
+
+@article{Tarasov2019,
+	Abstract = {Containers are a widely successful technology today popularized by Docker. They improve system utilization by increasing workload density and enable seamless deployment of workloads across development, test, and production environments. Docker's unique approach to data management, which involves frequent snapshot creation and removal, presents a new set of exciting challenges for storage systems. At the same time, storage management for Docker containers has remained largely unexplored with a dizzying array of solution choices and configuration options. In this paper we unravel the multi-faceted nature of Docker storage and demonstrate its impact on system and workload performance. As we uncover new properties of the popular Docker storage drivers, this is a sobering reminder that widespread use of new technologies can often precede their careful evaluation.},
+	Author = {Tarasov, Vasily and Rupprecht, Lukas and Skourtis, Dimitris and Li, Wenji and Rangaswami, Raju and Zhao, Ming},
+	Date-Added = {2019-11-28 09:34:50 +0100},
+	Date-Modified = {2019-11-28 09:34:50 +0100},
+	Day = {01},
+	Doi = {10.1007/s10586-018-02893-y},
+	Issn = {1573-7543},
+	Journal = {Cluster Computing},
+	Month = {Dec},
+	Number = {4},
+	Pages = {1159--1172},
+	Title = {Evaluating Docker storage performance: from workloads to graph drivers},
+	Url = {https://doi.org/10.1007/s10586-018-02893-y},
+	Volume = {22},
+	Year = {2019},
+	Bdsk-Url-1 = {https://doi.org/10.1007/s10586-018-02893-y}}
+
+@url{kubernetes_secrets,
+	Author = {The Kubernetes Authors},
+	Date-Added = {2019-11-23 13:03:31 +0100},
+	Date-Modified = {2019-11-23 13:04:25 +0100},
+	Lastchecked = {November 22, 2019},
+	Title = {Distribute Credentials Securely Using Secrets},
+	Urldate = {April 15, 2019}}
+
+@url{docker_swarm,
+	Author = {Docker Inc.},
+	Date-Added = {2019-11-23 13:01:19 +0100},
+	Date-Modified = {2019-11-23 13:02:56 +0100},
+	Lastchecked = {November 22, 2019},
+	Title = {Swarm mode overview},
+	Urldate = {July 6, 2017}}
+
+@inproceedings{10.1007/978-3-319-94289-6_8,
+	Abstract = {Container technology has become an integral part of today's major IT services. Although it offers several benefits, it also introduces new challenges for operating and maintaining secure container environments. One such challenge is to retain the ability to detect and address the containers' vulnerabilities and compliance violations. However, designing an effective solution to enable this capability must be based on the accurate understanding of characteristics observed from actual container images and instances. To contribute toward this objective, we have built a general data processing framework, applying the principles of the state-of-the-art. It is a system that decouples the data collection process from the analysis so as to allow user to focus more on building new analysis logics rather than on the tools for monitoring agents. We applied it to the analysis of container images from the Docker Hub image repository, to learn about their security posture. In this work we present various interesting findings and new insights from analyzing the public image corpus. We have learned that more than 92{\%} of the images contain compliance violations and/or vulnerable packages.},
+	Address = {Cham},
+	Author = {Tak, Byungchul and Kim, Hyekyung and Suneja, Sahil and Isci, Canturk and Kudva, Prabhakar},
+	Booktitle = {Web Services -- ICWS 2018},
+	Date-Added = {2019-11-23 12:58:29 +0100},
+	Date-Modified = {2019-11-23 12:58:29 +0100},
+	Editor = {Jin, Hai and Wang, Qingyang and Zhang, Liang-Jie},
+	Isbn = {978-3-319-94289-6},
+	Pages = {116--133},
+	Publisher = {Springer International Publishing},
+	Title = {Security Analysis of Container Images Using Cloud Analytics Framework},
+	Year = {2018}}
+
+@article{Xu2018,
+	Abstract = {It is feasible to deploy Docker containers in IoT (Internet of Things) devices because their runtime overhead is almost zero. Default Docker installation does not verify an image authenticity. Authentication is vital for users to trust that the image is not malicious or tampered with. As Docker is currently a popular choice for developers, tightening its security is a priority for system administrators and DevOps engineers. Docker recently deployed Notary as a solution to verify authenticity of their images. Notary is a viable solution, but it has some potential threats. This paper specifically addresses its vulnerability towards Denial-of-Service (DoS) attacks, and propose a potential solution: blockchain-based Decentralized Docker Trust (DDT). The proposed solution involves decentralizing the trust via a blockchain. The solution greatly reduces the risk of DoS and at the same time provides a signature verification service for Docker images. We demonstrate the proposed blockchain-based solution's scalability and efficiency by conducting performance evaluation. At the same time, we also implemented a system prototype of Decentralized Docker Trust (DDT), and conducted performance evaluation for it on Amazon Web Services (AWS) across multiple data centers.},
+	Author = {Xu, Quanqing and Jin, Chao and Rasid, Mohamed Faruq Bin Mohamed and Veeravalli, Bharadwaj and Aung, Khin Mi Mi},
+	Date-Added = {2019-11-23 12:56:17 +0100},
+	Date-Modified = {2019-11-23 12:56:17 +0100},
+	Day = {01},
+	Doi = {10.1007/s11042-017-5224-6},
+	Issn = {1573-7721},
+	Journal = {Multimedia Tools and Applications},
+	Month = {Jul},
+	Number = {14},
+	Pages = {18223--18248},
+	Title = {Blockchain-based decentralized content trust for docker images},
+	Url = {https://doi.org/10.1007/s11042-017-5224-6},
+	Volume = {77},
+	Year = {2018},
+	Bdsk-Url-1 = {https://doi.org/10.1007/s11042-017-5224-6}}
+
+@url{docker_heise,
+	Author = {Heise online},
+	Date-Added = {2019-11-23 12:41:36 +0100},
+	Date-Modified = {2019-11-23 12:42:32 +0100},
+	Lastchecked = {23.11.2019},
+	Title = {Container: Docker verkauft Enterprise-Gesch{\"a}ft und bekommt neuen CEO},
+	Urldate = {14.11.2019}}
+
+@url{docker_faq,
+	Author = {Docker Inc.},
+	Date-Added = {2019-11-23 12:37:56 +0100},
+	Date-Modified = {2019-11-23 12:45:09 +0100},
+	Keywords = {docker, faqs},
+	Lastchecked = {2019-11-23},
+	Title = {Docker frequently asked questions (FAQ)},
+	Urldate = {2019-11-23}}
+
+@electronic{nccgroup,
+	Author = {ncc group},
+	Date-Added = {2019-11-11 15:56:38 +0100},
+	Date-Modified = {2019-11-11 15:57:36 +0100},
+	Title = {Understanding and Hardening Linux Containers},
+	Urldate = {2016-06-29}}
+
+@book{Souppaya:2017aa,
+	Author = {Souppaya, Murugiah and Morello, John and Scarfone, Karen},
+	Date = {2017/09/25},
+	Date-Added = {2019-11-11 15:53:47 +0100},
+	Date-Modified = {2019-11-11 15:53:47 +0100},
+	Doi = {10.6028/NIST.SP.800-190},
+	Month = {09},
+	Title = {NIST Special Publication 800-190, Application Container Security Guide},
+	Ty = {BOOK},
+	Year = {2017},
+	Bdsk-Url-1 = {https://doi.org/10.6028/NIST.SP.800-190}}
+
+@article{to_docker_or_not,
+	Author = {Combe, Theo and Martin, Antony and Pietro, Roberto},
+	Date-Added = {2019-11-11 15:50:50 +0100},
+	Date-Modified = {2019-12-02 14:05:09 +0100},
+	Doi = {10.1109/MCC.2016.100},
+	Journal = {IEEE Cloud Computing},
+	Month = {09},
+	Pages = {54-62},
+	Title = {To Docker or Not to Docker: A Security Perspective},
+	Volume = {3},
+	Year = {2016},
+	Bdsk-Url-1 = {https://doi.org/10.1109/MCC.2016.100}}
+
+@article{DBLP:journals/corr/Bui15,
+	Archiveprefix = {arXiv},
+	Author = {Thanh Bui},
+	Bibsource = {dblp computer science bibliography, https://dblp.org},
+	Biburl = {https://dblp.org/rec/bib/journals/corr/Bui15},
+	Date-Added = {2019-11-11 15:49:02 +0100},
+	Date-Modified = {2019-11-11 15:49:02 +0100},
+	Eprint = {1501.02967},
+	Journal = {CoRR},
+	Timestamp = {Mon, 13 Aug 2018 16:46:28 +0200},
+	Title = {Analysis of Docker Security},
+	Url = {http://arxiv.org/abs/1501.02967},
+	Volume = {abs/1501.02967},
+	Year = {2015},
+	Bdsk-Url-1 = {http://arxiv.org/abs/1501.02967}}
+
+@inproceedings{7180102,
+	Author = {V. S. {Sinha} and D. {Saha} and P. {Dhoolia} and R. {Padhye} and S. {Mani}},
+	Booktitle = {2015 IEEE/ACM 12th Working Conference on Mining Software Repositories},
+	Date-Added = {2019-11-11 15:43:45 +0100},
+	Date-Modified = {2019-11-11 15:43:45 +0100},
+	Doi = {10.1109/MSR.2015.48},
+	Keywords = {application program interfaces;public key cryptography;source code (software);secret-key leaks mitigation;secret-key leaks detection;source code repositories;fix key leaks;code repositories;key leaks protection;version control systems;Pattern matching;Control systems;History;Java;Software;Facebook;Leak detection;mining software repositories;api keys;security;git},
+	Month = {May},
+	Pages = {396-400},
+	Title = {Detecting and Mitigating Secret-Key Leaks in Source Code Repositories},
+	Year = {2015},
+	Bdsk-Url-1 = {https://doi.org/10.1109/MSR.2015.48}}

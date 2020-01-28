@@ -1,0 +1,37 @@
+%
+% Chapter: Related Work
+%
+
+\chapter{Known key leak techniques}
+\label{ch:known_key_leak_techniques}
+Scientific work on detection of secrets in source codes has been done in \cite{7180102}. Different procedures are shown, which can be used to detect different types of secrets. Mainly API tokens from Amazon and Facebook were handled in the paper. They explained methods like sample selection using keyword search, pattern-based search, heuristics-driven filtering and source-based program slicing. 
+
+The first approach focuses on fixed strings in sensitive key files such as a RSA private key. RSA private keys contains always a prefix like the following:
+\begin{lstlisting}
+-----BEGIN OPENSSH PRIVATE KEY-----
+\end{lstlisting}
+\begin{lstlisting}
+-----BEGIN RSA PRIVATE KEY-----
+\end{lstlisting}
+\begin{lstlisting}
+-----BEGIN PRIVATE KEY-----
+\end{lstlisting}
+
+
+This exemplary keyword approach applies well when keys use fixed string prefixes. It is not sufficient for private keys that have no fixed prefixes.
+
+Due to this fact, the referenced paper is more focusing on pattern-based search. The pattern-based search is not restricted to strings, but to regular expressions and is suitable for strings with a fixed schema.
+As in most cases, a pattern-based search also has its drawbacks in the form of false-positives. This is why in \cite{7180102} heuristics and source slicing are used to reduce false-positives and to increase the efficiency.
+Heuristics have been tested by looking at cases where a matching secret key appears within 5 lines of each other. This approach is usually precise in relation to the results achieved, but it is possible to miss leaked keys where the credentials are not close together. A different tested heuristically approach to reduce false-positives is trying and guessing whether they are auto-generated or hand-written, as they noticed that they are common false-positives.
+A further framework was used for this approach and the false-positive rate was successful decreased.
+
+The source-based program slicing approach is a very efficient approach. In case of API keys from Amazon and Facebook they had a 100\% efficiency detection-rate with the use of a customized program slicing method. Source-based program slicing is a complex feature which is evaluated in \cite{z3} in depth. 
+
+Due to the fact, that heuristics-driven filtering and source-based program slicing is used to reduce the amount of false positives and to increase the efficiency, the following concept will only use the main mechanism of the work in  \cite{7180102}. This includes the well working keyword search and pattern-based search. The reason for this to prove that the detection of secrets in container images is possible in general. When this is possible an extension of heuristics-driven filtering and source-based program slicing will in theory further improve the results. 
+The following chapter will first adapt these key mechanism like keyword search and pattern-based search in order to create a theoretical concept to detect secrets in container images with docker as example.
+
+%
+% Section: XYZ
+%
+
+

@@ -1,0 +1,9 @@
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+18c42544f1df        31 minutes ago      /bin/sh -c #(nop)  CMD ["/bin/sh" "-c" "sh /...   0B
+92938892ab5e        31 minutes ago      /bin/sh -c chmod +x /opt/app.sh                 35B
+b4505d1e1290        31 minutes ago      /bin/sh -c #(nop) COPY file:bda8f04ea8895a84...   35B
+775349758637        4 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<missing>           4 weeks ago         /bin/sh -c mkdir -p /run/systemd && echo 'do...   7B
+<missing>           4 weeks ago         /bin/sh -c set -xe   && echo '#!/bin/sh' > /...   745B
+<missing>           4 weeks ago         /bin/sh -c [ -z "$(apt-get indextargets)" ]     987kB
+<missing>           4 weeks ago         /bin/sh -c #(nop) ADD file:a48a5dc1b9dbfc632...   63.2MB

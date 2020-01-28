@@ -1,0 +1,25 @@
+This analysing program will scan a Docker image for embedded secrets.
+If a secret is detected then a data-structure containing the secret will be returned; if not, a empty data-structure will be returned.
+
+Enter an image name
+if image exist
+	pull image
+	check keywords COPY, ADD and RUN
+	if keywords used
+		paths_list = empty
+		for keyword in keywords:
+			switch(keyword)
+				COPY:	
+				ADD: paths_list.append(check dst PATH method1)
+				break;
+				RUN: paths_list.append(check dst PATH method2)
+				break;
+		scan paths
+		if secrets found
+			return secrets in data-structure	
+		else
+			return empty data-structure			
+	else
+		return empty data-structure
+else
+	go to Enter an image name
