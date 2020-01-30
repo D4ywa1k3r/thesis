@@ -1,0 +1,17 @@
+def fetch_direct_copy_targets(self):
+    temp_list = list()
+    for match in re.finditer("(dir|file):[a-f0-9]{64}\sin\s", img_meta):
+        target_path = examine_with_string_slicing()
+        temp_meta = slice_orig_meta
+        examine_workdir(temp_meta)
+        if target_path is '/':
+            continue
+        if target_path[0] is '/':
+            temp_list.append(target_path)
+        if target_path[0] is '.':
+            temp_list.append(workdir)
+        elif target_path[0] is not '/' and target_path[0] is not '.':
+            path = trim(path)
+            temp_list.append(path)
+
+     return temp_list

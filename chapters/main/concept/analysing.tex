@@ -27,7 +27,7 @@ The architecture itself has to be built in a way of reusability and should work 
 \label{ch:theory:analysing_process:obtain}
 The architecture of this module belongs to a classical input output system. This module takes the image name as an argument and will download the image as a file output on the host system. As already known, the output is saved as several folders and files depending on the used union file system which represents the image. Before the download starts, the module has to take care about garbage of old images in order to save hardware resources and prevent errors during the future proceeding. This will be done through the Docker API, since Docker provides already functions to clean up images from a host system.
 The target image can be downloaded from an arbitrary container registry. In this work the module will only pull images from public registries without authentication. In theoretical, it is also possible to pull images from registries where authentication is needed. These actions would also take place in this module.
-If the image does not exist, the entire process has to be repeated with another queried input argument, namely another image name.
+If the image does not exist, the analysing process is terminated.
 However, if this module has found and downloaded an image, it continues with the preprocessing of the image. The responsible module is explained in the next subsection of this analysis section.
 
 \subsection{Image preprocessing}
@@ -55,8 +55,8 @@ Due to the flexibility of these COPY and ADD commands there are a few cases to c
 It is important to note that many different folders can be examined, folders with the same name, and folders with a parent/child relations.
 Different folders without a file system relation are not a problem and can be treated as a normal scanning target. 
 If duplicate folders are detected, the preprocessor must detect and remove this duplicate so that the folder is considered only once.
-If a child parent relationship exists, the child folder can be removed and only the parent folder forms the root directory to be scanned. The parent folder contains the subfolder and the child is considered only once.
-A possible relation of folders can be recognized by a corresponding comparison of the given path specifications. The analysing module has to take care of that with implementing such a decision. 
+%If a child parent relationship exists, the child folder can be removed and only the parent folder forms the root directory to be scanned. The parent folder contains the subfolder and the child is considered only once.
+%A possible relation of folders can be recognized by a corresponding comparison of the given path specifications. The analysing module has to take care of that with implementing such a decision. 
 
 Next there is the RUN command. RUN implies the simple bash command which exist already in each metadata entry in the history. That is the reason why RUN is not explicitly listed as a keyword in the metadata informations. 
 One approach is to detect actions that follow a RUN action, as they are listed in the metadata information. That means there is a data structure with valid keywords necessary which will be compared to the whole metadata.
@@ -82,7 +82,7 @@ These requirements finally lead to a potentially valid pattern derived from the 
 	"(/bin/sh\s-c|&&)\s(openssl genrsa|wget|git clone|ssh-keygen)"
 \end{lstlisting}
 
-For each detected program, the syntax must be taken into account. Each program specifies an optional target path that must be extracted. That forms the next potential targets, which must be considered by the scanning module.Also here when the targets are examined, the special interrelation between folders like duplicated folders, parent-child relations has to be considered as well like mentioned previously.
+For each detected program, the syntax must be taken into account. Each program specifies an optional target path that must be extracted. That forms the next potential targets, which must be considered by the scanning module.Also here when the targets are examined, the special interrelation between folders like duplicated folders has to be considered as well like mentioned previously.
 
 When no optional endpoint is specified for a program, the current WORKDIR is used. This belongs to the COPY or ADD and to the RUN command.
 \graffito{The WORKDIR instruction sets the working directory for any RUN, COPY and ADD command in the Dockerfile}
@@ -95,10 +95,9 @@ The following snippet shows the effect of using the WORKDIR variable:
 \end{lstlisting}
 It can be seen that The WORKDIR variable is simply used as prefix when a relative Unix path is used.
 If the target path of an ADD, COPY and RUN command is recognized, the WORKDIR variable must finally be taken into account, unless an absolute path was used.
-However, it is a special use case when the WORKDIR variable is set as root directory. In this case everything should be scanned except for the default root files and folders.
+However, it is a special use case when the WORKDIR variable is set as root directory or the developer made an instruction to copy files to the root folder. In this case everything should be scanned except for the default root files and folders.
 This behavior might be confusing and is demonstrated with the following listing:
-\lstinputlisting[caption={Ubuntu 18.04 root folder}, captionpos=b, label={ch:concept:linux_tree}]{chapters/main/concept/listings/linuxroot.txt}
-Before the final targets can be defined by the preprocessing module, the root files and folders of a plain Linux system has to be examined. This must be done dynamically, since the amount of kernel modules (in this case the vmlinuz symbol links) or other system files differs depending on the maintenance work of the system owner. Every folder which is not listed from the dynamic examined root folder, deviates from the original file system and sets a certain difference. An example Linux root structure can be seen in the listing \ref{ch:concept:linux_tree}. This difference sets finally the target path(s) to scan. 
+Before the final targets can be defined by the preprocessing module, the root files and folders of a plain Linux system has to be set. This can be done static and scalable, since there are standards of root hierchachies established. Every folder which is not listed from the static root folder, deviates from the original file system and sets a certain difference. This difference sets finally the target path(s) to scan. 
 
 In general this scanning of certain areas enables a higher analysis speed and reduces the false-positive rate significantly instead of scanning a whole bulk of data. Unfortunately the advantage is a disadvantage at the same time. When secrets are already in upper images, they can't be discovered, because associated meta informations are only available starting from the latest base image. That requires an already trusted base image, as they are marked on container registries as official or trusted. It is a must do to use only trustworthy base images, since not only key problems exist. Also other types of security vulnerabilities may be included such as manipulated application packages as an example. 
 Also It is important to note that no manipulation on the history can be recognised with this module. This would be an important function extend, otherwise the manipulation allows to bypass this pre-processing module. 
