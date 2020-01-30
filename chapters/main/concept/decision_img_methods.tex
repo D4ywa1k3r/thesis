@@ -29,7 +29,7 @@ Finally the program that performs the analysis can access the mount point and do
 \subsection{Decision of access method} 
 \label{ch:theory:access_eval:decision_access}
 These mentioned approaches have advantages and disadvantages. 	
-In subsection \ref{ch:theory:access_eval:additional} the access approach has the drawback of an additional layer and requires a bi-directional interaction between host and container or container and a specific endpoint in order to save the results. Also it needs kind of copy of the image in order to save the meta-informations. The modifying of the base image leads to a higher complexity and effort. 
+In subsection \ref{ch:theory:access_eval:additional} the access approach has the drawback of an additional layer and requires a bi-directional interaction between host and container or container and a specific endpoint in order to save the results. Also it needs kind of copy of the image in order to save the meta-information. The modifying of the base image leads to a higher complexity and effort. 
 The second approach from \ref{ch:theory:access_eval:tarball} has only the image as a base and does not modify anything on the image and only needs a start of a container temporarily. Unlike in \ref{ch:theory:access_eval:additional} the container has not to run during the analysing process. However, the fact of starting a container is still a drawback because it can lead to an initially undefined consumption of resources.
 With direct access method from \ref{ch:theory:access_eval:direct_access}, the analysis is performed without starting a container and therefore no additional container load exists on the host.
 Finally the third approach has the big advantage to access to the image directly through the filesystem. 

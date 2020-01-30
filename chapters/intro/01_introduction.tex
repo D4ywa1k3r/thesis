@@ -1,16 +1,16 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-The use of application containers has become indispensable today. The advantages of those application containers are obvious to developers and system engineers. Container technology provides isolation and portability for any built application. Applications are consumer software, but most of all software that is needed in the business environment, such as large databases and web applications.
+Nowadays the use of application containers has become indispensable. The advantages of those application containers are obvious to developers and system engineers. Container technology provides isolation and portability for any built application. Applications are the most common form of consumer software, but most of all software that is needed in the business environment, such as large databases and web applications.
 
-In enterprise environments, several containers also often form one application. This means that the given isolation has to be partially removed and intercommunication these containers has to be enabled in order to provide a running application stack. Therefore credentials have to be integrated to guarantee a certain degree of security. Credentials such as passwords or other tokens can establish a more or less secure connection to a specific remote endpoint. 
+In enterprise environments, several containers also often form one application. This means that the given isolation has to be partially removed and intercommunication between these containers has to be enabled in order to provide a running application stack. Therefore credentials have to be integrated to guarantee a certain degree of security. Credentials such as passwords or other tokens can establish a more or less secure connection to a specific remote endpoint. 
 
 This now presupposes that developers are security-conscious and adhere to security standards. A container is usually an instance of an image and the image builds the base of every container. A fully developed image is usually found on online platforms, known as container-registries. These registries are normally available for the public. Anyone who has direct access to the image also automatically gets access to the file system within the image. If a developer has integrated secrets statically in order to create a secure communication across the internet into the image, these are easily visible to curious people or attackers. These secrets can be tapped by attackers, exploited and thus become obsolete. That is a fatal problem in container images in general.
 
 In addition to this problem, there are others such as the trust of images regarding integrity \cite{to_docker_or_not}.
 A popular attack is a man in the middle attack in this case. There is a signing process necessary with e.g. Docker content trust or a non-central blockchain approach \cite{Xu2018}. 
 
-Even obsolete packages are a problem for container images. Obsolete packages often contain vulnerabilities that are published and visible on Common Vulnerabilities and Exposures(CVE) systems \cite{10.1007/978-3-319-94289-6_8}. In theoretical, this problem can be solved by hard work through a consequent patching mechanism. 
+Even obsolete packages are a problem for container images. Obsolete packages often contain vulnerabilities that are published and visible on Common Vulnerabilities and Exposures(CVE) systems \cite{10.1007/978-3-319-94289-6_8}. In theory, this problem can be solved by hard work through a consequent patching mechanism. 
 
 However, this paper will only focus on the problem of the embedded secrets in container images, which are totally necessary for containers to communicate in a secure manner with other containers or services.
 
@@ -31,7 +31,7 @@ Secrets are used by almost every software that needs a secure communication in a
 If a key has been integrated into a container image, a key leak is inevitable.
 It is not difficult to steal keys from an image, since the attacker only needs to launch the container from the image to gain access to the file. The attacker can afterwards scan the file system for tokens, or check the source code or encapsulated archives and binaries for secrets. 
 
-Even if it is unknown and not allowed to the developer, nothing and no one can prevent technically the static integration of secrets. It is a pure failure of the developer.
+Even if it is unknown and not allowed to the developer, nothing and no one can prevent technically the static integration of secrets. The static integration is a pure failure of the developer.
 
 The development of an image analysis for embedded secrets allows a better control of the secrets used. This does not work preventively but can be used as a control instance before further processing or delivery. 
 %
@@ -60,4 +60,4 @@ This chapter afterwards focuses in particular on the practical development of ev
 
 Finally, there will be a summary of the collected results and a solid basis for future scientific work.
 
-In the next chapter it will go on as mentioned with containerization insights.
+The next chapter will introduce as mentioned with containerization insights.

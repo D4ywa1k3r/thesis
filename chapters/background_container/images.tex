@@ -1,6 +1,6 @@
 \section{Docker image}
 \label{sec:intro:docker_image:docker_img}
-In this section, the Docker image is explained in more detail, as it is an important part of the work. First, the architecture of a Docker image is presented with the necessary information for further work, since the overall architecture with all information would make the basic chapter too large. Than the construct for building a Docker image is explained. This is called a Dockerfile and the introduction is done by explaining the key factors and usage of the Dockerfile.
+In this section, the Docker image is explained in more detail, as it is an important part of the work. First, the architecture of a Docker image is presented with the necessary information for further work, since the overall architecture with all information would make the basic chapter too large. Then the construct for building a Docker image is explained. This is called Dockerfile and in the introduction the key factors and usage of Dockerfile is explained. 
 Finally, the last subsection describes the metadata information, as it is important to follow the theoretical concept.
 
 \subsection{Docker Image architecture}
@@ -8,7 +8,7 @@ Finally, the last subsection describes the metadata information, as it is import
 A Docker image is ultimately a stack of selected file system layers to provide a starting point for a container.
 Fig \ref{sec:intro:docker_image:docker_image_stack} shows how a Docker image is stacked. At the bottom there is the Linux kernel. On top of that takes two different image layers place. In this case it is a Debian and a Busybox.
 Both of them are runnable base images.
-On top of these layers are can be more layers stacked as shown on the Debian layer with an additional Emacs and an Apache layer. The busybox itself doesn't have another further layer stacked on the top.
+On top of these layers can be more layers stacked as shown on the Debian layer with an additional Emacs and an Apache layer. The busybox itself doesn't have another further layer stacked on the top.
 When a container is launched from an image, Docker finally attaches a read/write file system across all underlying layers, as it is seen on both images in this example.
 
 \begin{figure}[htbp]
@@ -58,28 +58,28 @@ First, \textit{direct integration} which contains the actions COPY and ADD. The 
 
 The second category \textit{indirect integration} is a bit more comprehensive. This category contains the action RUN.
 Docker itself uses RUN to trigger a shell command and commit it to a new image layer.
-The executed shell commands for RUN are inline defined. That allows cases, loop-constructs and external program execution. A flexible bunch of code is allowed, since it is just standard bash. This allows it a developer to use available tools like ssh-keygen, openssl, such as manual file and folder creation. It is totally up to the developer what do to with that inline command in the Dockerfile. 
+The executed shell commands for RUN are inline defined. That allows cases, loop-constructs and external program execution. A flexible bunch of code is allowed, since it is just standard bash. This allows a developer to use available tools like ssh-keygen, openssl and manual file and folder creation. It is totally up to the developer what do to with that inline command in the Dockerfile. 
 
 
-At this time it is known what a Docker image is and how it can be build. Also, it is known to integrate static files into an image in an indirect and direct way.  The next subsection will introduce the important topic metadata of an image which will be definitely used in the following chapters. 
+At this time it is known what a Docker image is and how it can be built. Also, it is known to integrate static files into an image in an indirect and direct way.  The next subsection will introduce the important topic metadata of an image which will be definitely used in the following chapters. 
 
 \subsection{Docker Metadata}
 \label{sec:intro:docker_image:docker_img:meta}
-Another important feature is the metadata of an image. Every Docker image contains several meta-informations of the build process. These meta-informations are directly accessible through the history feature. 
+Another important feature is the metadata of an image. Every Docker image contains several meta-information of the build process. These meta-informations are directly accessible through the history feature. 
 These informations are locally provided and accessible for the root user. 
 It is assumed in this work that no manipulation of the metadata was performed locally. An integrity check would be desirable and need further investigation.
 
 Using Ubuntu 18.04 as an example, the meta-information looks like this below \ref{sec:intro:docker_image:meta}:
 \lstinputlisting[caption={Prototype structure in Python}, captionpos=b, label={sec:intro:docker_image:meta}]{chapters/main/practical/listings/meta.txt}
 This listing might be confusing but it is helpful to just get an overview how it is structured, and how it can be helpful for the next chapters.
-It can be seen that the schema of this meta information is similar to JSON. The only difference is that numeral values are not marked in quotations. In this structure are many attributes with their corresponding values. Attributes like "Created", "CreatyBy" are first followed by "Id" and many more. 	
+It can be seen that the schema of this meta information is similar to JSON. The only difference is that numeral values are not marked in quotations. In this structure there are many attributes with their corresponding values. Attributes like "Created", "CreatyBy" are first followed by "Id" and many more. 	
 Important informations are most of all Dockerfile instructions like COPY, ADD an RUN, since they are responsible for integrating static files into the image.
 In this example it can be seen that only an ADD command is used. A COPY method is not used.
 A special fact applies to the RUN command. RUN commands are not directly listed in the meta informations.
 Instead, only the executable command that follows a RUN command is visible.
 
 In theory it is easy to analyse these informations because it is readable for computers because of the javascript object notation similarity.
-That makes this history feature of Docker very important especially when it comes to the (pre-)processing of Docker images.	 Important properties can be extracted, such as Dockerfile keywords and there parameters.
+That makes this history feature of Docker very important especially when it comes to the (pre-)processing of Docker images.	 Important properties can be extracted, such as Dockerfile keywords and corresponding parameters.
 
 This chapter provided a basic knowledge about the architecture Docker images and the interaction with Overlay2. This knowledge is fundamental to have an idea how the file structure is working behind the scenes. It gives some ideas for the theoretical concept to analyse such an image for static secrets.
 Before this is possible some related work is shown about key leak techniques. Key leak techniques are essential in order to detect secrets.
