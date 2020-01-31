@@ -1,2 +1,15 @@
-\section{Local images}
+\section{Self developed images}
 \label{ch:eval:local_images}
+The creation of Docker images containing the secrets to detect needs a directive. An arbitrary development of Dockerfiles and thus Docker images leads finally to chaos and misleading scan-results. 
+The section structures the creation of image as follows. Basically there will be two categories of Docker images. The first one only contains the RSA secrets and the second one contains only AWS tokens.
+Each category deserves the creation of two images. In other words, there will be 2 Dockerfiles for the RSA and the AWS category. The reason for this is the creation of images that use either the direct or indirect method of static integration of secrets. In total there are 4 Docker images, which have to be created by developing a corresponding Dockerfile. It is important when developing a Dockerfile to consider the different cases. WORKDIR changes has to take place, since they are commonly used by developers. Finally it is important to use absolute and relative destination paths. These different cases and tasks will be considered now starting with the creating a Docker image, containing RSA keys.
+
+\lstinputlisting[caption={Image with RSA secret using COPY and ADD}, captionpos=b, label={ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile1}
+\lstinputlisting[caption={Image with RSA secret using RUN}, captionpos=b, label={ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile2}
+Both variants of the created images have different properties that had to be considered. Both variant consists of WORKDIR changes, relative and absolute paths. The images are handed over to the analysemanager one after the other. Each time the Analysis Manager is restarted, the entire analysis workflow provided by the theory chapter is run through. This includes per analysis a new garbage collection, fetching the image, mounting and finally scanning the image.
+The analysing_manager is finally started by passing the image name as a command line argument, as can be seen in this following command
+\begin{lstlisting}
+	python analysing_manager.py <img_name>
+\end{lstlisting}
+After starting this procedure the result is printed out. To be able to see the status of the process, console output is made at important points and written to the standard buffer
+
