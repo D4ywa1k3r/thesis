@@ -1,0 +1,6 @@
+FROM ubuntu:18.04
+COPY files/aws .
+WORKDIR /opt
+ADD files/aws /tmp/
+WORKDIR /mnt
+ADD files/aws .

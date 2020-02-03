@@ -1,0 +1,14 @@
+#####   Preparing environment   #####
+
+#####   Preprocessing Image rsa_second   #####
+
+#####   rsa_second   Has to be analysed #####
+
+#####   Mounting   #####
+
+#####   examination RSA keys starts   #####
+/var/lib/docker/overlay2/merged/root/.ssh/id_rsa:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/root/linse.private:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/rsa.private:-----BEGIN RSA PRIVATE KEY-----
+
+#####   examination AWS tokens starts   #####

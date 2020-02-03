@@ -1,0 +1,9 @@
+#####   aws_second   Has to be analysed #####
+
+#####   Mounting   #####
+
+#####   examination RSA keys starts   #####
+
+#####   examination AWS tokens starts   #####
+/var/lib/docker/overlay2/merged/rsa_aws_fake_keys/aws/java/src/aws_client.java:    String ACCESS_KEY_ID = "AKIA2E0A8F3B244C9986";
+/var/lib/docker/overlay2/merged/tmp/secrete.txt:    String ACCESS_KEY_ID = "AKIA2E0A8F3B244C9986";
