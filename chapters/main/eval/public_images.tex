@@ -1,2 +1,17 @@
 \section{Public available images}
 \label{ch:eval:public_images}
+Public images a saved on container registries. Container registries are provided by Docker Inc.(DockerHub), Google(GCR), Amazon (ECR) and others as well.   
+Each cloud provider offers a private area for users/groups to make the images accessible only to them. However the provided prototype only supports the query of public container registries without authentication.
+For this reason DockerHub is used as a base to scan images provided by the community. The testing was carried out on a random basis.
+The search was mainly for backend technologies that expect communication. This in turn requires secure communication using RSA for example.
+The search was performed manually without API query. The scan was then performed one by one and after some time images were found that actually contain RSA keys. 
+One of them was a commonly used candidate with more than 10 million downloads. This images was updated 5 month ago, in Oktober 2019. 
+\graffito{Note: The SHA is calculated over every image-layer by a special algorithm. This defines an image explicitly and makes clear which image was used exactly.}
+The image is called \textit{nodered/node-red-docker} and has the following SHA \textit{sha256:0bd9a1d2200474e7471bada2eb633f7193320ee47cb3b8aa34326d19f7f485c6}.
+Finally the analysing output can be seen in the following listing.
+\lstinputlisting[caption={Result RSA keys analyse}, captionpos=b, label={ch:eval:public_images:result_public}]{chapters/main/eval/listings/result_public.txt}
+8 private keys have been found in the Docker image. For each RSA key found, the corresponding folder was displayed. The folder structure indicates that these keys are mostly used by the MQTT protocol.
+The MQTT folder hierarchy displays RSA test keys as well as potential productive client RSA keys. A further investigation can help to associate this private key.
+The other RSA keys would also be possible candidates that pursue a certain protection goal. As an example the tls-key.pem may be sensitive since a TLS private key can be used to generate certificate signing requests (CSR), and later to secure and verify connections using the certificate created per that request. All these private keys needs a further investigation in order to obtain possible sensitive informations.
+
+This section showed that the prototype can also be applied to public images. This confirms a possible universal application, since locally created images are not always true.

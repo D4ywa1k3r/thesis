@@ -1,0 +1,19 @@
+#####   Preparing environment   #####
+
+#####   Preprocessing Image nodered/node-red-docker   #####
+
+#####   nodered/node-red-docker   Has to be analysed #####
+
+#####   Mounting   #####
+
+#####   examination RSA keys starts   #####
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/mqtt/test/helpers/private-key.pem:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/mqtt/test/helpers/wrong-key.pem:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/mqtt/test/helpers/tls-key.pem:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged//usr/src/node-red/node_modules/mqtt/examples/tls client/tls-key.pem:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/oauth/tests/oauthtests.js:var RsaPrivateKey = "-----BEGIN RSA PRIVATE KEY-----\n" +
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/http-signature/http_signing.md:    -----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/agent-base/test/ssl-cert-snakeoil.key:-----BEGIN RSA PRIVATE KEY-----
+/var/lib/docker/overlay2/merged/usr/src/node-red/node_modules/https-proxy-agent/test/ssl-cert-snakeoil.key:-----BEGIN RSA PRIVATE KEY-----
+
+#####   examination AWS tokens starts   #####

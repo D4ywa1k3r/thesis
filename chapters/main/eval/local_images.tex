@@ -19,7 +19,7 @@ The analysing\_manager is finally started by passing the image name as a command
 \end{lstlisting}
 After starting this program it is possible to see the status of the process since console output is made at important points and written to the standard buffer.
 A complete output of the analysing program can be seen in the following listing \ref{ch:eval:local_images:rsa_second_result} with the Dockerfile \ref{ch:eval:local_images:rsa_run} of using the indirect integration of files.
-\lstinputlisting[caption={Image with RSA secret using RUN}, captionpos=b, label={ch:eval:local_images:rsa_second_result}]{chapters/main/eval/listings/result_rsa_second.txt}
+\lstinputlisting[caption={Result RSA keys analyse}, captionpos=b, label={ch:eval:local_images:rsa_second_result}]{chapters/main/eval/listings/result_rsa_second.txt}
 Every step is printed out in the console and the scan result is finally visible at the bottom of the listing. Every generated RSA key has been found and printed out with the corresponding location. The analysis program recognizes the RSA keys completely from the first image \ref{ch:eval:local_images:rsa_copy} as well. 
 
 The next targets to scan are Amazon web tokens. A further analyses takes place in the next subsection.
@@ -31,7 +31,7 @@ This subsection develops Docker images with AWS tokens integrated in a direct an
 \lstinputlisting[caption={Image with AWS token using RUN}, captionpos=b, label={ch:eval:local_images:aws_run}]{chapters/main/eval/listings/dockerfile4}
 The program will be applied to the second Docker image \ref{ch:eval:local_images:aws_run} because wget and git clones are used there and have not yet been considered yet.
 Now all 4 example RUN commands are considered by the analysing tool (wget, git clone, openssl and ssh-keygen). The result \ref{ch:eval:local_images:aws_second_result} below shows that every AWS token has been found and printed out with the corresponding location. The analysis program recognizes the AWS tokens completely from the first image \ref{ch:eval:local_images:aws_copy} as well. 
-\lstinputlisting[caption={Image with RSA secret using RUN}, captionpos=b, label={ch:eval:local_images:aws_second_result}]{chapters/main/eval/listings/result_aws_second.txt}
+\lstinputlisting[caption={Result AWS token analyse}, captionpos=b, label={ch:eval:local_images:aws_second_result}]{chapters/main/eval/listings/result_aws_second.txt}
 
 \subsection{Intermediate results}
 At this point it is important to emphasize that locally self-generated images with integrated RSA and AWS secrets can be recognized by the prototype. Also the speed of the analysing\_manger is remarkably fast at first view. 
@@ -45,13 +45,7 @@ The following list shows the required analysis time of the previously created im
 \item [Image \ref{ch:eval:local_images:aws_copy}] \textasciitilde 0.1398549079985969 seconds
 \item [Image \ref{ch:eval:local_images:aws_run}] \textasciitilde 0.4584746649998124 seconds
 \end{description}
-The high performance of the scan is caused by the previously determined destination folders by the preprocessing module. This shows a comparison in the next listing when the preprocessing module is omitted and the whole bunch of data will be scanned.
-\begin{description}
-\item [Image \ref{ch:eval:local_images:rsa_copy}] \textasciitilde 10 minutes
-\item [Image \ref{ch:eval:local_images:rsa_run}] \textasciitilde 10 minutes
-\item [Image \ref{ch:eval:local_images:aws_copy}] \textasciitilde 10 minutes
-\item [Image \ref{ch:eval:local_images:aws_run}] \textasciitilde 10 minutes
-\end{description}
+The high performance of the scan is caused by the previously determined destination folders by the preprocessing module. A recursive scan of a complete root filesystem was also made and takes over an hour since the file has to be opened and checked for different prefixes and patterns.
 
 Since it is known that the prototype works for locally self-developed images, it is worth to know if the prototype can detect secrets in public images.
 This question is examined in the next section of this evaluation chapter.
