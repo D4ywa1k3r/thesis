@@ -1,9 +1,8 @@
 \chapter{Evaluation}
 \label{ch:eval}
 This chapter evaluates the prototypical implementation of the previous chapter \ref{ch:practical_realization}. 
-Locally self-made Docker images and public Docker images from a container-registry provides the input to be processed by the prototype. The self-made images will purposely contain the RSA and AWS secrets while it is not clear if the public ones will contain these types of secrets. The goal is to prove that the prototype is working for public images as well.
-The results of the locally images are shown and a final result in relation to public images is briefly and concisely presented.
-These results provide a good basis for a subsequent discussion which take place in the last section of the chapter.
+The input for the prototype are self-built images as well as pictures from public container registries. The self-made images will purposely contain RSA and AWS secrets while it is not clear if the public ones will contain these types of secrets. The goal is to prove that the prototype is working for public images as well. Therefore a number of public images has to be scanned to find secrets.
+The results of the locally images and public images are briefly and concisely presented.
 The next section of this chapter starts with self-created Docker images.
 
 %*************************************************************************
@@ -15,8 +14,3 @@ The next section of this chapter starts with self-created Docker images.
 % Creating, Scanning & Results of own public Docker Images
 % ***
 \input {chapters/main/eval/public_images.tex}
-
-%*************************************************************************
-% Results 
-% ***
-\input {chapters/main/eval/result.tex}

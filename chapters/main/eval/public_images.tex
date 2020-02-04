@@ -1,11 +1,12 @@
 \section{Public available images}
 \label{ch:eval:public_images}
-Public images a saved on container registries. Container registries are provided by Docker Inc.(DockerHub), Google(GCR), Amazon (ECR) and others as well.   
+Public images are stored and available on container registries. Container registries are provided by several cloud providers like Docker Inc.(DockerHub), Google(GCR), Amazon (ECR) and others as well.   
 Each cloud provider offers a private area for users/groups to make the images accessible only to them. However the provided prototype only supports the query of public container registries without authentication.
-For this reason DockerHub is used as a base to scan images provided by the community. The testing was carried out on a random basis.
-The search was mainly for backend technologies that expect communication. This in turn requires secure communication using RSA for example.
-The search was performed manually without API query. The scan was then performed one by one and after some time images were found that actually contain RSA keys. 
-One of them was a commonly used candidate with more than 10 million downloads. This images was updated 5 month ago, in Oktober 2019. 
+DockerHub provides a large bundle of images provided by the community and is the standard container registry for public images. A simple strategy is used to find potential candidates from DockerHub to scan these images.
+The search on DockerHub includes mainly backend technologies that expects a communication to remote endpoints. This in turn requires secure communication using by mechanisms like RSA for example.	
+An additional filter is set to fetch only non official DockerHub images. These images are not proved officially by DockerHub. Third-party images that are not subject to verification theoretically have a high potential of vulnerabilities.
+The search is performed manually without programmatically API queries. However the scan is autonomous, as the prototype only needs the name of the suspicious image.
+The scan is performed one by one. One of them is a commonly used candidate with more than 10 million downloads. This images was updated 5 month ago, in Oktober 2019. 
 \graffito{Note: The SHA is calculated over every image-layer by a special algorithm. This defines an image explicitly and makes clear which image was used exactly.}
 The image is called \textit{nodered/node-red-docker} and has the following SHA \textit{sha256:0bd9a1d2200474e7471bada2eb633f7193320ee47cb3b8aa34326d19f7f485c6}.
 Finally the analysing output can be seen in the following listing.
