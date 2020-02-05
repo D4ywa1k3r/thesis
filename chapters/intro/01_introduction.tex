@@ -1,63 +1,68 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-Nowadays the use of application containers has become indispensable. The advantages of those application containers are obvious to developers and system engineers. Container technology provides isolation and portability for any built application. Applications are the most common form of consumer software, but most of all software that is needed in the business environment, such as large databases and web applications.
+Nowadays the use of application containers has become indispensable. For developers and system engineers the advantages of those application containers are obvious. Container technology provides isolation and portability for any built application. Applications are usually business software instead of consumer software. This includes web-applications, databases and further large systems. 
 
-In enterprise environments, several containers also often form one application. This means that the given isolation has to be partially removed and intercommunication between these containers has to be enabled in order to provide a running application stack. Therefore credentials have to be integrated to guarantee a certain degree of security. Credentials such as passwords or other tokens can establish a more or less secure connection to a specific remote endpoint. 
+In enterprise environments several containers often form one application. Therefore the given isolation has to be partially removed in order to enable intercommunication between these containers. Credentials have to be integrated to guarantee a certain degree of security. Credentials such as passwords or other tokens can establish a more or less secure connection to a specific remote endpoint. This finally results in a runnable application stack with secure communication between a container-stack.
 
-This now presupposes that developers are security-conscious and adhere to security standards. A container is usually an instance of an image and the image builds the base of every container. A fully developed image is usually found on online platforms, known as container-registries. These registries are normally available for the public. Anyone who has direct access to the image also automatically gets access to the file system within the image. If a developer has integrated secrets statically in order to create a secure communication across the internet into the image, these are easily visible to curious people or attackers. These secrets can be tapped by attackers, exploited and thus become obsolete. That is a fatal problem in container images in general.
+This presupposes developers to adhere to security standards when creating a container-stack. A container is usually an instance of an image. In other words the image builds the base of every container. A fully developed image is usually found on online platforms, known as container-registries. These registries are normally available for the public. Anyone who has direct access to the image gets access to the file system within the image automatically. If a developer has incorporated secrets statically into the image to enable secure communication over the Internet, they are easily visible to attackers. These secrets can be tapped and exploited. After all the embedded secrets are obsolete. That is a fatal problem in container images in general.
 
-In addition to this problem, there are others such as the trust of images regarding integrity \cite{to_docker_or_not}.
-A popular attack is a man in the middle attack in this case. There is a signing process necessary with e.g. Docker content trust or a non-central blockchain approach \cite{Xu2018}. 
+The trust of images builds an additional problem \cite{to_docker_or_not}.
+The image integrity is generally not guaranteed and can be leveraged by the popular man in the middle attack(MITM). There is a signing process necessary with e.g. Docker content trust or a non-central blockchain approach \cite{Xu2018}. This leads to a guaranteed integrity assurance.
 
-Even obsolete packages are a problem for container images. Obsolete packages often contain vulnerabilities that are published and visible on Common Vulnerabilities and Exposures(CVE) systems \cite{10.1007/978-3-319-94289-6_8}. In theory, this problem can be solved by hard work through a consequent patching mechanism. 
+Outdated software-packages are also a problem for container images. Vulnerabilities of outdated packages are common and public available on Common Vulnerabilities and Exposures(CVE) systems \cite{10.1007/978-3-319-94289-6_8}. In theory this problem can be solved by hard work through a consequent patching mechanism. 
 
-However, this paper will only focus on the problem of the embedded secrets in container images, which are totally necessary for containers to communicate in a secure manner with other containers or services.
+However this paper focuses only on the problem of embedded secrets which are totally necessary for containers to communicate in a secure manner.
 
-Nowadays Docker is a famous container technology. Docker allows deployments in cloud native environments, on bare metal machines on Windows Systems, Mac OS and Linux operating systems. 
-Latest IT-news proves that Docker is currently undergoing a radical change and that there will be alternative solutions in the future \cite{docker_heise}. Since containers are still promising for the future, this work will provide exemplary samples with Docker.
+Nowadays Docker is a famous container technology. Docker allows deployments in cloud native environments and on bare metal machines. Possible supported operating systems are for example Windows, MacOS and Linux.
+The latest IT news reports that Docker is currently undergoing a radical change. There might be alternative solutions in the future \cite{docker_heise}. This work provides exemplary samples with Docker, since containers are still promising. Since Linux fundamentals form the basis basically, this work can be adapted to other container technologies.
 
-However, this work can be adapted to other container technologies, since Linux core features still form the basis.
-
-Currently, the computer science has developed some approaches to discover secrets in general \cite{7180102}. Related work to detect secrets in container images is not given yet.
-That is the basis on which the thesis starts its work with Docker as an example.
+Currently the computer science has developed some approaches to discover secrets in general \cite{7180102}. Related work to detect secrets in container images is not given yet.
+That is the basis on which the thesis starts the work with Docker as an example.
 
 %
 % Section: Motivation
 %
 \section{Motivation}
 \label{sec:intro:motivation}
-Secrets are used by almost every software that needs a secure communication in an unfaithful environment. For example, software that transfers sensitive data through the internet to a service-endpoint. The main goal of secrets are to tackle challenges like confidentiality, integrity, authenticity and accountability. A key leak would lead to a collapse of the above protection objectives in general.
-If a key has been integrated into a container image, a key leak is inevitable.
-It is not difficult to steal keys from an image, since the attacker only needs to launch the container from the image to gain access to the file. The attacker can afterwards scan the file system for tokens, or check the source code or encapsulated archives and binaries for secrets. 
+Secrets like passwords and other authentication tokens are used by almost every software that needs a secure communication in an unfaithful environment. The main goal of secrets are to tackle challenges like confidentiality, integrity, authenticity and accountability. A key loss would lead to a collapse of the above protection objectives in general. A key-leak is inevitable as soon as a key is integrated into an image.
+The attacker only needs to launch the container from the image to gain access to the file. Afterwards a scan of the file system for tokens can be made easily. 
 
-Even if it is unknown and not allowed to the developer, nothing and no one can prevent technically the static integration of secrets. The static integration is a pure failure of the developer.
-
-The development of an image analysis for embedded secrets allows a better control of the secrets used. This does not work preventively but can be used as a control instance before further processing or delivery. 
+Probably a developer is trained in security standards and will not integrate tokens statically. But developers are also error-prone people and there is no technical prevention for the static integration of secrets. 
+The development of a concept to detect embedded secrets in container images allows better control of the secrets used and catches possible errors of the developer. This concept does not work preventively, but can be used as a control instance before further processing or delivery. 
 %
 % Section: Ziele
 %
 \section{Goal of this work}
 \label{sec:intro:goal}
-This work tries to develop an approach to detect embedded secrets in container images. This is approached structurally by a theoretically developed concept, which contains various elementary building blocks. These include access to the container image as well as analysis and other points. The concept limits the goals to be aimed at to two important secrets in order to set a certain scope.
-In addition, new evaluated theoretical concepts are presented in this article using prototype applications. The prototypes are available on GitHub and on the attached CD.
-Finally, this prototype is applied in practice to obtain the result of the theoretical concept.
+This work develops an approach to detect embedded secrets in container images. This is tackled by a theoretically developed concept. This concept includes the access method to the container image and an analysis workflow for the detection of defined secrets. The concept is limited to two important secret-types to set a certain scope.
+A further goal is the prototypical implementation of the concept. The prototype is also evaluated by applying realistic scenarios.
+Finally, clear results should emerge from the prototype. The prototype is available on GitHub and on the attached CD.
+
 %
 % Section: Struktur der Arbeit
 %
 \section{Structure}
 \label{sec:intro:structure}
-Before falling into details its good to have a structure of this paper in mind. This helps for the following work in the best possible way.
-This work is basically targeted for everyone who is interested in computer science with basic knowledge about Linux architecture and container virtualization.
+Before falling into details it is worth to have a structure of this paper in mind. This helps to understand the following work in the best possible way. This thesis is basically aimed at everyone who is interested in computer science and has basic knowledge of Linux architecture and container virtualization.
 
-In this second chapter right after this section, it starts with container technology introduction in general related to Linux. The difference to classical virtualization is described briefly. Linux namespaces are also explained, because they represent an important functionality in the container area followed by a brief introduction to cgroups.
-There follows a deep dive into container images which form the basis for the work. This is an essential section that contains the functionality + usage of the union mount file system OVERLAY2.
+The background chapter starts with container technology introduction in general related to Linux. 
+That includes a description to containers in general with a brief comparison to the classical virtualization. Then the Linux namespaces are explained, since they are used by every container. 
+For a better understanding of the container concept, the topic of C-groups is also addressed
+Afterwards the topic UnionFS is explained, because this knowledge is necessary for understanding the following container images.
+The UnionFS and Image sections are essential as they constitute the basic know-how of the work.
 
-The third chapter introduces related work regarding key leak techniques in general with source codes and file systems. These techniques will be adapted in the following chapters.
+The third chapter gives an introduction to key-leak techniques in general.
+Scientifically elaborated documents are reviewed to get an overview of possible key-leak techniques.
+It is considered which existing methods can be used and adapted for the theoretical concept.
 
-The fourth chapter will contain a theoretical approaches to analyse the image. That includes the secret types to detect, the image access which has to be used and the processing of the image itself.
-This chapter afterwards focuses in particular on the practical development of evaluated methods to verify and compare the elaborated approaches.
+The fourth chapter contains the theoretical concept to detect embedded secrets in images. The concept starts with setting a scope of secrets to detect. Afterwards the image access is defined by a proper comparison.
+Finally the analysing workflow is defined based on the defined image access method.
+The analysing workflow represents the core work which represents the scientific delta.
 
-Finally, there will be a summary of the collected results and a solid basis for future scientific work.
+The fifth chapter describes the practical realization of the theoretical concept. A prototype is built and described which exactly reflects the functions and modules from the concept. 
 
+Finally, the prototype is evaluated with the help of valid use cases. First self-made images are applied to the prototype and then public images. The results are discussed briefly and concisely in the same chapter.
+
+The thesis is concluded by a conclusion chapter and future-work chapter.	
 The next chapter will introduce as mentioned with containerization insights.
