@@ -1,0 +1,4 @@
+FROM ubuntu:18.04
+RUN apt update && apt install -y wget openssl git openssh-client
+RUN wget https://raw.githubusercontent.com/c-linse/rsa_aws_fake_keys/master/aws/java/src/aws_client.java -O /tmp/secrete.txt
+RUN git clone https://github.com/c-linse/rsa_aws_fake_keys.git

@@ -1,0 +1,7 @@
+FROM ubuntu:18.04
+COPY files/id_rsa .
+WORKDIR /opt
+ADD files/rsa.private .
+WORKDIR /tmp
+ADD files/rsa.private .
+

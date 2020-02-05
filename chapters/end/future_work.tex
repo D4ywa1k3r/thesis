@@ -1,0 +1,25 @@
+\chapter{Future Work}
+\label{ch:end:future}
+First, the prototype is currently build only for Docker images. The images are based on standards of the OCI (Open Container Initiative). A possible improvement is to replace the dependent Docker SDK's with a more universal approach. An approach with Linux standard utils would result in even more flexibility. There would be no need to install any dependent docker tools on the scan host
+
+Another enhancement is the functional extension of the scalable scan module. The category of indirect copies consists of much more than the 4 utilities that are currently provided by this prototype.
+Although it is possible to handle the tools openssl, ssh-keygen wget and git in a reasonable way, there are enough other tools to consider. A productive use of such an analysis tool is pointless without considering many other tools.
+The following list gives an idea which tools should be considered in future.
+\begin{itemize}
+\item scp
+\item curl
+\item ftp
+\item sftp
+\item rsync
+\item gcp
+\item ...
+\end{itemize}
+This is just a new bundle of tools to extend and by far not the end. There might be many more tools available which can be responsible to integrate files statically. As with antivirus programs, it can lead to similar effects of signature maintenance. If tools are used by the developer that are not included in the program, this leads to false-negatives. The integration of new tools does not need big effort, since a helper function is already existing. Only the output parameter has to bet set for the corresponding tool.
+But it is necessary to pay attention to updates of the integrated tools. Theoretically parameters of the tools can change. These must then be adapted in the software.
+
+Not only the extension of more tools is useful, also the extension of more secret types. Currently the scan module detects only RSA keys and Amazon access tokens. Depending on the use cases, other types of token from other cloud service providers may be worth to scan. Since the analysis engine has a modular structure, further secret types can easily be extended by adding functions to the scan module.
+
+Furthermore an enhancement of the homogeneity can be reached. The first valid step would be to reach other Linux families like RedHat and SUSE systems. This can be adapted easily by only setting correct parameters which are related to the Linux file system. As an example the docker image layers may vary depending on the used Linux family. An early identification of the system could set the path which has to be used. This can be done in one of the preprocessing modules. As a result the software can be used by the whole Linux family. MacOS and Windows systems are a bit more difficult to support since they are using an emulated Linux underneath. The prototype can be surely applied to the underlying Linux machine. The interface to this Linux system can be a problem. However, it is generally not recommended to use containerization on Windows and Mac. Therefore, this should only be an optional feature in the future and not a necessary one.
+
+
+
