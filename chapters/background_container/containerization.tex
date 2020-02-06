@@ -1,0 +1,15 @@
+\section{Containerization paradigm}
+\label{sec:intro:containerization}
+%Definition Container
+% Short overview of how a container works
+% Short architecture
+% properties
+%
+% 
+The paradigm of containers is very simple in theory. Containers are basically operated as stateless and separate units. These units can fulfill certain tasks by acting autonomously as isolated software components.
+The paradigm is integrated by certain kernel functionalities. These functionalities have been introduced with the jails concept in BSD in the early 2000s \cite{Souppaya:2017aa}. In 2008 these functionalities have been introduced in a more user-friendly way in the Linux kernel \cite{Souppaya:2017aa} as a framework called Linux Containers(LXC's).
+However the usage of LXC's directly can become quite complex. The using of LXC has become much easier since Docker was introduced as a wrapper. Docker offers a user-friendly interaction with the LXC framework and has established itself as a state-of-the-art construct in terms of containerization.
+Due to Docker developers are nowadays able to provide containers at a much faster pace than with pure LXC's. 
+	
+From BSD's first rudimentary container approach with jails to Linux LXC's to Docker, native Linux features provide the functional foundation for encapsulation between host and deployed containers.
+These necessary isolation and permissions concepts of a recent Linux system(Kernel version 5.3.11) are described in the next sections.

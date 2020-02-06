@@ -1,19 +1,18 @@
 \section{Classification and placement}
-\label{sec:intro:containerization}
-Containerization technology has been introduced in BSD in the early 2000s and finally established in the Linux kernel in 2008 \cite{Souppaya:2017aa}. The resulting Linux containers(LXC's) are much more flexible and closer to the underlying host operating system than the classical full virtualization strategy from the 1960s. Figure \ref{fig:intro:diff_container_vm} shows the architectural difference between container and full virtualization. 
+\label{sec:intro:virt_and_cont}
+This section classifies full virtualization and containerization concept shortly by demonstrating the architectural difference. 
 
+Containerization is widely used in cloud environments. Containers are almost the foundation of every cloud environment.
+However classical virtualization existed long before container concepts. Both concepts have advantages and disadvantages. That's why they are also combined as hybrid concepts.
+Figure \ref{fig:intro:diff_container_vm} shows the architectural difference between container technology and full virtualization. 
 \begin{figure}[htbp]
  \centering
  \includegraphics[width=0.7\textwidth]{gfx/examples/os_virt_diff}
  \caption{Difference between container and full virtualization}
  \label{fig:intro:diff_container_vm}
 \end{figure}
-The fact about the architectural difference leads to important facts.
-A container is a lightweight alternative to full machine virtualization. In fact a container does not require as seen in \ref{fig:intro:diff_container_vm} a virtualized hardware. The container is just using and sharing the underlying kernel from the host. 
+Full virtualization allows it to run an entire guest operating system in a virtual machine (VM) on a host operating system. This is possible through an installed piece of software called hypervisor which is build classically on top of the originally initiated operating system. This virtualization model provides solid security through this additional isolation layer. One obvious drawback is the heavyweight and therefore high resource usage characteristic.
+In contrast to classical virtualization a container does not need an additional operating system layer as seen in Figure \ref{fig:intro:diff_container_vm}. The container is just using and sharing the underlying kernel from the host. 
+Containerization technology is therefore closer to the underlying host operating system than the classical virtualization strategy. That makes containers more lightweight and therefore flexible. Comparisons between container concepts and classical virtualization with regard to the application purposes are described in \cite{}
+The next section gives a closer look at containerization paradigm itself.
 
-Containers themselves are basically operated as stateless and distinct units, which are usually provided and destroyed by an orchestrator or by hand. If updates are available, the containers are simply replaced. This enables developers and system engineers to make and push changes to apps at a much faster pace.
-
-The immutability of containers also affects data persistence. Instead of mixing the app with the data used, containers emphasize the concept of isolation. Data persistence should not be achieved by simply writing to the container root file system, but by using external, persistent data stores such as databases or volumes. Data should be used outside the containers themselves, so that when a container is replaced by a new version, all data is still available for the new container.
-
-From BSD's first rudimentary container approach with jails to Linux LXC's to Docker, native Linux features provide the functional foundation for encapsulation between host and deployed containers.
-These necessary isolation and permissions concepts of a recent Linux system(Kernel version 5.3.11) are described in the next sections.
