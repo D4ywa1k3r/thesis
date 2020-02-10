@@ -10,7 +10,7 @@ These different approaches have advantages and disadvantages. On one hand the ke
 \subsection{Additional image layer} 
 \label{ch:theory:access_eval:additional}
 The access is made through a new additional layer which contains and also adds a program to the obtained image. When the image is being initiated as a container, the program can work on the entire file system.
-Before the new layer is being added, preprocessing on the original image is mandatory. The first result has to be temporary saved. That includes all the metadata informations which are necessary for the scan. These metadata are explained more deeply in \ref{sec:intro:docker_image:docker_img:meta} and will furthermore be used by the processing module in \ref{ch:practical_realization:implementation:preprocessing}. A change of the base image would lead to a lost of these important informations. 
+Before the new layer is being added, preprocessing on the original image is mandatory. The first result has to be temporary saved. That includes all the metadata informations which are necessary for the scan. These metadata are explained more deeply in section \ref{sec:intro:docker_image:docker_img:meta} and will furthermore be used by the processing module in section \ref{ch:practical_realization:implementation:preprocessing}. A change of the base image would lead to a lost of these important informations. 
 
 After this processing is done a new additional layer can be added with the analysing program.
 Finally the program would need an endpoint, where the result is saved. The result has to be saved on a permanent storage due to the nature of containers, because the results are removed after stopping the container. 
@@ -25,7 +25,7 @@ This archive contains the complete file system including the writable container 
 \label{ch:theory:access_eval:direct_access}
 Theoretically, direct access to the image is also possible, since an image is present on the local system before it is started as a container.
 The background chapter showed, that a Docker image is just a stack of several image layers. The direct access to the image as a whole needs a manual overlay-mount on the host system itself.
-Necessary informations to mount the overlay correctly is proved by the the background chapter \ref{sec:intro:docker_image:docker_img}.
+Necessary informations to mount the overlay correctly is proved by the section \ref{sec:intro:docker_image:docker_img}.
 For the overlay the mandatory lower directories have to be examined. The sequence of the directories in the chain is also important. These can be analysed through the provided informations which are available locally. That includes especially the lowerfile of each Docker layer. These informations has to be used in order to finally get the overlay-mount. 
 Finally the program that performs the analysis can access the mount point and do its analysis. 
 
