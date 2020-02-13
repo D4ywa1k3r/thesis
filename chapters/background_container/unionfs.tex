@@ -1,41 +1,38 @@
 \section{Unionfs}
 \label{sec:intro:docker_image:unionfs}
-As already mentioned in chapter \ref{ch:intro} this paper uses Docker as container technology.
-It is necessary to have knowledge of Union file systems before delving into container and especially Docker image insights.
+This paper uses Docker as container technology as already mentioned in chapter \ref{ch:intro} .
+To have knowledge of union file systems is necessary before delving into container and especially Docker image insights.
 Union file systems build the basis for container images in general. This section explains one important file system - the Overlay2 file system.
 
-A Union file system represents a file system by grouping directories and files. There are several union file system available like BTRF, AUFS, ZFS and Overlay2 which are compared in detail in \cite{Tarasov2019}.
-Only Overlay2 will be considered in this work because Overlay2 is directly implemented in the Linux Kernel \cite{Tarasov2019} and is meanwhile the standard in Docker related to Docker Inc. \cite{docker_storage_driver}.
+A union file system represents a file system by grouping directories and files. There are several union file system available like BTRF, AUFS, ZFS and Overlay2 which are compared in detail in \cite{Tarasov2019}.
+Only Overlay2 will be considered in this work because Overlay2 is directly implemented in the Linux kernel \cite{Tarasov2019} and is meanwhile the standard in Docker related to Docker Inc. \cite{docker_storage_driver}.
 Basically Overlay2 needs at least 4 directory types to work correctly:
 \begin{itemize}
-\item Lower-directory - can be read-only and could be an overlay itself
-\item Upper-directory - is normally writable
-\item Merged-directory - represents the union view of the lower and upper directory
-\item Work-directory - used to prepare files before they are switched to the overlay/merged destination in an atomic action 
+\item Lower directory - usually read-only and can be an overlay itself
+\item Upper directory - is normally writable
+\item Merged directory - represents the union view of the lower and upper directory
+\item Work directory - used to prepare files before they are switched to the overlay/merged destination in an atomic action 
 \end{itemize}
-
-The properties of an Overlay2 file system are now explained with the help of an example. 
+The elements of an Overlay2 file system are now described with the help of an example. 
 First the following folder structure in Listing \ref{intro:overlay:hierarchy} is assumed.
 \lstinputlisting[caption={Tree orig}, captionpos=b, label={intro:overlay:hierarchy}]{chapters/intro/listings/tree1.txt}
-The folder structure contains all the mandatory Overlay2 elements in order to work properly. The mount point can be created without additional software packages because Overlay2 is natively supported under Linux.
+The folder structure contains all the mandatory Overlay2 elements. The mount point can be created without additional software packages because Overlay2 is natively supported under Linux.
 This is illustrated by the following mount command.
 \begin{lstlisting}
 	mount -t overlay -o lowerdir=./lower1:./lower2,upperdir=./upper,workdir=./work overlay ./merged
 \end{lstlisting}
+First the command must know what type of file system to mount. This information is provided by the -t switch. In this case it is an overlay type. The next flag -o allows to add options to mount the specific filesystem. Each option with associated values is separated by a comma. The option lowerdir is set to a chain of folders separated by a colon. The lowerdir argument takes only the lower1 and lower2 directory. Then upperdir is set to the upper folder of the provided hierarchy. The worker option represents a single folder and is set accordingly to the worker folder. Lastly overlay option needs an argument to provide the union mount on the file system. This union view is presented through the merged directory.
 
-First the command must know what type of file system to mount. This information is provided by the -t switch. In this case it is an overlay type. The next flag -o allows to add options to mount the specific filesystem. Each option with associated values is separated by a comma. The option lowerdir is set to a chain of folders separated by a colon. The lowerdir arguments takes only the lower1 and lower2 directory. Then upperdir is set to the upper folder of the provided hierarchy. The worker options represents a single folder and is set accordingly. Lastly overlay needs an argument to provide the union mount on the file system. This union view is presentated through the merged directory.
-
-The properties of the Overlay2 file system are demonstrated next.
+The behavior of the Overlay2 file system is demonstrated in the following.
 The file system as a whole is populated with files as seen in Figure \ref{sec:intro:docker_image:treefilled}.
 \lstinputlisting[caption={Tree filled}, captionpos=b, label={sec:intro:docker_image:treefilled}]{chapters/intro/listings/tree2.txt}
-A file creation in one of the lower- and upper-directories is visible as expected in the merged-directory.
+A file creation in one of the lower- and upper directories is visible as expected in the merged directory.
 A file or directory object in the upper directory tree appears in the overlay. The same object is not visible in the lower directory.
 Each directory content is merged to create a combined directory object in the overlay.
-The treatment of objects with the same name that exist in upper- and lower-directories depends on the object type itself.
 A file or directory that originates from the overlay is removed from the overlay when it has been removed from the upper directory. 
-A file or directory that originates from the lower directory remains in the lower directory when it was removed from the overlay-directory, but a 'whiteout' mark is created in the upper directory. A whiteout takes the form of a character device with device number 0/0 and a name identical to the removed object. A whiteout ensures that the object in the lower directory is simply ignored. Also a whiteout is not not visible in the overlay-directory. 
+A file or directory that originates from the lower directory remains in the lower directory when it was removed from the overlay-directory, but a 'whiteout' mark is created in the upper directory. A whiteout takes the form of a character device with device number 0/0 and a name identical to the removed object. A whiteout ensures that the object in the lower directory is simply ignored. Also a whiteout is not not visible in the overlay directory. 
 
 Another important fact about union file system is the use of copy on write strategy. 
-A storage driver manager takes care of copying files to the upper layer when a file from an underlying layer has been modified. A duplicate is created and the modification takes place. This is an efficient resource-management technique because operations may just need a copy instead of creating a new file.
+A storage driver manager takes care of copying files to the upper layer when a file from an underlying layer has been modified. A duplicate is created and the modification takes place. This is an efficient resource management technique because operations may just need a copy instead of creating a new file.
 	
-The general knowledge about the Overlay2 file system is known. This is important to understand the main component - the Docker image. This is described in the following.
+The general knowledge about the Overlay2 file system is provided. This is important to understand the main component - the Docker image. This is described in the following.

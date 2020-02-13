@@ -1,6 +1,6 @@
 \section{Linux namespaces}
 \label{sec:intro:containerization:linux_namespaces}
-A Linux namespace encloses a global system resource in an abstraction that makes the processes within the namespace appear to have their own isolated instance of the global resource. Changes to the global resource are visible to other processes that are members of the namespace, but invisible to other processes. Namespaces are the basic building block of containers under Linux. There are the following namespaces available under Linux:
+A Linux namespace encloses a global system resource in an abstraction that makes the processes within the namespace appear to have their own isolated instance of the global resource. Changes to the global resource are visible to other processes that are members of the namespace, but invisible to other processes. Namespaces are the basic building block of containers under Linux. The following namespaces exist under Linux:
 \begin{itemize}
 \item Cgroup
 \item Interprocess communication (IPC)
@@ -10,49 +10,48 @@ A Linux namespace encloses a global system resource in an abstraction that makes
 \item User
 \item UTS
 \end{itemize}
-Unfortunately it is utopian to describe every namespace-type in depth in this work. 
-The IPC and mount namespace are described now briefly. Then the essential namespaces are explained in a dedicated subsection.
+Unfortunately it is utopian to describe every namespace type in depth in this work. 
+The IPC and mount namespace are described now briefly. Then the more interesting namespaces are explained in a dedicated subsection.
 
-Mount namespaces provide an isolation of the list of mount points seen by the processes in each namespace instance. Processes in each of the mount namespace instances see different single views of directory hierarchies. This view can range from physical or network drives, mount paths, or advanced features such as union file systems which are discussed in section \ref{sec:intro:docker_image:unionfs}.
+Mount namespaces provide an isolation of the list of mount points seen by the processes in each namespace instance. Processes in each of the mount namespace instances see different single views of directory hierarchies. This view can range from physical or network drives, mount paths or advanced features such as union file systems which are discussed in section \ref{sec:intro:docker_image:unionfs}.
 
-
-IPC namespaces isolate certain IPC resources like System V IPC objects and POSIX message queues which both are data structures which allows via e.g. shared memory to transfer information between processes.
+IPC namespaces isolate certain IPC resources like System V IPC objects and POSIX message queues which both are data structures they allow via e.g. shared memory to transfer information between processes.
 
 \subsection{PID}
 \label{sec:intro:containerization:linux_namespaces:pid_namespaces}
-Traditional the Linux kernel has always maintained a single process tree. The tree contains a reference to each process currently running in a parent-child hierarchy. 
+Traditionally the Linux kernel has always maintained a single process tree. The tree contains a reference to each process currently running in a parent-child hierarchy. 
 A Linux system starts with process PID1. This is the root of the process tree and the root process initiates the rest of the system by starting different handlers and services. All other processes start below this process PID1 in the tree. 
 
 The basic idea behind PID namespaces is to create and append a new root tree to the already existing tree with its own PID1. This makes the child process to a root process.
-With PID namespace isolation, processes in the subordinate namespace have no way to detect the existence of the parent process. This ensures that processes that belong to a process tree do not inspect or kill processes in other process trees. However processes in the higher-level namespace have a full view in the lower-level namespace of processes.
+Processes in the subordinate namespace have no way to detect the existence of the parent process. This ensures that processes that belong to a process tree do not inspect or kill processes in other process trees. However processes in the higher-level namespace have a full view in the lower-level namespace of processes.
 
 \subsection{Network}
 \label{sec:intro:containerization:linux_namespaces:network_namespaces}
-Due to the global instance of the network interface on a single host it is possible with granted permissions to alter routing + ARP tables. With network namespaces totally different instances of network interfaces can be provided. Routing + ARP tables then operate independent of each other. This prevents communication between network namespaces.
+Due to the global instance of the network interface on a single host it is possible with granted permissions to alter routing and ARP tables. With network namespaces totally different instances of network interfaces can be provided. Routing and ARP tables then operate independent of each other. This prevents communication between network namespaces.
  
 Network namespaces are complex but important to know. These are responsible to establish communication between containers and hosts and between containers themselves. 
 The following enumeration shows the standardized CNI (Container Network Interface) workflow. CNI describes how network namespaces are created and how a desired communication between these namespaces can be established.
 
 \begin{enumerate}
 \item Create network namespace
-\item Create bridge Network/Interface
-\item Create veth pairs
-\item Attach veth to namespace and bridge
+\item Create bridge network/interface
+\item Create virtual-ethernet pairs
+\item Attach virtual-ethernet to namespace and bridge
 \item Assign IP addresses
 \item Bring interfaces up
 \end{enumerate}
-For a better understanding an example with 2 network namespaces is shown in Figure \ref{sec:intro:containerization:linux_namespaces:netowork_ns} below. Each color represents a network namespace with its associated virtual network interface pairs(veth-x and veth-x.bridge). For simplicity IP addresses are not shown in this image. C1 in this picture is just a prefix for the underlying host which is arbitrary in this case. Basically communication between any networks from a view of a network namespace is not possible as already mentioned. Network communication across namespaces is allowed after the CNI procedure. Finally the two interface endpoints (purple and orange) have a valid IP address which leads to a working network communication.
-
+For a better understanding an example with 2 network namespaces is shown in Figure \ref{sec:intro:containerization:linux_namespaces:netowork_ns}. Each color represents a network namespace with its associated virtual network interface pairs(veth-x and veth-x-bridge). For simplicity IP addresses are not shown. In this picture C1 is just a prefix for the underlying hostname which is arbitrary in this case. Basically communication between any networks from a view of a network namespace is not possible as already mentioned. Network communication between namespaces is allowed after the CNI procedure. Finally the two interface endpoints (purple and orange) have a valid IP address which leads to a working network communication.
 \begin{figure}[htbp]
  \centering
  \includegraphics[width=0.4\textwidth]{gfx/examples/network_ns}
  \caption{Example of basic network within a container cluster}
 \label{sec:intro:containerization:linux_namespaces:netowork_ns}
 \end{figure}
-This is the beginning of network communication through namespaces and CNI. But just inter communication between different namespaces on a single host isn't sufficient. Several steps are required to communicate with another host externally and over the Internet.
+This is the beginning of network communication through namespaces and CNI. However only inter communication between different namespaces on a single host is not sufficient. Several steps are required to communicate externally to other host and across the Internet.
 
 Figure \ref{sec:intro:containerization:linux_namespaces:netowork_ns_out} shows a more comprehensive setup. 
-There is shown that the local host is also the gateway because it has one network connection through the interface eth0 and it has access to the bridge network created on the host. If the blue namespace network needs to access the endpoint with the IP address 192.168.1.3 a routing table entry in the blue network namespace like the following necessary.
+It shows that the local host is also the gateway because it has one network connection through the interface eth0 and it has access to the bridge network created on the host. 
+A routing table entry in the blue network namespace like the following necessary, if the blue namespace network needs to access the endpoint with the IP address 192.168.1.3 
 \begin{lstlisting}
 	ip netns exec blue ip route add 192.168.1.0/24 via 192.168.15.5
 \end{lstlisting}
@@ -71,7 +70,7 @@ In order to provide access to the internet from a namespace it is necessary to a
 \label{sec:intro:containerization:linux_namespaces:netowork_ns_out}
 \end{figure}
 This example of network namespaces demonstrates the power and flexibility of network namespaces.
-Normally these steps are automatically done through a daemon like Docker. This in turn can also be managed by an orchestrator like Kubernetes or Mesos.
+Normally these steps are automatically done through a container daemon like Docker. This in turn can also be managed by an orchestrator like Kubernetes or Mesos.
 
 Lastly the user namespace is left and described in the following.
 
@@ -87,9 +86,9 @@ The next section describes in short another Linux kernel feature called cgroups.
 
 \section{Cgroups}
 \label{sec:intro:containerization:cgroups}
-Control groups (Cgroups) are a way of enforcing hardware resource limitations and access controls on a process or set of processes. The cgroup scheme provide a hierarchical, inheritable, and optionally nested resource control mechanism.
+Control groups (Cgroups) are a way of enforcing hardware resource limitations and access controls on a process or set of processes. The cgroup scheme provide a hierarchical, inheritable and optionally nested resource control mechanism.
 In the world of containers Cgroups manifest themselves as instruments to prevent runaway containers and denial of service attacks.
-The following enumeration contain the resources that are controlled by cgroups.
+The following enumeration contains the resources that are controlled by cgroups.
 \begin{itemize}
 \item CPU usage
 \item Memory usage

@@ -1,6 +1,6 @@
-somedir/
-|-- lower1
-|-- lower2
-|-- merged
-|-- upper
-`-- work
+				somedir/
+				|-- lower1
+				|-- lower2
+				|-- merged
+				|-- upper
+				`-- work
