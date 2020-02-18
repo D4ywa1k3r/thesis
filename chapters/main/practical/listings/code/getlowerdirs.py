@@ -1,8 +1,8 @@
 def get_lower_directories(self):
-    result = []
-    for root, dirs, files in os.walk(self.overlay_path):
-        if self.lower_file in files:
-            fo = open(f"{root}/{self.lower_file}", "r")
-            result.append(fo.readline())
+    dirs = os.listdir(self.overlay_path + '/l')
+    lower_chain = ""
+    for dir in dirs:
+        lower_chain += f"l/{dir}:"
 
-    return max(result, key=len)
+    lower_chain = lower_chain[:len(lower_chain) - 1]
+    return lower_chain

@@ -4,9 +4,12 @@
 
 \chapter{Known key leak techniques}
 \label{ch:known_key_leak_techniques}
-Scientific work on detection of secrets in source codes has been done in \cite{7180102}. Different procedures are shown, which can be used to detect different types of secrets. Mainly API tokens from Amazon and Facebook were handled in the paper. They explained methods like sample selection using keyword search, pattern-based search, heuristics-driven filtering and source-based program slicing. 
-
-The first approach focuses on fixed strings in sensitive key files such as a RSA private key. RSA private keys contains always a prefix like the following:
+Scientific work about key leak techniques on a source code base has been done in \cite{7180102}. 
+The main work consists in the application of different mechanisms to uncover different types of secrets.
+These are keyword search, pattern-based search and heuristics-driven filtering.
+This work mainly dealed with the detection of API tokens from Amazon and Facebook.
+	
+The first approach called keyword search focuses on fixed strings in files such as a RSA private key. RSA private keys contains always a prefix like the following:
 \begin{lstlisting}
 -----BEGIN OPENSSH PRIVATE KEY-----
 \end{lstlisting}
@@ -16,22 +19,21 @@ The first approach focuses on fixed strings in sensitive key files such as a RSA
 \begin{lstlisting}
 -----BEGIN PRIVATE KEY-----
 \end{lstlisting}
+This keyword search approach works well if the secrets contain fixed string prefixes. 
+On the other hand, it is not sufficient for private keys without fixed prefixes.
+Due to this fact, the referenced paper \cite{7180102} is more focusing on pattern-based search. 
 
+Pattern-based search works on the basis of regular expressions and is therefore suitable for strings with a fixed schema.
+Tokens provided by cloud providers and other dedicated vendors follow a fixed scheme. Therefore these tokens are recognized by regular language classes.
+However this pattern-based search method also has disadvantages in the form of false-positives.
+These false-positive issue is handled in \cite{7180102} by heuristics and source slicing.
 
-This exemplary keyword approach applies well when keys use fixed string prefixes. It is not sufficient for private keys that have no fixed prefixes.
+Heuristics have been tested by looking at cases where a matching secret key appears within 5 lines of each other. This is usually precise but there is a risk of missing the key where credentials are not close together.
+Another tested heuristically approach to reduce false-positives is trying and guessing whether they are auto-generated or hand-written. 
+An additional framework was used to follow this approach. The false-positive rate was successful decreased as noticed in \cite{7180102}.
 
-Due to this fact, the referenced paper is more focusing on pattern-based search. The pattern-based search is not restricted to strings, but to regular expressions and is suitable for strings with a fixed schema.
-As in most cases, a pattern-based search also has its drawbacks in the form of false-positives. This is why in \cite{7180102} heuristics and source slicing are used to reduce false-positives and to increase the efficiency.
-Heuristics have been tested by looking at cases where a matching secret key appears within 5 lines of each other. This approach is usually precise in relation to the results achieved, but it is possible to miss leaked keys where the credentials are not close together. A different tested heuristically approach to reduce false-positives is trying and guessing whether they are auto-generated or hand-written, as they noticed that they are common false-positives.
-A further framework was used for this approach and the false-positive rate was successful decreased.
+The following concept will use the keyword search and pattern-based search to detect secrets. 
+The reason is the following: It is only intended to prove that the recognition of secrets in container images is generally possible. 
+In theory an extension of heuristics-driven filtering improves the results if the detection of secrets in container images is possible.
 
-The source-based program slicing approach is a very efficient approach. In case of API keys from Amazon and Facebook they had a 100\% efficiency detection-rate with the use of a customized program slicing method. Source-based program slicing is a complex feature which is evaluated in \cite{z3} in depth. 
-
-Due to the fact, that heuristics-driven filtering and source-based program slicing is used to reduce the amount of false positives and to increase the efficiency, the following concept will only use the main mechanism of the work in  \cite{7180102}. This includes the well working keyword search and pattern-based search. The reason for this is to prove that the detection of secrets in container images is possible in general. When this is possible an extension of heuristics-driven filtering and source-based program slicing will in theory further improve the results. 
-The following chapter will first adapt these key mechanism like keyword search and pattern-based search in order to create a theoretical concept to detect secrets in container images with docker as example.
-
-%
-% Section: XYZ
-%
-
-
+The following chapter only adapts these key mechanism keyword search and pattern-based search in the theoretical concept to detect secrets in container images with docker as example.

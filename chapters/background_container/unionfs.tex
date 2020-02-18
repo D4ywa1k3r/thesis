@@ -18,7 +18,7 @@ First the following folder structure in Listing \ref{intro:overlay:hierarchy} is
 \lstinputlisting[caption={Tree orig}, captionpos=b, label={intro:overlay:hierarchy}]{chapters/intro/listings/tree1.txt}
 The folder structure contains all the mandatory Overlay2 elements. The mount point can be created without additional software packages because Overlay2 is natively supported under Linux.
 This is illustrated by the following mount command.
-\begin{lstlisting}
+\begin{lstlisting}[label={intro:overlay:mountcmd}]
 	mount -t overlay -o lowerdir=./lower1:./lower2,upperdir=./upper,workdir=./work overlay ./merged
 \end{lstlisting}
 First the command must know what type of file system to mount. This information is provided by the -t switch. In this case it is an overlay type. The next flag -o allows to add options to mount the specific filesystem. Each option with associated values is separated by a comma. The option lowerdir is set to a chain of folders separated by a colon. The lowerdir argument takes only the lower1 and lower2 directory. Then upperdir is set to the upper folder of the provided hierarchy. The worker option represents a single folder and is set accordingly to the worker folder. Lastly overlay option needs an argument to provide the union mount on the file system. This union view is presented through the merged directory.

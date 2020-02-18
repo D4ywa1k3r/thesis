@@ -1,30 +1,34 @@
 \section{Prototyp structure}
 \label{ch:practical_realization:prot_struct}
-The following project structure in listing \ref{ch:practical_realization:struc} gives an overview of the prototyp and of how it is built in this paper.
+The following Listing \ref{ch:practical_realization:struc} gives an overview of the project structure and how the prototyp is implemented in this paper.
 \lstinputlisting[caption={Prototyp structure in Python}, captionpos=b, label={ch:practical_realization:struc}]{chapters/main/practical/listings/struc.txt}
+The root folder contains the main program analyzing\_manager, a modules folder and the venv directory.
+The venv directory builds the virtual environment feature of Python. 
+The modules folder contains the essential modules of the prototyp, namely obtaining, preprocess, mount and scan. These represent the modules from the theoretical concept in section \ref{ch:theory:analyzing_process}. 
+They are managed and used by the analyzing\_manager module which lies in parent (root) folder. 
+The core modules are deliberately created as distinct units. That makes the maintenance of the prototyp easier. Changing a single core module promises more flexibility and counteracts problems instead of maintaining a large monolith. A replacement of core modules is also possible since it hasn't got any relations to the other modules. Only the interface to the to the analyzing\_manager module has to be valid.
 
-The root folder contains the main program the analysing\_manager.py, a modules folder and the venv directory.
-The venv directory builds the virtual environment feature of Python, while the modules folder contains the essential modules which represents the core function of the prototyp, namely obtaining-, preprocessing-, mounting- and scanning module. These python-modules represents the modules in section \ref{ch:theory:analysing_process} from the theoretical concept. These are managed and used by an analysing\_manager module which lies in parent (root) folder. 
+The analyzing\_manager is the main program and interacts with the core modules. 
+To request the prototype, the analyzing\_manager is available as a central endpoint. A single endpoint to interact with provides a good starting point for the analysis of the process. Common technologies like RPC's can be used to trigger this single analyzing endpoint. Also microservice implementation with REST is possible.
 
-The analysing\_manager module is mainly in interaction with the core modules. The core modules are deliberately created as distinct units. That makes it easier to maintain the prototyp. Changing a single core module promises more flexibility and counteracts problems instead of maintaining a large monolith. A replacement of core modules is also possible since the interface to the analysing\_manager is untouched.
-Through the analysing manager module a central endpoint exists to request the prototyp. This is especially useful for a potential microservice. Restpoints have a single place to interact with and to start the analysing. Also other common technologies like RPC's from Apache thrift or Googles protocol buffer can be used to trigger this single analysing endpoint. 
+The procedure shown below starts automatically when the analyzing manager is triggered with an image name as input.
 
-When the analysing manager is triggered with an image name as input, the procedure which is shown belowwill automatically starts.
-\lstset{language=Python}          % Set your language (you can change the language for each code-block optionally)
-\begin{lstlisting}[]  % Start your code-block
+\lstset{language=Python} 
+\begin{lstlisting}[]
 	
-    analysing = AnalManager(img_name)
-    analysing.prepare_environment()
-    analysing.preprocess()
-    if analysing.necessary:
-         analysing.mount()
-         analysing.examine()
+    analyzing = analyzingManager(img_name)
+    analyzing.prepare_environment()
+    analyzing.preprocess()
+    if analyzing.necessary:
+         analyzing.mount()
+         analyzing.examine()
     
 \end{lstlisting}
-It starts first with analysing.prepare\_environment() where the obtaining module \ref{ch:practical_realization:implementation:obtain} is executing its tasks. The Docker image will be downloaded by this module. Afterwards the preprocessing will take place through the call of the preprocess method. The preprocessing will be done by the implemented preprocessing module \ref{ch:practical_realization:implementation:preprocessing}.
-Finally the analysing manager can decide if a further investigation is necessary. If so the mount and scan module will be instantiated. The synchronous mount call, as well as the examine call is is executed consecutively. The final result of the scan module is just printed out into the stdout stream of Linux.
+After the analyzing object has been instantiated, the method prepare\_environment is started. The obtaining module \ref{ch:practical_realization:implementation:obtain} is addressed and executing its task.
+The Docker image has to be downloaded and garbage collection has to be done by this module as well. After this step the preprocess method is called and the corresponding preprocessing module is triggered.
+Through this preprocessing a decision can be made if a further image investigation is necessary. The mount and scan module has to be instantiated If this is necessary. Both the synchronous mount call and the examination call are executed sequentially when an analysis is required.
 \graffito{Note: Stdout, also known as standard output, is the default file descriptor where a process can write output.}
-When secrets are found, the secret will be printed to the stdout stream. When no secret was found, a standard info message will be piped into the stdout buffer.
+The secret will be printed to the stdout stream when secrets are found. Otherwise a standard info message will be piped into the stdout buffer.
 
-This section has given an overview about the implementation of the prototyp in general. The following section will introduce the implementation of the core modules.
+This section has given an overview about the implementation and the workflow of the prototyp in general. In the following section the implementation of the core modules is presented in more detail.
 
