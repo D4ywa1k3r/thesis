@@ -1,7 +1,11 @@
 \chapter{Conclusion}
 \label{ch:end:conclusion}
-The goal of this bachelor thesis was to develop an approach to detect embedded secrets in Docker images. A theoretical concept was created to achieve this goal. First the decision was made to detect only RSA private keys and Amazon access tokens. These two secrets sets the scope of this paper. They have different characteristics. RSA contains a fixed prefix, while an AWS token follows a specific pattern.
-Afterwards it was evaluated that a direct access to the image in general might be a better approach than the alternatives tarball and additional container layer approach. This was followed by developing an analysis procedure consisting of 4 core modules.
+The goal of this bachelor thesis was to develop an approach to detect embedded secrets in Docker images. 
+A theoretical concept was created to achieve this goal. In this concept the decision was made to detect only RSA private keys and Amazon access tokens.
+These two secrets set the scope of this paper. These two keys have different characteristics.
+RSA contains a fixed prefix, while an AWS token follows a specific pattern at the content level.
+Then a decision was made that direct access to the image would be a better approach than the alternative tarball and additional container layer approach.
+This was followed by developing an analysis procedure consisting of 4 core modules.
 These core modules are the following
 \begin{itemize}
 \item Image-obtaining
@@ -9,15 +13,52 @@ These core modules are the following
 \item Image-mount
 \item File-scan
 \end{itemize}
-The Image-obtaining module takes care about old Docker images and downloads the target image from a container registry. The preprocessing module extracts the metadata from the image. If the processor recognises the keywords COPY, ADD or RUN, a further analysis of the image is necessary, as these commands are responsible for adding possible secrets statically into the image. When no keywords like that are existing no further image investigation will take place. The metadata is a bulk of data of each image and is created by the image build process itself. If the scan should take place, the image will be mounted by the image-mount module. Finally the file-scan module is responsible for detecting RSA keys and Amazon access tokens with the use of key-based search and pattern-based search.
+The Image-obtaining module deletes old Docker images from the local system and downloads the target image from a container registry.
 
-This concept was prototypically implemented in a Linux environment using the programming language Python. Each core-module of the analyzing procedure was implemented as a different python module to provide independence and most of flexibility. An additional module called "analyzing\_manager" was used to manage the whole analyzing-workflow by calling and managing each of the mentioned python modules.
+The preprocessing module extracts the metadata from the image. 
+The metadata is a bulk of data of each image and is created by the image build process itself.
+Most important informations in the metadata are most of all Dockerfile instructions.
+A further analysis of the image is necessary if the processor recognises the keywords COPY, ADD or RUN.
+These commands are responsible for adding possible secrets statically into the image. 
+No further image investigation will take place when no keywords like that are existing. 
 
-Afterwards the developed prototype was evaluated. Self-defined images were built containing RSA keys and AWS tokens during the evaluation. On the one hand the direct method was used and on the other hand the indirect.
-These two methods represent two categories that are responsible for the integration of static content.
-The direct method contains only ADD and COPY and is handled completely. However the indirect method is somewhat more comprehensive but nevertheless deterministic. The indirect method is represented by Linux shell tools/commands. Currently the responsible module has 4 commands included. The locally created images were the first input of the prototype for the evaluation. The result was positive and all keys could be detected.
+The image will be mounted by the image-mount module if the scan is necessary. The mount type is the union-file-system Overlay2.
+This module provides a central point from which the host system can access and finally scan all files of the image.
 
-To be trusted more, the prototype was also used for public images. Public images are inevitable to archive valid and more trustworthy results. In the evaluation different images were searched and RSA keys were found in one image. It is not clearly definable whether these keys are used for production or test systems. However the result is that the prototype has found the desired keys.
+Lastly the file-scan module is responsible for detecting RSA keys and Amazon access tokens with the use of key-based search and pattern-based search.
+The scanning module uses the path of the overlay mount point and can use it as a classic Unix path.
+
+This concept was prototypically implemented in a Linux environment using the programming language Python.
+Each core-module of the analyzing procedure was implemented as a different python module to provide independence and most of flexibility. 
+An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned python modules.
+So there is a central program to which an image can be passed.
+
+Lastly the developed prototype was evaluated. 
+Self-defined images as well as public images were used to prove the prototyp is working.
+
+The self-created images contained intentionally RSA keys and Amazon tokens.
+The direct and indirect methods were used to integrate the secrets.
+These two methods are responsible for the integration of static content.
+The direct method includes only the use of the COPY/ADD instructions in the Dockerfile.
+The indirect method includes all commands that can be executed via RUN.
+The direct method is deterministic and completely covered in the prototype.
+With the indirect method, initially only a certain degree of coverage is possible.
+This is due to the variety of potential tools that can be used for static integration.
+It was started in the prototype with 4 tools. Attention was paid to possible scalability.
+Then the self-made images were handed over to the prototype to perform the first tests.
+
+Furthermore public images were also analysed by the prototyp.
+Public images are inevitable to achieve valid and more trustworthy results.
+A simple strategy was used to manually search for images on Dockerhub.
+Non-official Docker images that use backend technologies were searched.
+
+The tests of local and public images showed positive results.
+For the self-developed images, the direct as well as the indirect method was covered in the desired context.
+Each secret was uncovered in every self-defined Docker image within a very short time.
+The detection of secrets in public images has also worked.
+Several RSA keys in a common Docker image were found.
+It is not clearly definable whether these keys are used for production or test systems.
+However the result is that the prototype has found the desired keys.
 
 
 
