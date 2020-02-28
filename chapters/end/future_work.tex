@@ -7,8 +7,7 @@ These potential improvements are pointed out in this final chapter.
 First the prototyp is currently using the Docker SDK. 
 A possible enhancement is to replace this dependency with a more universal approach. 
 An approach with Linux standard utils is promising to reach this achievement.
-Finally there would be no need to install any dependent tools on the scan host.
-
+Finally there would be no need to install any dependent tools on the host.
 
 A further improvement would be the functional extension of the preprocessing module.
 The category of indirect copying consists of much more than the 4 utilities that are currently provided.
@@ -22,31 +21,31 @@ The following list gives an idea which tools should be considered in future.
 \item ftp
 \item sftp
 \item rsync
-\item gcp
 \end{itemize}
-This is only a bundle of tools that need to be expanded.
+This is only a bundle of common tools that need to be expanded.
 There might be many more tools available which can be responsible to integrate files statically.
 This can lead to similar effects as with antivirus programs to a costly signature maintenance.
+
 It can also lead to false-negatives if tools are used by the developer that are not included in the program.
 The integration of new tools does not need big effort, since a helper function is already existing.
 Only the output parameter has to bet set for the new corresponding tool.
-But it is necessary to pay attention to updates of the integrated tools.
+It is necessary to pay attention to updates of the integrated tools.
 Theoretically parameters of the tools can change. 
 These must then be adapted in the software.
 
 Not only the extension of more tools is useful. The extension of more secret types is also a key factor.
 Currently the file-scan module detects only RSA keys and Amazon access tokens.
-Token by other cloud service providers or software vendors can be scanned if they have a fixed prefix or schema.
+Token by other cloud service providers or software vendors can be scanned if they use a fixed prefix or schema.
 These secret types can easily be extended to the scan module, as the analysis engine is modular.
 
-Furtermore improving homogeneity would be useful future work.
+Furthermore improving homogeneity would be useful future work.
 The first valid step would be to reach other Linux families like RedHat and SUSE systems.
 This can be adapted easily by only setting correct parameters which are related to the Linux file system.
 As an example the Docker image layers may vary depending on the used Linux family.
-The corresponding module to adapt would be the module.
+The corresponding module to adapt would be the mount module.
 Early identification of the host system helps to determine which Linux paths to use.
 The detection of the hostsystem can be done in the preprocessing modules.
-As a result the software can be used by the whole Linux family.
+As a result the software can be used by all major Linux distributions.
 
 Overall it can be said that there is still a lot of work to be done to provide a trustworthy image analysis.
 The Bachelor thesis has shown that this can be worthwhile.

@@ -1,39 +1,51 @@
 \section{Self developed images}
 \label{ch:eval:local_images}
-The creation of Docker images containing secrets to detect needs a directive. An arbitrary development of Dockerfiles and thus Docker images leads to chaos and misleading scan-results. 
-Regardless of how the results turn out, it is desirable to be able to clearly assign the results.
+The creation of Docker images containing secrets to detect needs a directive. 
+An arbitrary development of Dockerfiles and thus Docker images leads to chaos and misleading scan results. 
+It is desirable to be able to clearly assign the results regardless of how the results turn out.
 
-The section structures the creation of image as follows. Basically there are two categories of Docker images. The first contains RSA secrets and the second AWS tokens. Each category requires the creation of two images. In other words there will be 2 Dockerfiles for the RSA and the AWS category. 
+The section structures the creation of image as follows. 
+Basically there are two categories of Docker images. 
+The first contains RSA secrets and the second AWS tokens. 
+Each category requires the creation of two images. 
+In other words there will be 2 Dockerfiles for the RSA and the AWS category. 
 In total there are 4 Docker images which have to be created by developing a corresponding Dockerfile. 
-The reason for the development of 4 screens results from the possibility to use different integration variants.
-It is known that the direct and the indirect method exist. Therefore 4 images are needed to cover both categories logically completely.
+The reason for the development of 4 images results from the possibility to use different integration variants.
+It is known that the direct and the indirect method exist. 
+Therefore 4 images are needed to cover both categories logically completely.
 
-It is important to consider different cases when developing a Dockerfile. WORKDIR changes has to take place since they are commonly used by developers. Finally it is important to use absolute and relative destination paths. 
+It is important to consider different cases when developing a Dockerfile. 
+WORKDIR changes has to take place since they are commonly used by developers. 
+Finally it is important to use absolute and relative destination paths. 
 
-RSA and AWS images are developed in dedicated subsections. The first subsegment develops RSA images.
+RSA and AWS images are developed in dedicated subsections. 
+The first subsegment develops RSA images.
 
 \subsection{Docker image RSA private key}
 \label{ch:eval:local_images:rsa}
-This subsection develops Docker images with RSA keys integrated in a direct and indirect way. The corresponding images are created and demonstrated by the following two Dockerfiles.
-\lstinputlisting[caption={Image with RSA secret using COPY and ADD}, captionpos=b, label={ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile1}
-\lstinputlisting[caption={Image with RSA secret using RUN}, captionpos=b, label={ch:eval:local_images:rsa_run}]{chapters/main/eval/listings/dockerfile2}
+This subsection develops Docker images with RSA keys integrated in a direct and indirect way. 
+The corresponding images are created and demonstrated by the following two Dockerfiles shown in Listing \ref{ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile1} and \ref{ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile2}.
+\lstinputlisting[caption={Dockerfile - RSA secret integration using COPY/ADD}, captionpos=b, label={ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile1}
+\lstinputlisting[caption={Dockerfile - RSA secret integration using RUN}, captionpos=b, label={ch:eval:local_images:rsa_run}]{chapters/main/eval/listings/dockerfile2}
 Two RSA private keys are integrated directly using COPY and ADD instructions as seen in the first Dockerfile in Listing \ref{ch:eval:local_images:rsa_copy}. 
-Another three RSA private keys are integrated in an indirect way using RUN commands. The tool ssh-keygen and openssl generate RSA keys as shown in the second Dockerfile in Listing \ref{ch:eval:local_images:rsa_run}. 
+Another three RSA private keys are integrated in an indirect way using RUN commands. 
+The tool ssh-keygen and openssl generate RSA keys as shown in the second Dockerfile in Listing \ref{ch:eval:local_images:rsa_run}. 
 Both Dockerfiles contain WORKDIR changes and the use of relative and absolute paths. 
 
-The images are created and handed over to the analyzis manager one after the other.
-The entire analyzis workflow is triggered each time the analyzis manager is started. 
+The images are created and handed over to the prototyp one after the other.
+The entire analsis workflow is triggered each time the analysis manager is started. 
 That includes garbage collection, fetching the image, mounting and lastly scanning the image.
-The analyzing manager is finally started by passing the image name as a command line argument. That demonstrates the following command.
+The analyzing manager is finally started by passing the image name as a command line argument. 
+That demonstrates the following command.
 \begin{lstlisting}
-	python analysing_manager.py <img_name>
+	python analyzing_manager.py <img_name>
 \end{lstlisting}
 After starting this program the status is written to the standard output buffer at important points.
 A complete analysis with console output of the Dockerfile from Listing \ref{ch:eval:local_images:rsa_run} is shown in Listing \ref{ch:eval:local_images:rsa_second_result}.
-\lstinputlisting[caption={Result RSA keys analyse}, captionpos=b, label={ch:eval:local_images:rsa_second_result}]{chapters/main/eval/listings/result_rsa_second.txt}
+\lstinputlisting[caption={Output of RSA key analysis}, captionpos=b, label={ch:eval:local_images:rsa_second_result}]{chapters/main/eval/listings/result_rsa_second.txt}
 Each step is printed in the console. The scan result is finally visible at the bottom of the listing. 
 Every generated RSA key has been found and printed out with the corresponding location.
-The analyzis program recognizes the RSA keys completely from the first image shown in Listing \ref{ch:eval:local_images:rsa_copy} as well. 
+The analysis program recognizes the RSA keys completely from the first image shown in Listing \ref{ch:eval:local_images:rsa_copy} as well. 
 
 Amazon web tokens form the target to be analyzed at next. This is done in the following subsection. 
 
@@ -41,13 +53,14 @@ Amazon web tokens form the target to be analyzed at next. This is done in the fo
 \label{ch:eval:local_images:aws}
 This subsection develops Docker images with AWS tokens integrated in a direct and indirect way. 
 The corresponding images are represented by the following two Dockerfiles.
-\lstinputlisting[caption={Image with AWS token using COPY and ADD}, captionpos=b, label={ch:eval:local_images:aws_copy}]{chapters/main/eval/listings/dockerfile3}
-\lstinputlisting[caption={Image with AWS token using RUN}, captionpos=b, label={ch:eval:local_images:aws_run}]{chapters/main/eval/listings/dockerfile4}
-The analyzing program is applied to the second Docker image Listing \ref{ch:eval:local_images:aws_run} because wget and git clones has to be considered as well. 
-Now all 4 example RUN commands are considered by the analysing tool (wget, git clone, openssl and ssh-keygen). 
+\lstinputlisting[caption={Dockerfile - AWS token integration using COPY/ADD}, captionpos=b, label={ch:eval:local_images:aws_copy}]{chapters/main/eval/listings/dockerfile3}
+\lstinputlisting[caption={Dockerfile - AWS token integration token using RUN}, captionpos=b, label={ch:eval:local_images:aws_run}]{chapters/main/eval/listings/dockerfile4}
+The analyzing program is applied to the second Docker image Listing \ref{ch:eval:local_images:aws_run}. 
+Wget and git clones has to be considered as well. 
+Now all 4 example RUN commands are considered by the analyzing tool (wget, git clone, openssl and ssh-keygen). 
 The result below in Listing \ref{ch:eval:local_images:aws_second_result} shows that every AWS token has been found and printed out with the corresponding location.
-The analyzis program recognizes the AWS tokens completely from the first image shown in Listing \ref{ch:eval:local_images:aws_copy} as well.
-\lstinputlisting[caption={Result AWS token analyse}, captionpos=b, label={ch:eval:local_images:aws_second_result}]{chapters/main/eval/listings/result_aws_second.txt}
+The analysis program recognizes the AWS tokens completely from the first image shown in Listing \ref{ch:eval:local_images:aws_copy} as well.
+\lstinputlisting[caption={Output of AWS token analysis}, captionpos=b, label={ch:eval:local_images:aws_second_result}]{chapters/main/eval/listings/result_aws_second.txt}
 
 \subsection{Intermediate results}
 At this point it is important to emphasize that locally self-generated images with RSA and AWS secrets integrated can be recognized by the prototype.
@@ -55,7 +68,7 @@ Also the speed of the analyzing manager is remarkably fast.
 Only the download is the bottleneck in this program. The download depends on the size of the image and the bandwidth of the internet connection.
 An additional timer module was integrated in order to get an overview of the time required by the analyzing manager.
 This measurement includes every step apart from the downloading phase. This means preprocessing, mounting and finally scanning.
-The timer is yet another python module and is started before the analysing object is initiated. 
+The timer is yet another python module and is started before the analyzing object is initiated. 
 The timer is stopped when result is printed out and the object is destroyed.
 The following overview shows the required analysis time of the previously developed images from subsection \ref{ch:eval:local_images:rsa} and \ref{ch:eval:local_images:aws}. 
 \begin{description}
@@ -68,9 +81,9 @@ The high performance of the scan is caused by the previously determined destinat
 A complete bulk scan is thereby excluded and only specific folders scanned.
 
 The calculated time of the scans does not provide general times since it depends finally of the image size. 
-It would probably make sense to scan several Docker images of different size to get valid relations.
+It makes sense to scan several Docker images of different size to get valid relations.
 The calculated time by this prototype gives a rough hint how big is the impact of using the preprocessing module.
-In this case the times are impressive compared to a bulkscan that takes several minutes.
+In this case the times are impressive compared to a bulkscan of a complete file system.
 
 It is known that the prototype works for locally self-developed images. But it is worth to know if the prototype can detect secrets in public images as well.
-This question is examined in the next section of this evaluation chapter.
+This question is answered in the next section of this evaluation chapter.

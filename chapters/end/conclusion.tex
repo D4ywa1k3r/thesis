@@ -18,7 +18,7 @@ The Image-obtaining module deletes old Docker images from the local system and d
 The preprocessing module extracts the metadata from the image. 
 The metadata is a bulk of data of each image and is created by the image build process itself.
 Most important informations in the metadata are most of all Dockerfile instructions.
-A further analysis of the image is necessary if the processor recognises the keywords COPY, ADD or RUN.
+A further analysis of the image is necessary if the processor recognizes the keywords COPY, ADD or RUN.
 These commands are responsible for adding possible secrets statically into the image. 
 No further image investigation will take place when no keywords like that are existing. 
 
@@ -47,7 +47,7 @@ This is due to the variety of potential tools that can be used for static integr
 It was started in the prototype with 4 tools. Attention was paid to possible scalability.
 Then the self-made images were handed over to the prototype to perform the first tests.
 
-Furthermore public images were also analysed by the prototyp.
+Furthermore public images were also analyzed by the prototyp.
 Public images are inevitable to achieve valid and more trustworthy results.
 A simple strategy was used to manually search for images on Dockerhub.
 Non-official Docker images that use backend technologies were searched.

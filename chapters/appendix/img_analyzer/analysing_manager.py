@@ -60,17 +60,17 @@ if __name__ == "__main__":
     img_name = str(sys.argv[1])
     start_time = timeit.default_timer()
     print(start_time)
-    analysing = AnalManager(img_name)
+    analyzing = AnalManager(img_name)
     print(f"#" * 5 + "   Preparing environment   " + "#" * 5 + "\n")
-    analysing.prepare_environment()
+    analyzing.prepare_environment()
     print(f"#" * 5 + "   Preprocessing Image " +img_name + "   "+ "#" * 5 + "\n")
-    analysing.preprocess()
+    analyzing.preprocess()
 
-    if analysing.necessary:
-         print(f"#"*5 + "   " + img_name + "   Has to be analysed " + "#"*5 + "\n")
+    if analyzing.necessary:
+         print(f"#"*5 + "   " + img_name + "   Has to be analyzed " + "#"*5 + "\n")
          print(f"#"*5 + "   Mounting   " + "#"*5 + "\n")
-         analysing.mount()
-         analysing.examine_deeply()
+         analyzing.mount()
+         analyzing.examine_deeply()
     end_time = timeit.default_timer()
     print(end_time-start_time)
 

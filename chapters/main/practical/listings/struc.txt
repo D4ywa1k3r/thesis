@@ -1,6 +1,6 @@
 .
 |-- __pycache__
-|-- analysing_manager.py
+|-- analyzing_manager.py
 |-- modules
 |   |-- __pycache__
 |   |-- mount.py

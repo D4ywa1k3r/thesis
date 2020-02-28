@@ -7,5 +7,8 @@
 Heutzutage wird cloud native computing immer beliebter. Insbesondere die Anwendungscontainer von Docker sind ein wesentlicher Bestandteil des nativen cloud computing. Jeder Container basiert auf statischen Datenstrukturen - sogenannten Abbildern. Diese Abbilder formen ein wichtiges, aber auch kritisches Element in diesem Ökosystem.
 Abbilder werden in cloud Umgebungen oder temporär in anderen öffentlichen oder privaten Container-Plattformen gespeichert. Dies führt zu Problemen sobald der Entwickler symmetrische oder asymmetrische Geheimnisse wie SSH-Schlüssel, Klartext-Passwörter, Zertifikate und andere in das Abbild integriert hat.
 
-Die Idee hinter dieser Arbeit ist die Entwicklung eines Ansatzes zur Erkennung privater RSA-Schlüssel und Amazon-Zugriffstokens. Beide Token sind allgegenwärtig und werden von Entwicklern in Container images verwendet. Verwandte Arbeiten existieren, um Geheimnisse im Quellcode im Allgemeinen, aber nicht direkt in Container-Bildern zu entdecken. Diese Arbeit entwickelt und verfolgt einen theoretischen Ansatz mit prototypischer Umsetzung um zu beweisen, dass eine Anwendung bekannter Key-Leak-Techniken zur Erkennung eingebetteter Geheimnisse in Docker Images möglich ist.
+Die Idee hinter dieser Arbeit ist die Entwicklung eines Ansatzes zur Erkennung privater RSA-Schlüssel und Amazon-Zugriffstokens. 
+Beide Token sind allgegenwärtig und werden von Entwicklern in Container Abbildern verwendet. 
+Verwandte Arbeiten existieren, um Geheimnisse im Quellcode im Allgemeinen, aber nicht direkt in Container-Bildern zu entdecken. 
+Diese Arbeit entwickelt und verfolgt einen theoretischen Ansatz mit prototypischer Umsetzung um zu beweisen, dass eine Anwendung bekannter Key-Leak-Techniken zur Erkennung eingebetteter Geheimnisse in Docker Abbildern möglich ist.
 \end{otherlanguage}

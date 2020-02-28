@@ -5,8 +5,12 @@
 
 \begin{otherlanguage}{american}
 \chapter*{Abstract}
-Nowadays cloud native computing is becoming more and more popular. Docker's application containers in particular are an essential component of cloud native computing. Every container is based on static data structures, so-called images. These images form an important but also critical element in this eco-system.
-Images are stored in dedicated cloud environments or temporarily in other public or private container registries. This leads to problems if the developer has integrated symmetric or asymmetric secrets into the image like SSH keys, clear text passwords, certificates and others.
+Nowadays cloud native computing is becoming more and more popular. 
+Docker's application containers in particular are an essential component of cloud native computing. 
+Every container is based on static data structures, so-called images. 
+These images form an important but also critical element in this eco-system.
+Images are stored in dedicated cloud environments or temporarily in other public or private container registries. 
+This can leads to various problems if the developer has integrated symmetric or asymmetric secrets into the image like SSH keys, clear text passwords, certificates and others.
 
-The idea behind this work is to develop an approach to detect RSA private keys and an Amazon access tokens which are both commonly used by developers in an application container image. Related work is available for discovering secrets in source code in general but not in container images directly. This thesis develops and follows a theoretical approach with prototypical implementation to prove that it is possible to apply known key-leak techniques to detect embedded secrets in docker images.
+The idea behind this work is to develop an approach to detect RSA private keys and Amazon access tokens which are both commonly used by developers in an application container image. Related work is available for discovering secrets in source code in general but not in container images directly. This thesis develops and follows a theoretical approach with prototypical implementation to prove that it is possible to apply known key-leak techniques to detect embedded secrets in Docker images.
 \end{otherlanguage}

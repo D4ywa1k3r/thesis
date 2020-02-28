@@ -1,4 +1,4 @@
-#####   aws_second   Has to be analysed #####
+#####   aws_second   Has to be analyzed #####
 
 #####   Mounting   #####
 

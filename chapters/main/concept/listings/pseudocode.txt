@@ -1,25 +1,55 @@
-This analysing program will scan a Docker image for embedded secrets.
-If a secret is detected then a data-structure containing the secret will be returned; if not, a empty data-structure will be returned.
+This analyzing program will scan a Docker image for embedded secrets. A data-structure containing the secret(s) will be printed into the stdout buffer.
 
-Enter an image name
+Enter an image_name
 if image exist
-	pull image
-	check keywords COPY, ADD and RUN
-	if keywords used
-		paths_list = empty
-		for keyword in keywords:
-			switch(keyword)
-				COPY:	
-				ADD: paths_list.append(check dst PATH method1)
-				break;
-				RUN: paths_list.append(check dst PATH method2)
-				break;
-		scan paths
+	image =	pull image(image_name)
+	meta  = image.history()
+	
+	action_dict = {
+        "ADD": False,
+        "COPY": False,
+        "openssl": False,
+        "wget": False,
+        "git clone": False,
+        "ssh-keygen": False,
+    }
+	scan_necessary = contains_key_actions(meta)
+
+	if scan_necessary:
+		target_dirs = empty
+		
+		for target in fetch_direct_copy_targets():
+			if target use relative path:
+				examine WORKDIR
+				target = WORKDIR + target
+            target_dirs.add(target)
+
+        for target in fetch_indirect_copy_targets():
+			if target use relative path:
+				examine WORKDIR
+				target = WORKDIR + target
+            target_dirs.add(target)
+		
+		remove_overlay_dirs()
+        create_overlay_dirs()
+        lower_chain = get_lower_directories()
+		mount_overlay(lower_chain)
+		
+		for target in targets:
+			if target is root:
+				targets_list = root level standard deviations
+				for final_target in targets_list:
+					scan_for_rsa_pk(overlay_path + final_target)
+					scan_for_aws_token(overlay_path + final_target)
+			else:
+				scan_for_rsa_pk(overlay_path + final_target)
+				scan_for_aws_token(overlay_path + final_target)
+
 		if secrets found
-			return secrets in data-structure	
+			print secrets	
 		else
-			return empty data-structure			
+			return 0			
 	else
-		return empty data-structure
+		return 0
 else
-	go to Enter an image name
+	initialize termination process

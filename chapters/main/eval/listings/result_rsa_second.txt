@@ -2,7 +2,7 @@
 
 #####   Preprocessing Image rsa_second   #####
 
-#####   rsa_second   Has to be analysed #####
+#####   rsa_second   Has to be analyzed #####
 
 #####   Mounting   #####
 

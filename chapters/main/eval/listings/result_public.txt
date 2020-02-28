@@ -2,7 +2,7 @@
 
 #####   Preprocessing Image nodered/node-red-docker   #####
 
-#####   nodered/node-red-docker   Has to be analysed #####
+#####   nodered/node-red-docker   Has to be analyzed #####
 
 #####   Mounting   #####
 

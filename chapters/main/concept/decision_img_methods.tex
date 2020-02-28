@@ -1,40 +1,64 @@
 \section{Evaluation of access methods}
 \label{ch:theory:access_eval}
-This segment examines the first building block of the core concept of image analysis. It will evaluate and decide which methods has to be used to get file access to an image in general.
+This segment examines the first building block of the core concept of image analysis.
+It will evaluate and decide which methods have to be used to get file access to a Docker image in general.
 
-Basically an image is distributed arbitrarily and it cannot be assumed that the Dockerfile can be accessed.
-Therefore only the pure availability of the image is realistic. The first key question is which is an universal access to an image in order to perform a depth analysis.
+Basically a Docker image is distributed arbitrarily and it cannot be assumed that the Dockerfile can be accessed.
+Therefore only the pure availability of the image is realistic.
+The first key question is what is a universal method of access to an image in order to perform a depth analysis.
 In conclusion the architecture of Docker images leads to three obvious possibilities that are described in the following subsections.
-These different approaches have advantages and disadvantages. On one hand the key feature of the access method is a well working interaction with the necessary analysing module. When on the other hand the file access method needs big effort or it modifies an image in order to embed necessary actions to such extend that it can have a bad impact for the whole scanning workflow in general. This has to be considered deciding on which access method has to be finally used.
+These different approaches have advantages and disadvantages.
+One key feature of the access method is a well working interaction with the necessary analyzing module.
+Another key factor represents a necessary modification of the image. 
+A modification can have a negative effect on the entire scan workflow in general.
+Modification basically violates integrity and has to be avoided.
+This has to be considered deciding on which access method has to be finally used.
 
 \subsection{Additional image layer} 
 \label{ch:theory:access_eval:additional}
-The access is made through a new additional layer which contains and also adds a program to the obtained image. When the image is being initiated as a container, the program can work on the entire file system.
-Before the new layer is being added, preprocessing on the original image is mandatory. The first result has to be temporary saved. That includes all the metadata informations which are necessary for the scan. These metadata are explained more deeply in section \ref{sec:intro:docker_image:docker_img:meta} and will furthermore be used by the processing module in section \ref{ch:practical_realization:implementation:preprocessing}. A change of the base image would lead to a lost of these important informations. 
+The access is made through a new additional layer which contains and also adds a program to the obtained image. 
+The program can work on the entire file system when the image is being initiated as a container.
+Preprocessing on the original image is mandatory before the new layer is being added. 
+The first result has to be temporary saved. 
+This includes all the metadata informations that are useful for the scan. 
+These metadata are explained more deeply in section \ref{sec:intro:docker_image:docker_img:meta}. 
+A change of the base image would lead to a lost of these important informations.
 
-After this processing is done a new additional layer can be added with the analysing program.
-Finally the program would need an endpoint, where the result is saved. The result has to be saved on a permanent storage due to the nature of containers, because the results are removed after stopping the container. 
+After this processing is done a new additional layer can be added with the analyzing program.
+Finally the program would need an endpoint to save the results. 
+The result has to be saved on a permanent storage due to the nature of containers.
 
 \subsection{Tarball approach} 
 \label{ch:theory:access_eval:tarball}
 The idea behind this approach is to pipe a running container into a tarball. The container must be started and remain online until all informations are extracted and stored in an archive.
 After exporting the container can be deleted immediately because the processing only takes place on the tarball.
-This archive contains the complete file system including the writable container layer. The archive can be analysed afterwards by a program. This program can save the results locally or deliver it to an endpoint.
+This archive contains the complete file system including the writable container layer. The archive can be analyzed afterwards by a program. This program can save the results locally or deliver it to an endpoint.
 
 \subsection{Direct access} 
 \label{ch:theory:access_eval:direct_access}
-Theoretically, direct access to the image is also possible, since an image is present on the local system before it is started as a container.
-The background chapter showed, that a Docker image is just a stack of several image layers. The direct access to the image as a whole needs a manual overlay-mount on the host system itself.
-Necessary informations to mount the overlay correctly is proved by the section \ref{sec:intro:docker_image:docker_img}.
-For the overlay the mandatory lower directories have to be examined. The sequence of the directories in the chain is also important. These can be analysed through the provided informations which are available locally. That includes especially the lowerfile of each Docker layer. These informations has to be used in order to finally get the overlay-mount. 
-Finally the program that performs the analysis can access the mount point and do its analysis. 
+In theory direct access to the image is also possible, since an image is present on the local system before it is started as a container.
+The background chapter showed that a Docker image is just a stack of several image layers. 
+The direct access to the image as a whole needs a overlay-mount on the host system itself.
+Necessary informations to mount the overlay correctly has been demonstrated in section \ref{sec:intro:docker_image:docker_img}.
+The mandatory lower directories for the overlay have to be examined. 
+These can be analyzed through the locally provided informations.
+Other mandatory directories of an overlay have to be created accordingly.
+These informations have to be used in order to create the overlay-mount finally. 
+Lastly the program that performs the analysis can access the mount point and browse through the union file system.
 
 \subsection{Decision of access method} 
 \label{ch:theory:access_eval:decision_access}
 These mentioned approaches have advantages and disadvantages. 	
-In subsection \ref{ch:theory:access_eval:additional} the access approach has the drawback of an additional layer and requires a bi-directional interaction between host and container, or container and a specific endpoint in order to save the results. It also needs a somewhat of a copy of the image in order to save the meta-information. The modifying of the base image leads to a higher complexity and effort. 
-The second approach from \ref{ch:theory:access_eval:tarball} only has the image as a base and does not modify anything from it. It only needs a start of a container temporarily. Unlike in \ref{ch:theory:access_eval:additional} the container does not have to run during the analysing process. However the fact of starting a container is still a drawback because it can lead to an initially undefined consumption of resources.
-With the direct access method from \ref{ch:theory:access_eval:direct_access}, the analysis is performed without starting a container and therefore no additional container load exists on the host.
+The access approach In subsection \ref{ch:theory:access_eval:additional} has the drawback of an additional layer and requires a remote communication in order to save the results.
+It also needs a somewhat of a copy of the image in order to save the meta-information. 
+The modification of the base image leads to a higher complexity and effort. 
+
+The second approach from subsection \ref{ch:theory:access_eval:tarball} only has the image as a base and does not modify anything. 
+It only needs a start of a container temporarily. 
+Unlike in \ref{ch:theory:access_eval:additional} the container does not have to run during the analyzing process. 
+However the fact of starting a container is still a drawback because it can lead to an initially undefined consumption of resources.
+The direct access method from subsection \ref{ch:theory:access_eval:direct_access} performs the analysis without starting a container. 
+Conclusively no additional container load exists on the host.
 
 Lastly the third approach has the big advantage to access to the image directly through the filesystem. 
-Since direct access to the image via the file system requires the least effort from a logical perspective, this access method is used in this theoretical concept.
+This access method is used in this theoretical concept since direct access to the image via the file system requires the least effort from a logical perspective.
