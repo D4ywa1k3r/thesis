@@ -43,7 +43,7 @@ This has advantages because simplicity offers little potential for error in cont
 The preprocessing module decides whether an image needs to be scanned. Which areas of the image need to be scanned is also decided by this module.
 This preprocessing reduces the amount of false positives and increases a much faster pace when it comes to scanning.	
 This corresponding python module needs a bit more logic to work properly. 
-The following enumaration of functions helps to get an overview of the logic. 
+The following enumeration of functions helps to get an overview of the logic. 
 Only core functions are listed.
 Helper functions are not listed as they are not necessary at this point.
 \begin{itemize}
@@ -55,16 +55,16 @@ Helper functions are not listed as they are not necessary at this point.
 \item examine\_workdir(self)
 \end{itemize}
 The function collect\_metadata is the first important method. 
-The function initilizes the Docker environment in order to fetch the locally provided target image. 
+The function initializes the Docker environment in order to fetch the locally provided target image. 
 Afterwards the extraction of this fetched image is done through the equivalent Docker history command. 
-The history command provides metadata informations which are explained in section \ref{sec:intro:docker_image:docker_img:meta}. 
+The history command provides metadata informations which is explained in section \ref{sec:intro:docker_image:docker_img:meta}. 
 This metadata is stored in an instance attribute to provide a global access to these metadata.
 
 The decision whether the target image has to be scanned or not is made in the method contains\_key\_actions.
 An image has to be scanned when keywords such as ADD, COPY or any RUN commands have been used during the building process. 
 This was developed in the theoretical concept in section \ref{ch:theory:analyzing_process:prepro}, 
 
-The determination is made with help of a proper data-structure compared against the metadata information of the image.
+The determination is made with help of a proper data-structure compared to the metadata information of the image.
 A Python dictionary is a data-structure to provide one or more key:value pairs.
 The key:value pair represents the keyword with an associated status whether one of the keys was used. 
 This associated status value is a simple boolean.
@@ -88,13 +88,13 @@ The comparison implemented in Python can be seen in code-listing \ref{ch:practic
 The corresponding value will be updated to true when an entry from the dictionary is detected. 
 The whole data\_structure will be checked and a dedicated boolean is set and returned. 
 The method contains\_key\_actions returns true if any key values are set to true. 
-That means in general that a further investigation of the image is mandatory. 
+In general this means that a further investigation of the image is mandatory. 
 No further investigation is necessary if each value is still set to false.
 \lstinputlisting[language=Python,caption={Python snippet - scanning decision}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_contains}]{chapters/main/practical/listings/code/contains.py}
 Furthermore the methods fetch\_direct\_copy\_targets and fetch\_indirect\_copy\_targets have in common to extract and to return detected path(s) used by COPY, ADD or RUN. 
 The method fetch\_direct\_copy\_targets takes care about fetching targets which has been integrated via ADD and COPY. 
-The method fetch\_indirect\_copy\_targets takes care about the indirect integration via openssl, wget, git clone and ssh-keygen. 
-The implementation of both methods looks different.
+The method fetch\_indirect\_copy\_targets are responsible for the indirect integration via openssl, wget, git clone and ssh-keygen. 
+The implementation of both methods appear to be different.
 
 The method fetch\_direct\_copy\_targets searches in the meta information for this following regex pattern which was determined in the theoretical concept in section \ref{ch:theory:analyzing_process:prepro}.
 \begin{lstlisting}
@@ -104,19 +104,19 @@ A string slicing takes place in order to extract the target path if this pattern
 Simple string slicing with determination of the position of special delimiter signs is possible. 
 This is due to the fixed schema or the fixed syntax of the meta information.
 The examination of the target path realised in Python can be seen in the code-listing \ref{ch:practical_realization:implementation:preprocessing:code_fetchdirect} below.
-This developed algorithm deserves a tiny explanation.
+This developed algorithm deserves a brief explanation.
 \lstinputlisting[caption={Pseudocode - fetch COPY/ADD targets}, captionpos=b,label={ch:practical_realization:implementation:preprocessing:code_fetchdirect}]{chapters/main/practical/listings/code/fetchdirect.txt}
 Each match from the Regex pattern is processed further. 
 The determined destination folders are appended to a list. 
 The determination starts with examining the raw target\_path of the match. 
 Then a temporary metadata is extracted in order to set the current WORKDIR for the corresponding target\_path. 
-The WORKDIR variable must be determined exactly since the variable can change several times in the build process. 
+The WORKDIR variable must be determined exactly since the variable can change several times during the build process. 
 A string slicing helps to examine the WORKDIR variable. 
 The slicing takes place from the start of the original metadata until the position of the already determined corresponding target directory. 
 The last occurring WORKDIR variable of this sliced metadata sets the final WORKDIR variable for the corresponding target\_path. 
 The WORKDIR variable is important when the target\_path is relativ instead of absolute as known from section \ref{ch:theory:analyzing_process:prepro}.
 
-Furthermore it is important to distinguish between the root path, relativ paths and absolute paths of the examined target\_path. 
+Furthermore it is important to distinguish between the root path, relative paths and absolute paths of the examined target\_path. 
 This is examined by analyzing the first character of the already known target\_path. 
 Loop rounds are omitted when the target\_path is the root directory. 
 This is due to the last entry since this is always an ADD command for the base image layer. 
@@ -135,18 +135,18 @@ A helper function to this associated command is called when any of these command
 The helper function is mainly responsible for the string slicing.
 The helper method expects the output option of the command and the corresponding determined position of the option in the metadata.
 The output option may differ depending on the command. 
-That is is why a helper function comes in place to omit duplicated code. 
-The helper function will determine and return the output path finally.
+This is why a helper function comes in place to omit duplicated code. 
+The helper function will determine and return the output path definetely.
 Depending of the amount of matches in the meta-data the helper function may be called multiple times. 
 That is why an examined target from the helper function is appended to an array. 
 
 A special case takes place when no output argument is given. 
 In that case the current WORKDIR has to be checked and returned.
-Absolute and relative paths play a role as with COPY and ADD. 
+Absolute and relative paths play a role as well with COPY and ADD. 
 The treatment of relatives and absolute paths in fetch\_indirect\_copy\_targets are identically as in fetch\_direct\_copy\_targets.
 A full in depth insight of the corresponding work between the fetch\_indirect\_copy\_targets and the helper functions can be seen in source code of the attached CD.
 
-Finally this preprocessing module holds the method clearup\_targets. This method takes care about the data structure which holds the targets globally. The global data structure is transformed into a Python set. This set automatically removes duplicates.
+Finally this preprocessing module holds the method clearup\_targets. This method clears up the data structure which holds the targets globally. The global data structure is transformed into a Python set. This set automatically removes duplicates.
 	
 At this point the target directories are examined and the necessary mount module can be triggered. The realization of this mount module is described in the next subsection.
 
@@ -163,8 +163,8 @@ The functions create\_overlay\_dirs and remove\_overlay\_dirs are responsible fo
 There are working directories necessary to mount an Overlay2 file system as written in section \ref{sec:intro:docker_image:unionfs}.
 Every folder in except of the lower directories are created or deleted by these functions. 
 The creation and deletion is programmatically done via the available \textit{os} package and is due to the simplicity not worth to show at this point. 
-It is important to note twice that the lower directories are not created or deleted by these methods. 
-The lower directories are automatically provided on the file system when the obtaining module starts cleaning up the garbage or downloading the target image.
+It is important to note repeatdedly that the lower directories are not created or deleted by these methods. 
+The lower directories are automatically provided on the file system when the obtaining module starts cleaning up the garbage or is downloading the target image.
 Therefore the lowerdirs must be examined separately. The examination is done by an additional helper method. 
 The examination is shown in code-listing \ref{ch:practical_realization:implementation:preprocessing:code_getlowerdirs}.
 The helper method tries to return a directory chain as a string concatenation of the existing image layers.
@@ -222,11 +222,11 @@ The following code snippet shows the core method to scan these directories with 
                 else:
                     os.system(f"find {mount.overlay_mount_path + dir} -type f -iname '*' -exec grep -HIr -- '{prefix}' "'{}'" \;")
 \end{lstlisting}
-For preparing the final target dir the prefix builds with the target\_list the cartesian product. 
-Two cases has to be considered depending on the resulting \textit{dir} variable. 
+For preparing the final target dir the prefix creates with the target\_list the cartesian product. 
+Two cases have to be considered depending on the resulting \textit{dir} variable. 
 A new target path examination is done by the function get\_root\_diff when the root directory has to be scanned. 
 This function returns a list of all folders that are different from a standard Linux root file system. 
-This deviation forms the targets to scan on root level. This leads finally to a third nested for loop in the cartesian product. 
+This deviation forms the targets to scan on root level. This finally leads to a third nested for loop in the cartesian product. 
 The full path is created through the overlay mount path and the examined target dir in combination. 
 Finally the find and grep utils are responsible to uncover the secrets.
 
@@ -239,9 +239,9 @@ Because of the grep options the result is finally printed to the stdout buffer.
 The scan\_for\_aws\_key function requires a work pattern instead of a data structure with prefixes. 
 This regex pattern from the theoretical concept is simply applied.
 The function is slightly leaner than scan\_for\_rsa\_pk. 
-This is because only one pattern is used for instead of several prefixes. 
-This leads conclusively to the elimination of one for loop.
-This is advantageous for the speed of the process. Also by reducing complexity. 
+This is because only one pattern is used instead of several prefixes. 
+This conclusively leads to the elimination of one for loop.
+This is advantageous for the speed of the process. 
 The implementation is almost identical to the previous function of RSA detection. 
 The only difference is the parameter usage of the tool grep. 
 An option is enabled so that patterns instead of prefixes can be recognized by the grep tool.

@@ -2,7 +2,7 @@
 \label{ch:eval:local_images}
 The creation of Docker images containing secrets to detect needs a directive. 
 An arbitrary development of Dockerfiles and thus Docker images leads to chaos and misleading scan results. 
-It is desirable to be able to clearly assign the results regardless of how the results turn out.
+It is desirable to be able to clearly assign the results regardless of how these turn out.
 
 The section structures the creation of image as follows. 
 Basically there are two categories of Docker images. 
@@ -12,10 +12,10 @@ In other words there will be 2 Dockerfiles for the RSA and the AWS category.
 In total there are 4 Docker images which have to be created by developing a corresponding Dockerfile. 
 The reason for the development of 4 images results from the possibility to use different integration variants.
 It is known that the direct and the indirect method exist. 
-Therefore 4 images are needed to cover both categories logically completely.
+Therefore 4 images are needed to cover both categories completely.
 
 It is important to consider different cases when developing a Dockerfile. 
-WORKDIR changes has to take place since they are commonly used by developers. 
+WORKDIR changes has to occur since they are commonly used by developers. 
 Finally it is important to use absolute and relative destination paths. 
 
 RSA and AWS images are developed in dedicated subsections. 
@@ -35,7 +35,7 @@ Both Dockerfiles contain WORKDIR changes and the use of relative and absolute pa
 The images are created and handed over to the prototyp one after the other.
 The entire analsis workflow is triggered each time the analysis manager is started. 
 That includes garbage collection, fetching the image, mounting and lastly scanning the image.
-The analyzing manager is finally started by passing the image name as a command line argument. 
+The analyzing manager is finally beeing started by passing the image name as a command line argument. 
 That demonstrates the following command.
 \begin{lstlisting}
 	python analyzing_manager.py <img_name>
@@ -56,7 +56,7 @@ The corresponding images are represented by the following two Dockerfiles.
 \lstinputlisting[caption={Dockerfile - AWS token integration using COPY/ADD}, captionpos=b, label={ch:eval:local_images:aws_copy}]{chapters/main/eval/listings/dockerfile3}
 \lstinputlisting[caption={Dockerfile - AWS token integration token using RUN}, captionpos=b, label={ch:eval:local_images:aws_run}]{chapters/main/eval/listings/dockerfile4}
 The analyzing program is applied to the second Docker image Listing \ref{ch:eval:local_images:aws_run}. 
-Wget and git clones has to be considered as well. 
+Wget and git clones have to be considered as well. 
 Now all 4 example RUN commands are considered by the analyzing tool (wget, git clone, openssl and ssh-keygen). 
 The result below in Listing \ref{ch:eval:local_images:aws_second_result} shows that every AWS token has been found and printed out with the corresponding location.
 The analysis program recognizes the AWS tokens completely from the first image shown in Listing \ref{ch:eval:local_images:aws_copy} as well.
@@ -65,11 +65,12 @@ The analysis program recognizes the AWS tokens completely from the first image s
 \subsection{Intermediate results}
 At this point it is important to emphasize that locally self-generated images with RSA and AWS secrets integrated can be recognized by the prototype.
 Also the speed of the analyzing manager is remarkably fast. 
-Only the download is the bottleneck in this program. The download depends on the size of the image and the bandwidth of the internet connection.
+Only the download is the bottleneck in this program. 
+The download depends on the size of the image and the bandwidth of the internet connection.
 An additional timer module was integrated in order to get an overview of the time required by the analyzing manager.
 This measurement includes every step apart from the downloading phase. This means preprocessing, mounting and finally scanning.
 The timer is yet another python module and is started before the analyzing object is initiated. 
-The timer is stopped when result is printed out and the object is destroyed.
+The timer is stopped when the result is printed out and the object is destroyed.
 The following overview shows the required analysis time of the previously developed images from subsection \ref{ch:eval:local_images:rsa} and \ref{ch:eval:local_images:aws}. 
 \begin{description}
 \item [Image \ref{ch:eval:local_images:rsa_copy}] \textasciitilde 0.1449288309995609 seconds
@@ -78,12 +79,13 @@ The following overview shows the required analysis time of the previously develo
 \item [Image \ref{ch:eval:local_images:aws_run}] \textasciitilde 0.4584746649998124 seconds
 \end{description}
 The high performance of the scan is caused by the previously determined destination folders by the preprocessing module.
-A complete bulk scan is thereby excluded and only specific folders scanned.
+A complete bulk scan is thereby excluded and only specific folders are scanned.
 
-The calculated time of the scans does not provide general times since it depends finally of the image size. 
-It makes sense to scan several Docker images of different size to get valid relations.
-The calculated time by this prototype gives a rough hint how big is the impact of using the preprocessing module.
+The calculated time of the scans does not provide general times since it ultimately depends on the image size. 
+It makes sense to scan several Docker images of different sizes to get valid relations.
+The calculated time by this prototype gives a rough hint of how big the impact of using the preprocessing module is.
 In this case the times are impressive compared to a bulkscan of a complete file system.
 
-It is known that the prototype works for locally self-developed images. But it is worth to know if the prototype can detect secrets in public images as well.
+It is known that the prototype works for locally self-developed images. 
+But it is worth to know that the prototype can detect secrets in public images as well.
 This question is answered in the next section of this evaluation chapter.

@@ -9,18 +9,18 @@ Examples are the following providers and their solutions.
     \item Amazon - Elastic Container Registry(ECR)
 \end{itemize}{}    
 There are many other providers and solutions available. 
-Each cloud provider offers normally a private area to make images only accessible to sepcial users and groups. 
+Each cloud provider normally offers a private area to make images only accessible to sepcial users and groups. 
 A valid authentication is necessary to get access to these locked images.
 However the provided prototype only supports the query of public container registries without authentication.
 
 DockerHub provides a large bundle of images provided by the community and is the standard container registry for public images.
-This platform is therefore a very good candidate for the designed prototype.
+This platform therefore is a very good candidate for the designed prototype.
 
 A simple strategy is used to find potentially suspicious images from DockerHub.
 The search in DockerHub includes mainly backend technologies that expects a communication to remote endpoints.
 This in turn requires secure communication using mechanisms such as RSA.
 An additional filter is set to fetch only non official DockerHub images.
-These images are not proved officially by Docker Inc.
+These images are not officially proved by Docker Inc.
 In theory images from non-verified third party vendors have a higher potential of vulnerabilities than official ones.
 The search is performed manually without programmatically API queries. 
 
@@ -29,7 +29,8 @@ The scan is performed one after the other without any parallel process execution
 
 One of the scans was performed on a frequently used image with more than 10 million downloads.
 This image was updated in Oktober 2019. 
-\graffito{Note: The SHA is calculated over every image-layer by a special combination of hash calculations. This defines an image explicitly and makes clear which image was used exactly.}
+\graffito{Note: The SHA is calculated over every image-layer by a special combination of hash calculations. 
+This defines an image explicitly and makes clear which image was used exactly.}
 The image is called \textit{nodered/node-red-docker} \\and has the following SHA \\\textit{sha256:0bd9a1d2200474e7471bada2eb633f7193320ee47cb3b8aa34326d19f7f485c6}.
 \\The console output of the scan can be seen in Listing \ref{ch:eval:public_images:result_public}.
 \lstinputlisting[caption={Result RSA keys analyze}, captionpos=b, label={ch:eval:public_images:result_public}]{chapters/main/eval/listings/result_public.txt}
@@ -39,8 +40,8 @@ The folder structure indicates that these keys are mostly used by the MQTT proto
 It can be assumed that the keys found are only for test and demo purposes. This can be deduced from the folder structure.
 Further investigation may help to assign this private key. 
 It cannot be excluded that these are potentially secret keys.
-This also applies to the other private keys
-All these private keys needs a further investigation in order to obtain possible sensitive informations.
+This also applies to the other private keys.
+All these private keys need a further investigation in order to obtain possible sensitive informations.
 
 This section showed that the prototype can also be applied to public images.
 This confirms a possible universal application if the prototype shall be developed as a product. 

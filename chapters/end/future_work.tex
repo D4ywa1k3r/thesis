@@ -14,7 +14,7 @@ The category of indirect copying consists of much more than the 4 utilities that
 The prototyp only supports the tools openssl, ssh-keygen wget and git.
 There are many more tools that are responsible for the integration of static files. 
 A productive use of such an analysis tool is pointless without considering many other tools.
-The following list gives an idea which tools should be considered in future.
+The following list gives an idea which tools should be considered in the future.
 \begin{itemize}
 \item scp
 \item curl
@@ -27,15 +27,15 @@ There might be many more tools available which can be responsible to integrate f
 This can lead to similar effects as with antivirus programs to a costly signature maintenance.
 
 It can also lead to false-negatives if tools are used by the developer that are not included in the program.
-The integration of new tools does not need big effort, since a helper function is already existing.
+The integration of new tools does not need big effort since a helper function is already existing.
 Only the output parameter has to bet set for the new corresponding tool.
 It is necessary to pay attention to updates of the integrated tools.
 Theoretically parameters of the tools can change. 
-These must then be adapted in the software.
+These must then be adapted into the software.
 
 Not only the extension of more tools is useful. The extension of more secret types is also a key factor.
-Currently the file-scan module detects only RSA keys and Amazon access tokens.
-Token by other cloud service providers or software vendors can be scanned if they use a fixed prefix or schema.
+Currently the file-scan module only detects RSA keys and Amazon access tokens.
+A Token by other cloud service providers or software vendors can be scanned if they use a fixed prefix or schema.
 These secret types can easily be extended to the scan module, as the analysis engine is modular.
 
 Furthermore improving homogeneity would be useful future work.
@@ -49,4 +49,4 @@ As a result the software can be used by all major Linux distributions.
 
 Overall it can be said that there is still a lot of work to be done to provide a trustworthy image analysis.
 The Bachelor thesis has shown that this can be worthwhile.
-An initial effort has been made, but success has been achieved after this effort.
+An initial effort has been made but success has been achieved after this effort.

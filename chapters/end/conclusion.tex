@@ -1,12 +1,13 @@
 \chapter{Conclusion}
 \label{ch:end:conclusion}
 The goal of this bachelor thesis was to develop an approach to detect embedded secrets in Docker images. 
-A theoretical concept was created to achieve this goal. In this concept the decision was made to detect only RSA private keys and Amazon access tokens.
+A theoretical concept was created to achieve this goal. 
+In this concept the decision was made to detect only RSA private keys and Amazon access tokens.
 These two secrets set the scope of this paper. These two keys have different characteristics.
 RSA contains a fixed prefix, while an AWS token follows a specific pattern at the content level.
 Then a decision was made that direct access to the image would be a better approach than the alternative tarball and additional container layer approach.
 This was followed by developing an analysis procedure consisting of 4 core modules.
-These core modules are the following
+These core modules are the following.
 \begin{itemize}
 \item Image-obtaining
 \item Meta-extraction
@@ -29,22 +30,21 @@ Lastly the file-scan module is responsible for detecting RSA keys and Amazon acc
 The scanning module uses the path of the overlay mount point and can use it as a classic Unix path.
 
 This concept was prototypically implemented in a Linux environment using the programming language Python.
-Each core-module of the analyzing procedure was implemented as a different python module to provide independence and most of flexibility. 
-An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned python modules.
-So there is a central program to which an image can be passed.
+Each core-module of the analyzing procedure was implemented as a different python module to provide independence and most of all flexibility. 
+An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned python modules so that there is a central program to which an image can be passed.
 
 Lastly the developed prototype was evaluated. 
-Self-defined images as well as public images were used to prove the prototyp is working.
+Self-defined images as well as public images were used to prove that the prototyp is working.
 
-The self-created images contained intentionally RSA keys and Amazon tokens.
+The self-created images intentionally contained RSA keys and Amazon tokens.
 The direct and indirect methods were used to integrate the secrets.
 These two methods are responsible for the integration of static content.
-The direct method includes only the use of the COPY/ADD instructions in the Dockerfile.
+The direct method only includes the use of the COPY/ADD instructions in the Dockerfile.
 The indirect method includes all commands that can be executed via RUN.
 The direct method is deterministic and completely covered in the prototype.
 With the indirect method, initially only a certain degree of coverage is possible.
 This is due to the variety of potential tools that can be used for static integration.
-It was started in the prototype with 4 tools. Attention was paid to possible scalability.
+It was first initiated with 4 tools in the prototype. Attention was paid to possible scalability.
 Then the self-made images were handed over to the prototype to perform the first tests.
 
 Furthermore public images were also analyzed by the prototyp.
