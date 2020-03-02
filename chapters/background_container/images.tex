@@ -8,10 +8,10 @@ These basics are eminentely important because they are part of the theoretical c
 
 \subsection{Image architecture}
 \label{sec:intro:docker_image:docker_img:architecture}
-A Docker image is ultimately a stack of selected file system layers to provide a starting point for a container \cite{docker_images}.
-Figure \ref{sec:intro:docker_image:docker_image_stack} shows how a Docker image is stacked. 
+A Docker image is ultimately a stack of selected file system layers \cite{docker_images}.
+Figure \ref{sec:intro:docker_image:docker_image_stack} created by \cite{docker_story} shows how a Docker image is stacked. 
 The Linux kernel is always at the bottom. A Debian and a Busybox layer are placed on the kernel.
-Both already form a complete and runnable Docker image.
+Both already form a runnable Docker image.
 On top of these layers more layers can be stacked as shown on the Debian layer with an additional Emacs and an Apache layer. 
 The Busybox layer does not have further layer placed on the top.
 Docker finally attaches a read/write file system across all underlying layers when a container is launched from an image.
