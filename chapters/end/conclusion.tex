@@ -1,6 +1,6 @@
 \chapter{Conclusion}
 \label{ch:end:conclusion}
-The goal of this bachelor thesis was to develop an approach to detect embedded secrets in Docker images. 
+The goal of this Bachelor thesis was to develop an approach to detect embedded secrets in Docker images. 
 A theoretical concept was created to achieve this goal. 
 In this concept the decision was made to detect only RSA private keys and Amazon access tokens.
 These two secrets set the scope of this paper. These two keys have different characteristics.
@@ -9,12 +9,12 @@ Then a decision was made that direct access to the image would be a better appro
 This was followed by developing an analysis procedure consisting of 4 core modules.
 These core modules are the following.
 \begin{itemize}
-\item Image-obtaining
-\item Meta-extraction
-\item Image-mount
-\item File-scan
-\end{itemize}
-The Image-obtain module deletes old Docker images from the local system and downloads the target image from a container registry.
+    \item Image obtain
+    \item Image preprocess
+    \item Image mount
+    \item File-scan
+    \end{itemize}
+The Image obtain module deletes old Docker images from the local system and downloads the target image from a container registry.
 
 The preprocess module extracts the metadata from the image. 
 The metadata is a bulk of data of each image and is created by the image build process itself.
@@ -23,15 +23,15 @@ A further analysis of the image is necessary if the processor recognizes the key
 These commands are responsible for adding possible secrets statically into the image. 
 No further image investigation will take place when no keywords like that are existing. 
 
-The image will be mounted by the image-mount module if the scan is necessary. The mount type is the union-file-system Overlay2.
+The image will be mounted by the image mount module if the scan is necessary. The mount type is the union-file-system Overlay2.
 This module provides a central point from which the host system can access and finally scan all files of the image.
 
 Lastly the file-scan module is responsible for detecting RSA keys and Amazon access tokens with the use of key-based search and pattern-based search.
-The scanning module uses the path of the overlay mount point and can use it as a classic Unix path.
+The scan module uses the path of the overlay mount point and can use it as a classic Unix path.
 
 This concept was prototypically implemented in a Linux environment using the programming language Python.
-Each core-module of the analyzing procedure was implemented as a different python module to provide independence and most of all flexibility. 
-An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned python modules so that there is a central program to which an image can be passed.
+Each core-module of the analyzing procedure was implemented as a different Python module to provide independence and most of all flexibility. 
+An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned Python modules so that there is a central program to which an image can be passed.
 
 Lastly the developed prototype was evaluated. 
 Self-defined images as well as public images were used to prove that the prototype is working.

@@ -41,7 +41,7 @@ The background chapter showed that a Docker image is just a stack of several ima
 The direct access to the image as a whole needs a overlay-mount on the host system itself.
 Necessary information to mount the overlay correctly has been demonstrated in section \ref{sec:intro:docker_image:docker_img}.
 The mandatory lower directories for the overlay have to be examined. 
-These can be analyzed through the locally provided information.
+These can be determined through the locally provided information.
 Other mandatory directories of an overlay have to be created accordingly.
 These information have to be used in order to create the overlay-mount finally. 
 Lastly the program that performs the analysis can access the mount point and browse through the union file system.
@@ -49,7 +49,7 @@ Lastly the program that performs the analysis can access the mount point and bro
 \subsection{Decision of access method} 
 \label{ch:theory:access_eval:decision_access}
 These mentioned approaches have advantages and disadvantages. 	
-The access approach In subsection \ref{ch:theory:access_eval:additional} has the drawback of an additional layer and requires a remote communication in order to save the results.
+The access approach in subsection \ref{ch:theory:access_eval:additional} has the drawback of an additional layer and requires a remote communication in order to save the results.
 It also needs a somewhat of a copy of the image in order to save the meta-information. 
 The modification of the base image leads to a higher complexity and effort. 
 

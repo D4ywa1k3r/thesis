@@ -19,7 +19,7 @@ The elements of an Overlay2 file system are now described with the help of an ex
 A following folder structure in Listing \ref{intro:overlay:hierarchy} is assumed.
 \lstinputlisting[caption={General structure of an Overlay2 file system}, captionpos=b, label={intro:overlay:hierarchy}]{chapters/intro/listings/tree1.txt}
 The folder structure contains all the mandatory Overlay2 elements. 
-The mount point can be created without additional software packages because Overlay2 is natively supported under Linux since Kernel version 4.52.2 \cite{}.
+The mount point can be created without additional software packages because Overlay2 is natively supported under Linux.
 This is illustrated by the following mount command.
 \begin{lstlisting}[label={intro:overlay:mountcmd}]
 	mount -t overlay -o lowerdir=./lower1:./lower2,upperdir=./upper,workdir=./work overlay ./merged

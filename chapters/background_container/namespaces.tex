@@ -72,7 +72,7 @@ Finally the two interface endpoints (purple and orange) have a valid IP address 
 \end{figure}
 This is the beginning of network communication through namespaces and CNI. 
 However only inter communication between different namespaces on a single host is not sufficient. 
-Several steps are required to communicate externally to other host and across the Internet.
+Several steps are required to communicate externally to other host and across the internet.
 
 Figure \ref{sec:intro:containerization:linux_namespaces:netowork_ns_out} displays a more comprehensive setup. 
 It shows that the local host is also the gateway because it has one network connection through the interface eth0 and it has access to the bridge network created on the host. 
@@ -127,5 +127,5 @@ The following enumeration contains the resources that are controlled by cgroups 
 \item PID limitation to limit a specific amount of processes 
 \end{itemize}
 
-In the following section awareness is raised of the fact that containers work in isolation via native Linux functions.
+Now awareness is raised that containers work in isolation via native Linux functions.
 The next important section gives an architectural introduction to the base of every container image - an union file system.

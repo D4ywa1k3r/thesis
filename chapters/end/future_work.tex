@@ -13,7 +13,7 @@ A further improvement would be the functional extension of the preprocess module
 The category of indirect copying consists of much more than the 4 utilities that are currently provided.
 The prototype only supports the tools openssl, ssh-keygen wget and git.
 There are many more tools that are responsible for the integration of static files. 
-A productive use of such an analysis tool is pointless without considering many other tools.
+A productive use of such an analyzing tool is pointless without considering many other tools.
 The following list gives an idea which tools should be considered in the future.
 \begin{itemize}
 \item scp
@@ -35,8 +35,8 @@ These must then be adapted into the software.
 
 Not only the extension of more tools is useful. The extension of more secret types is also a key factor.
 Currently the file-scan module only detects RSA keys and Amazon access tokens.
-A Token by other cloud service providers or software vendors can be scanned if they use a fixed prefix or schema.
-These secret types can easily be extended to the scan module, as the analysis engine is modular.
+A token by other cloud service providers or software vendors can be scanned if they use a fixed prefix or schema.
+These secret types can easily be extended to the scan module, as the analyzing engine is modular.
 
 Furthermore improving homogeneity would be useful for future work.
 The first valid step would be to reach other Linux families like RedHat and SUSE systems.
@@ -44,7 +44,7 @@ This can be adapted easily by only setting correct parameters which are related 
 As an example the Docker image layers may vary depending on the used Linux family.
 The corresponding module to adapt would be the mount module.
 Early identification of the host system helps to determine which Linux paths to use.
-The detection of the hostsystem can be done in the preprocessing modules.
+The detection of the host system can be done in the preprocess module.
 As a result the software can be used by all major Linux distributions.
 
 Overall it can be said that there is still a lot of work to be done to provide a trustworthy image analysis.

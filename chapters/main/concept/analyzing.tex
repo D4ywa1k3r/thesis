@@ -5,9 +5,9 @@ The next step in this concept is to define an analyzing process in order to dete
 The analyzing module contains 4 sub-modules.
 Each sub-module works independently to provide most of flexibility.
 \begin{itemize}
-\item Image-obtaining
-\item Meta-extraction
-\item Image-mount
+\item Image obtain
+\item Image preprocess
+\item Image mount
 \item File-scan
 \end{itemize}
 The structure of this analyzing section goes as followed.
@@ -23,10 +23,10 @@ Then the preprocess module extracts the metadata informations from the image.
 If the processor recognizes the keywords COPY, ADD or RUN a further analysis of the image is necessary.
 These three commands are responsible for adding possible secrets statically into the image.
 No further image investigation will take place when none of these keywords exists. 
-It is important to note that a RUN keyword does not appear directly in the meta informations. 
-Instead the RUN command is represented by a list of program names that have to be compared with the meta-data.
-The metadata-informations are already explained in section \ref{sec:intro:docker_image:docker_img:meta}.
-If the analysis had been taken place the image would have been mounted by the image-mount module.
+It is important to note that a RUN keyword does not appear directly in the meta-informations. 
+Instead the RUN command is represented by a list of program names that have to be compared with the metadata.
+The meta-informations are already explained in section \ref{sec:intro:docker_image:docker_img:meta}.
+If the analysis had been taken place the image would have been mounted by the image mount module.
 Necessary mounting informations are already available as mentioned in section \ref{sec:intro:docker_image:docker_img:architecture}.
 Finally the scan of RSA keys and Amazon access token takes place with the mentioned methods from chapter \ref{ch:known_key_leak_techniques}, namely keyword-based search and pattern-based search. A result is then returned in a flexible way.
 The architecture itself has to be built in a way of reusability and should work in a heterogeneous environment.
@@ -40,7 +40,7 @@ This includes working with standardized structures and scalable microservices.
 \label{ch:theory:analyzing process:fig}
 \end{figure}
 
-\subsection{Image-obtaining}
+\subsection{Image obtain}
 \label{ch:theory:analyzing_process:obtain}
 The architecture of this module belongs to a classical input output system. This module takes the image name as an argument and will download the image as a file output on the host system. 
 As already known, the output is saved as several folders and files depending on the used union file system which represents the image. 
@@ -55,13 +55,13 @@ If the image does not exist the analyzing process is terminated.
 However if this module has found and downloaded an image it continues with the preprocessing of the image. 
 The responsible module is explained in the next subsection.
 
-\subsection{Image preprocessing}
+\subsection{Image preprocess}
 \label{ch:theory:analyzing_process:prepro}
-This following module is very important as it forms the basis for the file scan module. 
+This following module is very important as it forms the basis for the file-scan module. 
 It primarily decides whether the specified image is in need of a scan.
 The module can also decide on which part is in need of a scan for embedded secrets. 
 The basis for this decision builds the meta-information check. 
-As written in the background chapter the history of an image provides several meta informations like the executed Dockerfile commands.
+As written in the background chapter the history of an image provides several meta-informations like the executed Dockerfile commands.
 If keywords such as ADD and COPY are found or any RUN methods are used further investigation or analysis is required.
 There is no suspicion of secrets being integrated and the termination process can be initiated if none of these have been performed.
 The reason to check only COPY, ADD and RUN keywords is described in section \ref{sec:intro:docker_image:docker_img:meta}. 
@@ -88,8 +88,6 @@ Due to the flexibility of these COPY and ADD commands there are a few cases to c
 It is important to note that many different folders can be examined folders with the same name.
 Different folders without a file system relation are not a complication and can be therefore treated as a normal scanning target. 
 If duplicate folders are detected the preprocessor must detect and remove this duplicate so that the folder is considered only once.
-%If a child parent relationship exists, the child folder can be removed and only the parent folder forms the root directory to be scanned. The parent folder contains the subfolder and the child is considered only once.
-%A possible relation of folders can be recognized by a corresponding comparison of the given path specifications. The analyzing module has to take care of that with implementing such a decision. 
 
 Subsequently the RUN command implies the simple bash command which already exists in each metadata entry in the history. 
 This is the reason why RUN is not explicitly listed as a keyword in the metadata informations. 
@@ -124,7 +122,7 @@ These requirements lead to a potentially valid pattern derived from the metadata
 
 For each detected program the syntax must be taken into account. 
 Each program specifies an optional target path that must be extracted. 
-These form the next potential targets which must be considered by the scanning module. 
+These form the next potential targets which must be considered by the scan module. 
 Special interrelation between folders like duplications have also to be considered when the targets are examined.
 
 If no optional endpoint is specified for a program, the current WORKDIR is used. This belongs to the COPY or ADD and to the RUN command.
@@ -148,7 +146,7 @@ This difference finally sets the target path(s) to scan.
 
 In general this scanning of certain areas enables a higher analysis speed and reduces the false-positive rate significantly.
 Unfortunately this advantage is also a disadvantage at the same time. 
-Secrets from upper base images can not be discovered because associated meta informations are only available starting from the latest base image.
+Secrets from upper base images can not be discovered because associated meta-informations are only available starting from the latest base image.
 That requires an already trusted base image.
 These base images are marked on container registries as official or trusted. 
 It is a must do to only use trustworthy base images since the key problems are not solely existing. 
@@ -159,9 +157,9 @@ This would be an important function to extend otherwise the manipulation would a
 However this work belongs to normal development processes without manipulations of a build pipeline.
 This preprocess module starts at the point where a developer or system engineer creates its own layer from a trusted base image.
 Finally the targets to be scanned must be made available when the preprocessing is successfully done. 
-The image-mount module is responsible for that and will be explained in the following.
+The image mount module is responsible for that and will be explained in the following.
 
-\subsection{Image-mount}
+\subsection{Image mount}
 \label{ch:theory:analyzing_process:imgmount}
 In the current state the file system only contains folders of layers that belong to the selected image.
 Due to the nature of images it is not possible to map the determined folders to the layers on file system level. 
@@ -171,17 +169,17 @@ This in fact would have reduced the number of folders in the folder chain to mou
 
 Due to this reason the ultimate goal of this module is to provide access to all folders of the image for the scan module. 
 Since Docker creates an overlay over the folders this module will achieve this as well. 
-This overlay leads to an access point for the scanning module. 
-How lower directories are chained has to be be examined through the local provided informations of the image.
+This overlay leads to an access point for the scan module. 
+How lower directories are chained has to be examined through the local provided informations of the image.
 This chain is the base to create an overlay mount point.
-As well a merged folder, a Working folder for the union file system and a \textit{writeable} folder needs to be provided accordingly.
+As well a merged folder, a working folder for the union file system and a \textit{writeable} folder needs to be provided accordingly.
 The according elements of an Overlay2 file system are described in section \ref{sec:intro:docker_image:unionfs}.
 If the mount process was successful the scan module is triggered in order to detect potential secrets. 
 This module will be explained in the following.
 
 \subsection{File-scan}
 \label{ch:theory:analyzing_process:scan}
-The file scan module is responsible for analyzing specific files for secrets. 
+The file-scan module is responsible for analyzing specific files for secrets. 
 It is known that this module must detect RSA private keys and Amazon AWS tokens since it is the goal of this Bachelor thesis.
 
 In case of the AWS tokens the amount of existing programming languages make it difficult to include all technologies in a prototype. 
@@ -197,7 +195,7 @@ AKIA[0-9A-Z]{16}
 
 For the recognition of RSA private keys it is not clear what the name and the file extension of the token is.
 This is the reason why every file in the given directory hierarchy will be checked.
-The file scan module will search for this fixed prefix at context level in the respective folder hierarchy.
+The file-scan module will search for this fixed prefix at context level in the respective folder hierarchy.
 \begin{lstlisting}
 -----BEGIN OPENSSH PRIVATE KEY-----
 \end{lstlisting}
@@ -216,10 +214,10 @@ At the end of the scan the result is returned to the requesting client.
 To finish off the analyzing process Figure \ref{ch:theory:analyzing_pseudocode} shows a more detailed sequence of analysis.
 It is a pure logical sequence without going into technical details and implementations. 
 
-\subsection{Pseudo code analyzing}
+\subsection{Pseudocode analyzing}
 \label{ch:theory:analyzing_pseudocode}
 The following pseudocode in Listing \ref{ch:theory:analyzing_process:pseudofig} is aligned to the programming language Python because it omits all the distracting brackets and makes it more readable to English speakers/readers.
-For completeness the pseudo code contains a short description of what the program does for a task. 
+For completeness the pseudocode contains a short description of what the program does for a task. 
 Afterwards the abstract algorithm is started.
 \lstinputlisting[caption={Pseudocode - analyzing workflow}, captionpos=b, label={ch:theory:analyzing_process:pseudofig}]{chapters/main/concept/listings/pseudocode.txt}
 This chapter provided the theoretical concept to detect embedded secrets in Docker images. The next chapter concentrates on the practical realization.

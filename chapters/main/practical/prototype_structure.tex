@@ -1,4 +1,4 @@
-\section{prototype structure}
+\section{Prototype structure}
 \label{ch:practical_realization:prot_struct}
 The following Listing \ref{ch:practical_realization:struc} gives an overview of the project structure and how the prototype is implemented in this paper.
 \lstinputlisting[caption={Python structure of the prototype}, captionpos=b, label={ch:practical_realization:struc}]{chapters/main/practical/listings/struc.txt}
@@ -25,7 +25,7 @@ The procedure shown below starts automatically when the analyzing manager is tri
 \lstset{language=Python} 
 \begin{lstlisting}[]
 	
-    analyzing = analyzingManager(img_name)
+    analyzing = AnalyzingManager(img_name)
     analyzing.prepare_environment()
     analyzing.preprocess()
     if analyzing.necessary:

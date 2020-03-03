@@ -44,7 +44,7 @@ These symbolic links help avoid the Linux \textit{mount} command from exceeding 
 It is also important to note that the \textit{diff} directory in each layer builds the chain of the overlay. 
 In each layer additional helper files are available like the lowerfile which creates a relation to an associated parent. 
 This lowerfile only exists if a parent folder exists. 
-The lower files are responsible for creating the chain of lowerdirs which can be seen in Listing \ref{sec:intro:docker_image:corresponding_unionfs}.
+The lowerfiles are responsible for creating the chain of lowerdirs which can be seen in Listing \ref{sec:intro:docker_image:corresponding_unionfs}.
 
 Every Docker image has a name and a tag. A special convention is described in \cite{docker_tag} and now explained. 
 An image name is made up of slash-separated name components optionally prefixed by a registry hostname. 
@@ -65,7 +65,7 @@ In other words each file system layer represents an instruction with help of a k
 The Dockerfile construct provides around 20 keywords \cite{dockerfile_ref}.
 Listing \ref{sec:intro:docker_image:dockerfile} shows a typical Dockerfile.
 \lstinputlisting[caption={Dockerfile to create a container image}, captionpos=b, label=sec:intro:docker_image:dockerfile]{chapters/intro/listings/dockerfile.txt}
-The FROM statement starts out by creating a layer from the ubuntu 18.04 image. 
+The FROM statement starts out by creating a layer from the Ubuntu 18.04 image. 
 COPY adds an example bash script from the Docker client’s current directory. 
 RUN makes the program executable. 
 Finally CMD specifies which command has to be executed inside the container.
@@ -105,7 +105,7 @@ The output of an Ubuntu 18.04 is shown below in Listing \ref{sec:intro:docker_im
 \lstinputlisting[caption={Metadata about an Ubuntu 18.04 Docker image}, captionpos=b, label={sec:intro:docker_image:meta}]{chapters/main/practical/listings/meta.txt}
 The metadata of Docker images provides a lot of information about a Docker image even if the Dockerfile is not available. 
 On one hand this Listing \ref{sec:intro:docker_image:meta} might be confusing. 
-On the other hand it is helpful to get an overview how the meta data is structured. 
+On the other hand it is helpful to get an overview how the metadata is structured. 
 Through the help of the history command the data is representated similar to JSON. 
 The only difference is that numeral values are not marked in quotations. 
 
@@ -115,11 +115,11 @@ Dockerfile keywords and corresponding parameters can be extracted as well.
 Most of all Dockerfile instructions like COPY, ADD and RUN are useful since they are responsible for integrating static files into the image.
 In this example only an ADD command as Dockerfile keyword is used.
 A special fact applies to the RUN command. 
-RUN commands are not directly listed in the meta informations.
+RUN commands are not directly listed in the meta-informations.
 Instead only the executable command that follows a RUN command is listed.
 A COPY instruction is not used in this example.
 
-This chapter provided a basic knowledge about the architecture and the interaction between Docker images and Overlay2. 
+This chapter provided a basic knowledge about the Docker image architecture and the interaction between Docker images and Overlay2. 
 This basic knowledge of these elements and mechanisms under the hood is of crucial importance. 
 Necessary information about core concepts for the development of a theoretical concept are provided.
 Before a theoretical concept is developed related work is shown about key leak techniques.

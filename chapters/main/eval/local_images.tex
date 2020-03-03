@@ -24,7 +24,7 @@ The first subsegment develops RSA images.
 \subsection{Docker image RSA private key}
 \label{ch:eval:local_images:rsa}
 This subsection develops Docker images with RSA keys integrated in a direct and indirect way. 
-The corresponding images are created and demonstrated by the following two Dockerfiles shown in Listing \ref{ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile1} and \ref{ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile2}.
+The corresponding images are created and demonstrated by the following two Dockerfiles shown in Listing \ref{ch:eval:local_images:rsa_copy} and Listing \ref{ch:eval:local_images:rsa_copy}.
 \lstinputlisting[caption={Dockerfile - RSA secret integration using COPY/ADD}, captionpos=b, label={ch:eval:local_images:rsa_copy}]{chapters/main/eval/listings/dockerfile1}
 \lstinputlisting[caption={Dockerfile - RSA secret integration using RUN}, captionpos=b, label={ch:eval:local_images:rsa_run}]{chapters/main/eval/listings/dockerfile2}
 Two RSA private keys are integrated directly using COPY and ADD instructions as seen in the first Dockerfile in Listing \ref{ch:eval:local_images:rsa_copy}. 
@@ -33,7 +33,7 @@ The tool ssh-keygen and openssl generate RSA keys as shown in the second Dockerf
 Both Dockerfiles contain WORKDIR changes and the use of relative and absolute paths. 
 
 The images are created and handed over to the prototype one after the other.
-The entire analsis workflow is triggered each time the analysis manager is started. 
+The entire analysis workflow is triggered each time the analyzing manager is started. 
 That includes garbage collection, fetching the image, mounting and lastly scanning the image.
 The analyzing manager is finally beeing started by passing the image name as a command line argument. 
 That demonstrates the following command.
@@ -45,7 +45,7 @@ A complete analysis with console output of the Dockerfile from Listing \ref{ch:e
 \lstinputlisting[caption={Output of RSA key analysis}, captionpos=b, label={ch:eval:local_images:rsa_second_result}]{chapters/main/eval/listings/result_rsa_second.txt}
 Each step is printed in the console. The scan result is finally visible at the bottom of the listing. 
 Every generated RSA key has been found and printed out with the corresponding location.
-The analysis program recognizes the RSA keys completely from the first image shown in Listing \ref{ch:eval:local_images:rsa_copy} as well. 
+The analyzing program recognizes the RSA keys completely from the first image shown in Listing \ref{ch:eval:local_images:rsa_copy} as well. 
 
 Amazon web tokens form the target to be analyzed at next. This is done in the following subsection. 
 
@@ -59,7 +59,7 @@ The analyzing program is applied to the second Docker image Listing \ref{ch:eval
 Wget and git clones have to be considered as well. 
 Now all 4 example RUN commands are considered by the analyzing tool (wget, git clone, openssl and ssh-keygen). 
 The result below in Listing \ref{ch:eval:local_images:aws_second_result} shows that every AWS token has been found and printed out with the corresponding location.
-The analysis program recognizes the AWS tokens completely from the first image shown in Listing \ref{ch:eval:local_images:aws_copy} as well.
+The analyzing program recognizes the AWS tokens completely from the first image shown in Listing \ref{ch:eval:local_images:aws_copy} as well.
 \lstinputlisting[caption={Output of AWS token analysis}, captionpos=b, label={ch:eval:local_images:aws_second_result}]{chapters/main/eval/listings/result_aws_second.txt}
 
 \subsection{Intermediate results}
@@ -69,7 +69,7 @@ Only the download is the bottleneck in this program.
 The download depends on the size of the image and the bandwidth of the internet connection.
 An additional timer module was integrated in order to get an overview of the time required by the analyzing manager.
 This measurement includes every step apart from the downloading phase. This means preprocessing, mounting and finally scanning.
-The timer is yet another python module and is started before the analyzing object is initiated. 
+The timer is yet another Python module and is started before the analyzing object is initiated. 
 The timer is stopped when the result is printed out and the object is destroyed.
 The following overview shows the required analysis time of the previously developed images from subsection \ref{ch:eval:local_images:rsa} and \ref{ch:eval:local_images:aws}. 
 \begin{description}
