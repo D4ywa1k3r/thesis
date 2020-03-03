@@ -38,12 +38,12 @@ This shows once again that Docker only uses the well-known Linux core functions 
 
 One interesting and important fact exists about the mount process.
 The Overlay2 storage driver has a symbolic link for each image layer implemented. 
-During the mount process these symbolic links are used instead for the real folder names. 
+During the mount process these symbolic links are used instead of the real folder names. 
 The reason is the total length of 65 characters for each folder name. 
 These symbolic links help avoid the Linux \textit{mount} command from exceeding page size limitation.
 It is also important to note that the \textit{diff} directory in each layer builds the chain of the overlay. 
 In each layer additional helper files are available like the lowerfile which creates a relation to an associated parent. 
-This lowerfile only exists if a parent folder exist. 
+This lowerfile only exists if a parent folder exists. 
 The lower files are responsible for creating the chain of lowerdirs which can be seen in Listing \ref{sec:intro:docker_image:corresponding_unionfs}.
 
 Every Docker image has a name and a tag. A special convention is described in \cite{docker_tag} and now explained. 
@@ -76,8 +76,8 @@ An image can be created with the corresponding Dockerfile and the Docker build c
 \end{lstlisting}
 The Dockerfile construct is valuable to know because it is responsible for integrating secrets into an image. 
 Logically there are two categories that are responsible for integrating static files.
-First \textit{direct integration} which is related the actions COPY and ADD. T
-he difference between the two commands is the range of functions. 
+First \textit{direct integration} which is related to the actions COPY and ADD. 
+The difference between the two commands is the range of functions. 
 ADD is contrary to COPY able to unzip an archive directly to the endpoint.
 ADD can also request files, folders and archives from an URL and save the content directly to the endpoint.
 
@@ -100,21 +100,27 @@ Every Docker image saves informations of the image build process on a system.
 These informations are locally stored and accessible for the root user. 
 In this work it is assumed that no manipulation of the metadata is performed locally. 
 
-The metadata is programmatically accessible through the Docker history command. The output of an Ubuntu 18.04 is shown below in Listing \ref{sec:intro:docker_image:meta}.
+The metadata is programmatically accessible through the Docker history command. 
+The output of an Ubuntu 18.04 is shown below in Listing \ref{sec:intro:docker_image:meta}.
 \lstinputlisting[caption={Metadata about an Ubuntu 18.04 Docker image}, captionpos=b, label={sec:intro:docker_image:meta}]{chapters/main/practical/listings/meta.txt}
-The metadata of Docker images provides a lot of information about a Docker image even if the Dockerfile is not available. On one hand this Listing \ref{sec:intro:docker_image:meta} might be confusing. On the other hand it is helpful to get an overview how the meta data is structured. 
-Through the help of the history command the data is representated similar to JSON. The only difference is that numeral values are not marked in quotations. 
+The metadata of Docker images provides a lot of information about a Docker image even if the Dockerfile is not available. 
+On one hand this Listing \ref{sec:intro:docker_image:meta} might be confusing. 
+On the other hand it is helpful to get an overview how the meta data is structured. 
+Through the help of the history command the data is representated similar to JSON. 
+The only difference is that numeral values are not marked in quotations. 
 
-Many attributes with their corresponding values can be find in the above example. Attributes like "Created", "CreatyBy" are first followed by "Id" and many more. 	
+Many attributes with their corresponding values can be found in the above example. 
+Attributes like "Created", "CreatyBy" are first followed by "Id" and many more. 	
 Dockerfile keywords and corresponding parameters can be extracted as well.
-Most of all Dockerfile instructions like COPY, ADD an RUN are useful since they are responsible for integrating static files into the image.
+Most of all Dockerfile instructions like COPY, ADD and RUN are useful since they are responsible for integrating static files into the image.
 In this example only an ADD command as Dockerfile keyword is used.
-A special fact applies to the RUN command. RUN commands are not directly listed in the meta informations.
+A special fact applies to the RUN command. 
+RUN commands are not directly listed in the meta informations.
 Instead only the executable command that follows a RUN command is listed.
 A COPY instruction is not used in this example.
 
 This chapter provided a basic knowledge about the architecture and the interaction between Docker images and Overlay2. 
 This basic knowledge of these elements and mechanisms under the hood is of crucial importance. 
-Necessary informations about core concepts for the development of a theoretical concept are provided.
+Necessary information about core concepts for the development of a theoretical concept are provided.
 Before a theoretical concept is developed related work is shown about key leak techniques.
 Leakage techniques are absolutely essential to detect secrets.

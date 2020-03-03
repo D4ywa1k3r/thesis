@@ -22,7 +22,7 @@ Preprocessing on the original image is mandatory before the new layer is being a
 The first result has to be temporary saved. 
 This includes all the metadata informations that are useful for the scan. 
 These metadata are explained more deeply in section \ref{sec:intro:docker_image:docker_img:meta}. 
-A change of the base image would lead to a lost of these important informations.
+A change of the base image would lead to a loss of these important informations.
 
 After this processing is done a new additional layer can be added with the analyzing program.
 Finally the program would need an endpoint to save the results. 
@@ -30,7 +30,7 @@ The result has to be saved on a permanent storage due to the nature of container
 
 \subsection{Tarball approach} 
 \label{ch:theory:access_eval:tarball}
-The idea behind this approach is to pipe a running container into a tarball. The container must be started and remain online until all informations are extracted and stored in an archive.
+The idea behind this approach is to pipe a running container into a tarball. The container must be started and remain online until all information are extracted and stored in an archive.
 After exporting the container can be deleted immediately because the processing only takes place on the tarball.
 This archive contains the complete file system including the writable container layer. The archive can be analyzed afterwards by a program. This program can save the results locally or deliver it to an endpoint.
 
@@ -39,11 +39,11 @@ This archive contains the complete file system including the writable container 
 In theory direct access to the image is also possible, since an image is present on the local system before it is started as a container.
 The background chapter showed that a Docker image is just a stack of several image layers. 
 The direct access to the image as a whole needs a overlay-mount on the host system itself.
-Necessary informations to mount the overlay correctly has been demonstrated in section \ref{sec:intro:docker_image:docker_img}.
+Necessary information to mount the overlay correctly has been demonstrated in section \ref{sec:intro:docker_image:docker_img}.
 The mandatory lower directories for the overlay have to be examined. 
-These can be analyzed through the locally provided informations.
+These can be analyzed through the locally provided information.
 Other mandatory directories of an overlay have to be created accordingly.
-These informations have to be used in order to create the overlay-mount finally. 
+These information have to be used in order to create the overlay-mount finally. 
 Lastly the program that performs the analysis can access the mount point and browse through the union file system.
 
 \subsection{Decision of access method} 

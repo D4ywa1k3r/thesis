@@ -9,7 +9,7 @@ Examples are the following providers and their solutions.
     \item Amazon - Elastic Container Registry(ECR)
 \end{itemize}{}    
 There are many other providers and solutions available. 
-Each cloud provider normally offers a private area to make images only accessible to sepcial users and groups. 
+Each cloud provider normally offers a private area to make images only accessible to special users and groups. 
 A valid authentication is necessary to get access to these locked images.
 However the provided prototype only supports the query of public container registries without authentication.
 
@@ -28,7 +28,7 @@ However the scan is autonomous because the prototype only needs the name of the 
 The scan is performed one after the other without any parallel process execution.
 
 One of the scans was performed on a frequently used image with more than 10 million downloads.
-This image was updated in Oktober 2019. 
+This image was updated in October 2019. 
 \graffito{Note: The SHA is calculated over every image-layer by a special combination of hash calculations. 
 This defines an image explicitly and makes clear which image was used exactly.}
 The image is called \textit{nodered/node-red-docker} \\and has the following SHA \\\textit{sha256:0bd9a1d2200474e7471bada2eb633f7193320ee47cb3b8aa34326d19f7f485c6}.

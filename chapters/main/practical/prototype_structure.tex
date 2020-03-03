@@ -1,14 +1,14 @@
-\section{Prototyp structure}
+\section{prototype structure}
 \label{ch:practical_realization:prot_struct}
-The following Listing \ref{ch:practical_realization:struc} gives an overview of the project structure and how the prototyp is implemented in this paper.
-\lstinputlisting[caption={Python structure of the prototyp}, captionpos=b, label={ch:practical_realization:struc}]{chapters/main/practical/listings/struc.txt}
+The following Listing \ref{ch:practical_realization:struc} gives an overview of the project structure and how the prototype is implemented in this paper.
+\lstinputlisting[caption={Python structure of the prototype}, captionpos=b, label={ch:practical_realization:struc}]{chapters/main/practical/listings/struc.txt}
 The root folder contains the main program analyzing manager, a modules folder and the venv directory.
 The venv directory builds the virtual environment feature of Python. 
-The modules folder contains the essential modules of the prototyp namely obtaining, preprocess, mount and file-scan.
+The modules folder contains the essential modules of the prototype namely obtaining, preprocess, mount and file-scan.
 These represent the modules from the theoretical concept in section \ref{ch:theory:analyzing_process}.
 They are managed and used by the analyzing manager module which lies in the parent (root) folder. 
 The core modules are deliberately created as distinct units. 
-That makes the maintenance of the prototyp easier. 
+That makes the maintenance of the prototype easier. 
 Changing a single core module promises more flexibility and counteracts problems instead of maintaining a large monolith. 
 A replacement of core modules is also possible since it has not got any relations to the other modules. 
 Only the interface to the analyzing manager module has to be valid.
@@ -34,9 +34,9 @@ The procedure shown below starts automatically when the analyzing manager is tri
     
 \end{lstlisting}
 After the analyzing object has been instantiated the method prepare\_environment is being started. 
-The obtaining module \ref{ch:practical_realization:implementation:obtain} is addressed and is executing its task.
+The obtain module \ref{ch:practical_realization:implementation:obtain} is addressed and is executing its task.
 The Docker image has to be downloaded and garbage collection has to be done by this module as well. 
-After this step the preprocess method is called and the corresponding preprocessing module is beeing triggered.
+After this step the preprocess method is called and the corresponding preprocess module is beeing triggered.
 Through this preprocessing a decision can be made if a further image investigation is necessary. 
 The mount and scan module has to be instantiated if this is necessary.
 The synchronous mount call and the examination call are executed sequentially when an analysis is required.
@@ -44,6 +44,6 @@ The synchronous mount call and the examination call are executed sequentially wh
 The secret is printed to the stdout stream when secrets have been found. 
 Otherwise a standard info message will be piped into the stdout buffer.
 
-This section has given an overview about the implementation and the workflow of the prototyp in general.
+This section has given an overview about the implementation and the workflow of the prototype in general.
 In the following section the implementation of the core modules is presented in more detail.
 

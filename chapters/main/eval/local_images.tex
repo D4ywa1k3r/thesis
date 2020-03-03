@@ -32,7 +32,7 @@ Another three RSA private keys are integrated in an indirect way using RUN comma
 The tool ssh-keygen and openssl generate RSA keys as shown in the second Dockerfile in Listing \ref{ch:eval:local_images:rsa_run}. 
 Both Dockerfiles contain WORKDIR changes and the use of relative and absolute paths. 
 
-The images are created and handed over to the prototyp one after the other.
+The images are created and handed over to the prototype one after the other.
 The entire analsis workflow is triggered each time the analysis manager is started. 
 That includes garbage collection, fetching the image, mounting and lastly scanning the image.
 The analyzing manager is finally beeing started by passing the image name as a command line argument. 
@@ -78,12 +78,12 @@ The following overview shows the required analysis time of the previously develo
 \item [Image \ref{ch:eval:local_images:aws_copy}] \textasciitilde 0.1398549079985969 seconds
 \item [Image \ref{ch:eval:local_images:aws_run}] \textasciitilde 0.4584746649998124 seconds
 \end{description}
-The high performance of the scan is caused by the previously determined destination folders by the preprocessing module.
+The high performance of the scan is caused by the previously determined destination folders by the preprocess module.
 A complete bulk scan is thereby excluded and only specific folders are scanned.
 
 The calculated time of the scans does not provide general times since it ultimately depends on the image size. 
 It makes sense to scan several Docker images of different sizes to get valid relations.
-The calculated time by this prototype gives a rough hint of how big the impact of using the preprocessing module is.
+The calculated time by this prototype gives a rough hint of how big the impact of using the preprocess module is.
 In this case the times are impressive compared to a bulkscan of a complete file system.
 
 It is known that the prototype works for locally self-developed images. 

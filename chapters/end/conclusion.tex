@@ -14,9 +14,9 @@ These core modules are the following.
 \item Image-mount
 \item File-scan
 \end{itemize}
-The Image-obtaining module deletes old Docker images from the local system and downloads the target image from a container registry.
+The Image-obtain module deletes old Docker images from the local system and downloads the target image from a container registry.
 
-The preprocessing module extracts the metadata from the image. 
+The preprocess module extracts the metadata from the image. 
 The metadata is a bulk of data of each image and is created by the image build process itself.
 Most important informations in the metadata are most of all Dockerfile instructions.
 A further analysis of the image is necessary if the processor recognizes the keywords COPY, ADD or RUN.
@@ -34,7 +34,7 @@ Each core-module of the analyzing procedure was implemented as a different pytho
 An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned python modules so that there is a central program to which an image can be passed.
 
 Lastly the developed prototype was evaluated. 
-Self-defined images as well as public images were used to prove that the prototyp is working.
+Self-defined images as well as public images were used to prove that the prototype is working.
 
 The self-created images intentionally contained RSA keys and Amazon tokens.
 The direct and indirect methods were used to integrate the secrets.
@@ -47,7 +47,7 @@ This is due to the variety of potential tools that can be used for static integr
 It was first initiated with 4 tools in the prototype. Attention was paid to possible scalability.
 Then the self-made images were handed over to the prototype to perform the first tests.
 
-Furthermore public images were also analyzed by the prototyp.
+Furthermore public images were also analyzed by the prototype.
 Public images are inevitable to achieve valid and more trustworthy results.
 A simple strategy was used to manually search for images on Dockerhub.
 Non-official Docker images that use backend technologies were searched.

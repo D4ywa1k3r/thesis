@@ -5,7 +5,7 @@
 \chapter{Known key leak techniques}
 \label{ch:known_key_leak_techniques}
 Scientific work about key leak techniques on a source code base has been done in \cite{7180102}. 
-The main work consists in the application of different mechanisms to uncover different types of secrets.
+The main work consists of the application of different mechanisms to uncover different types of secrets.
 These are keyword search, pattern-based search and heuristics-driven filtering.
 This work mainly concentrates on the detection of API tokens from Amazon and Facebook.
 	
@@ -22,7 +22,7 @@ RSA private keys always contains a prefix like the following.
 \end{lstlisting}
 This keyword search approach works well if the secrets contain fixed string prefixes. 
 Nontheless it is not sufficient for private keys without fixed prefixes.
-Due to this fact the referenced paper \cite{7180102} is more focusing on pattern-based search. 
+Due to this fact the referenced paper \cite{7180102} is focusing more on pattern-based search. 
 
 Pattern-based search works on the basis of regular expressions and is therefore suitable for strings with a fixed schema.
 Tokens provided by cloud providers and other dedicated vendors follow a fixed scheme. Therefore these tokens are recognized by regular language classes.
@@ -33,7 +33,7 @@ Heuristics have been tested by looking at cases where a matching secret key appe
 This is usually precise but there is a risk of missing the key where credentials are not close together.
 Another tested heuristically approach to reduce false-positives is trying and guessing whether they are auto-generated or hand-written. 
 An additional framework was used to follow this approach. 
-The false-positive rate was successful decreased as noticed in \cite{7180102}.
+The false-positive rate was successfully decreased as noticed in \cite{7180102}.
 
 The following concept will use the keyword search and pattern-based search to detect secrets. 
 It is only intended to prove that the recognition of secrets in container images is generally possible. 

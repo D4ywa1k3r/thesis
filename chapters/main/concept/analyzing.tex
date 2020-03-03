@@ -3,7 +3,7 @@
 At this point the secrets to be discovered are defined and the file access method to be used is determined. 
 The next step in this concept is to define an analyzing process in order to detect these mentioned secrets.
 The analyzing module contains 4 sub-modules.
-Each sub-module works independent to provide most of flexibility.
+Each sub-module works independently to provide most of flexibility.
 \begin{itemize}
 \item Image-obtaining
 \item Meta-extraction
@@ -17,9 +17,9 @@ Afterwards each module is described in detail in a separate subsection.
 Finally there is a pseudocode in Listing \ref{ch:theory:analyzing_process:pseudofig} that shows the analyzing workflow in one comprehensive flow to catch the last detail questions.
 
 Figure \ref{ch:theory:analyzing process:fig} starts with obtaining the target image. 
-This obtaining module needs an input argument which is the name of the Docker image.
-The obtaining module deletes old Docker images and downloads the target image from a container registry. 
-Then the preprocessing module extracts the metadata informations from the image. 
+This obtain module needs an input argument which is the name of the Docker image.
+The obtain module deletes old Docker images and downloads the target image from a container registry. 
+Then the preprocess module extracts the metadata informations from the image. 
 If the processor recognizes the keywords COPY, ADD or RUN a further analysis of the image is necessary.
 These three commands are responsible for adding possible secrets statically into the image.
 No further image investigation will take place when none of these keywords exists. 
@@ -75,7 +75,7 @@ ADD file:08e718ed0796013f5957a1be7da3bef6225f3d82d8be0a86a7114e5caad50cbc in /
 It can be seen that an ADD follows a \textit{file}, separated by colon and followed by HEX code with 65 signs. 
 It is also noticable that the destination folder appears after the HEX code.
 Especially the destination path is interesting to watch. 
-The preprocessing module has to find this destination. 
+The preprocess module has to find this destination. 
 Therefore a corresponding pattern like the following might help.
 \begin{lstlisting}
 "(dir|file):[a-f0-9]{64}\sin\s"
@@ -141,7 +141,7 @@ If the target path of an ADD, COPY and RUN command is recognized, the WORKDIR va
 However it is a special use case when the WORKDIR variable is set as root directory or the developer used an instruction to copy files to the root folder. 
 In this case everything should be scanned except for the default root files and folders.
 This behavior might be confusing and is demonstrated with the following listing.
-Before the final targets can be defined by the preprocessing module, the root files and folders of a plain Linux system has to be set. 
+Before the final targets can be defined by the preprocess module, the root files and folders of a plain Linux system has to be set. 
 This can be done static and scalable since there are standards of root hierchachies established.
 Every folder that is not listed from the static root folder deviates from the original file system and sets a certain difference. 
 This difference finally sets the target path(s) to scan. 
@@ -154,10 +154,10 @@ These base images are marked on container registries as official or trusted.
 It is a must do to only use trustworthy base images since the key problems are not solely existing. 
 Also other types of security vulnerabilities may be included such as manipulated application packages. 
 It is also important to note that no manipulation on the history can be recognized with this module. 
-This would be an important function to extend otherwise the manipulation would allow to bypass this preprocessing module. 
+This would be an important function to extend otherwise the manipulation would allow to bypass this preprocess module. 
 
 However this work belongs to normal development processes without manipulations of a build pipeline.
-This preprocessing module starts at the point where a developer or system engineer creates its own layer from a trusted base image.
+This preprocess module starts at the point where a developer or system engineer creates its own layer from a trusted base image.
 Finally the targets to be scanned must be made available when the preprocessing is successfully done. 
 The image-mount module is responsible for that and will be explained in the following.
 
@@ -208,7 +208,7 @@ The file scan module will search for this fixed prefix at context level in the r
 -----BEGIN PRIVATE KEY-----
 \end{lstlisting}
 
-In both cases the analysis must be done recursively because there can be another folder within a folder which therefore can be nested other folders again.
+In both cases the analysis must be done recursively because there can be another folder within a folder which therefore can be nested within other folders again.
 The analysis is performed programmatically with native Linux tools and with file operations to browse through files.
 When the module determines a hit the result is beeing added to a data structure.
 At the end of the scan the result is returned to the requesting client.

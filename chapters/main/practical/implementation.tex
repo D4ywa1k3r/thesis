@@ -4,9 +4,9 @@ This section demonstrates the prototypical realization of the main modules obtai
 Each of the core modules is dedicated to one section.
 The prototypical realization of each module is shown with an overview of the methods used in combination with a practical implementation meaning code snippets in order to archive the desired goals. 
 The order of the modules to be described is based on the sequence of the analysis process from section \ref{ch:theory:analyzing_process}.
-It first starts with the obain module.
+It first starts with the obtain module.
 
-\subsection{Obtaining module}
+\subsection{Obtain module}
 \label{ch:practical_realization:implementation:obtain}
 The obtain module has to take care of the waste of the system environment. 
 This concerns locally stored images that should not be examined. 
@@ -34,13 +34,13 @@ The corresponding code snippet to this function can be seen in the code-listing 
 It is necessary to specify an image tag for the download.
 If no tag is specified every image will be downloaded with all available tags.
 This would lead to a big amount of image layers and conclusively to no success.
-\lstinputlisting[language=Python,caption={Python snippet - obtaining module}, captionpos=b,label={ch:practical_realization:implementation:obtain:code}]{chapters/main/practical/listings/code/garbage.py}
-This obtaining module is not very complex. 
-This has advantages because simplicity offers little potential for error in contrast to the following preprocessing module.
+\lstinputlisting[language=Python,caption={Python snippet - obtain module}, captionpos=b,label={ch:practical_realization:implementation:obtain:code}]{chapters/main/practical/listings/code/garbage.py}
+This obtain module is not very complex. 
+This has advantages because simplicity offers little potential for error in contrast to the following preprocess module.
 
-\subsection{Preprocessing module}
+\subsection{Preprocess module}
 \label{ch:practical_realization:implementation:preprocessing}
-The preprocessing module decides whether an image needs to be scanned. Which areas of the image need to be scanned is also decided by this module.
+The preprocess module decides whether an image needs to be scanned. Which areas of the image need to be scanned is also decided by this module.
 This preprocessing reduces the amount of false positives and increases a much faster pace when it comes to scanning.	
 This corresponding python module needs a bit more logic to work properly. 
 The following enumeration of functions helps to get an overview of the logic. 
@@ -137,7 +137,7 @@ The helper method expects the output option of the command and the corresponding
 The output option may differ depending on the command. 
 This is why a helper function comes in place to omit duplicated code. 
 The helper function will determine and return the output path definetely.
-Depending of the amount of matches in the meta-data the helper function may be called multiple times. 
+Depending on the amount of matches in the meta-data the helper function may be called multiple times. 
 That is why an examined target from the helper function is appended to an array. 
 
 A special case takes place when no output argument is given. 
@@ -146,11 +146,11 @@ Absolute and relative paths play a role as well with COPY and ADD.
 The treatment of relatives and absolute paths in fetch\_indirect\_copy\_targets are identically as in fetch\_direct\_copy\_targets.
 A full in depth insight of the corresponding work between the fetch\_indirect\_copy\_targets and the helper functions can be seen in source code of the attached CD.
 
-Finally this preprocessing module holds the method clearup\_targets. This method clears up the data structure which holds the targets globally. The global data structure is transformed into a Python set. This set automatically removes duplicates.
+Finally this preprocess module holds the method clearup\_targets. This method clears up the data structure which holds the targets globally. The global data structure is transformed into a Python set. This set automatically removes duplicates.
 	
 At this point the target directories are examined and the necessary mount module can be triggered. The realization of this mount module is described in the next subsection.
 
-\subsection{Mounting module}	
+\subsection{mount module}	
 \label{ch:practical_realization:implementation:mount}
 The structure of the mount module is built straight forward. Only core functions are listed below.
 \begin{itemize}
@@ -164,7 +164,7 @@ There are working directories necessary to mount an Overlay2 file system as writ
 Every folder in except of the lower directories are created or deleted by these functions. 
 The creation and deletion is programmatically done via the available \textit{os} package and is due to the simplicity not worth to show at this point. 
 It is important to note repeatdedly that the lower directories are not created or deleted by these methods. 
-The lower directories are automatically provided on the file system when the obtaining module starts cleaning up the garbage or is downloading the target image.
+The lower directories are automatically provided on the file system when the obtain module starts cleaning up the garbage or is downloading the target image.
 Therefore the lowerdirs must be examined separately. The examination is done by an additional helper method. 
 The examination is shown in code-listing \ref{ch:practical_realization:implementation:preprocessing:code_getlowerdirs}.
 The helper method tries to return a directory chain as a string concatenation of the existing image layers.
