@@ -18,7 +18,7 @@ The Image obtain module deletes old Docker images from the local system and down
 
 The preprocess module extracts the metadata from the image. 
 The metadata is a bulk of data of each image and is created by the image build process itself.
-Most important informations in the metadata are most of all Dockerfile instructions.
+Most important information in the metadata are most of all Dockerfile instructions.
 A further analysis of the image is necessary if the processor recognizes the keywords COPY, ADD or RUN.
 These commands are responsible for adding possible secrets statically into the image. 
 No further image investigation will take place when no keywords like that are existing. 
@@ -29,7 +29,7 @@ This module provides a central point from which the host system can access and f
 Lastly the file-scan module is responsible for detecting RSA keys and Amazon access tokens with the use of key-based search and pattern-based search.
 The scan module uses the path of the overlay mount point and can use it as a classic Unix path.
 
-This concept was prototypically implemented in a Linux environment using the programming language Python.
+This concept was prototypical implemented in a Linux environment using the programming language Python.
 Each core-module of the analyzing procedure was implemented as a different Python module to provide independence and most of all flexibility. 
 An additional module called analyzing manager was used to manage the whole analyzing workflow by calling and managing each of the mentioned Python modules so that there is a central program to which an image can be passed.
 

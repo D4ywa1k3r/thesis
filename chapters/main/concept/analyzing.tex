@@ -11,7 +11,7 @@ Each sub-module works independently to provide most of flexibility.
 \item File-scan
 \end{itemize}
 The structure of this analyzing section goes as followed.
-First the abstractive flowchart in Figure \ref{ch:theory:analyzing process:fig} gives basic informations about the analyzing process in general. 
+First the abstractive flowchart in Figure \ref{ch:theory:analyzing process:fig} gives basic information about the analyzing process in general. 
 It contains the analysis workflow shown with every module in action. 
 Afterwards each module is described in detail in a separate subsection.
 Finally there is a pseudocode in Listing \ref{ch:theory:analyzing_process:pseudofig} that shows the analyzing workflow in one comprehensive flow to catch the last detail questions.
@@ -19,15 +19,15 @@ Finally there is a pseudocode in Listing \ref{ch:theory:analyzing_process:pseudo
 Figure \ref{ch:theory:analyzing process:fig} starts with obtaining the target image. 
 This obtain module needs an input argument which is the name of the Docker image.
 The obtain module deletes old Docker images and downloads the target image from a container registry. 
-Then the preprocess module extracts the metadata informations from the image. 
+Then the preprocess module extracts the metadata information from the image. 
 If the processor recognizes the keywords COPY, ADD or RUN a further analysis of the image is necessary.
 These three commands are responsible for adding possible secrets statically into the image.
 No further image investigation will take place when none of these keywords exists. 
-It is important to note that a RUN keyword does not appear directly in the meta-informations. 
+It is important to note that a RUN keyword does not appear directly in the meta-information. 
 Instead the RUN command is represented by a list of program names that have to be compared with the metadata.
-The meta-informations are already explained in section \ref{sec:intro:docker_image:docker_img:meta}.
+The meta-information is already explained in section \ref{sec:intro:docker_image:docker_img:meta}.
 If the analysis had been taken place the image would have been mounted by the image mount module.
-Necessary mounting informations are already available as mentioned in section \ref{sec:intro:docker_image:docker_img:architecture}.
+Necessary mounting information is already available as mentioned in section \ref{sec:intro:docker_image:docker_img:architecture}.
 Finally the scan of RSA keys and Amazon access token takes place with the mentioned methods from chapter \ref{ch:known_key_leak_techniques}, namely keyword-based search and pattern-based search. A result is then returned in a flexible way.
 The architecture itself has to be built in a way of reusability and should work in a heterogeneous environment.
 This is achieved through development with proven properties from the field of distributed systems. 
@@ -61,7 +61,7 @@ This following module is very important as it forms the basis for the file-scan 
 It primarily decides whether the specified image is in need of a scan.
 The module can also decide on which part is in need of a scan for embedded secrets. 
 The basis for this decision builds the meta-information check. 
-As written in the background chapter the history of an image provides several meta-informations like the executed Dockerfile commands.
+As written in the background chapter the history of an image provides several meta-information like the executed Dockerfile commands.
 If keywords such as ADD and COPY are found or any RUN methods are used further investigation or analysis is required.
 There is no suspicion of secrets being integrated and the termination process can be initiated if none of these have been performed.
 The reason to check only COPY, ADD and RUN keywords is described in section \ref{sec:intro:docker_image:docker_img:meta}. 
@@ -73,7 +73,7 @@ The pattern is the following.
 ADD file:08e718ed0796013f5957a1be7da3bef6225f3d82d8be0a86a7114e5caad50cbc in /
 \end{lstlisting}
 It can be seen that an ADD follows a \textit{file}, separated by colon and followed by HEX code with 65 signs. 
-It is also noticable that the destination folder appears after the HEX code.
+It is also noticeable that the destination folder appears after the HEX code.
 Especially the destination path is interesting to watch. 
 The preprocess module has to find this destination. 
 Therefore a corresponding pattern like the following might help.
@@ -90,7 +90,7 @@ Different folders without a file system relation are not a complication and can 
 If duplicate folders are detected the preprocessor must detect and remove this duplicate so that the folder is considered only once.
 
 Subsequently the RUN command implies the simple bash command which already exists in each metadata entry in the history. 
-This is the reason why RUN is not explicitly listed as a keyword in the metadata informations. 
+This is the reason why RUN is not explicitly listed as a keyword in the metadata information. 
 One approach is to detect actions that follow a RUN action as they are listed in the metadata information. 
 That means there is a data structure with valid keywords necessary which will be compared to the whole metadata.
 The following enumeration shows commands which must be inserted into a suitable data structure for valid comparison with the metadata.
@@ -100,7 +100,7 @@ The following enumeration shows commands which must be inserted into a suitable 
 \item git clone
 \item wget
 \end{itemize}
-This list is not complete but it provides a first step to extract useful informations from originally RUN commands. 
+This list is not complete but it provides a first step to extract useful information from originally RUN commands. 
 All of these programs are ubiquitous.
 Ssh-keygen and openssl are able to create many types of keys and most of all RSA key pairs. 
 In this context the private part is the interesting part which can be looked further into.
@@ -108,9 +108,9 @@ Wget and git clone are common utils to request and download a bunch of files, fo
 Especially git clone is ubiquitous since git is very common for developers.
 Furthermore it is important to recognize these particular programs only when they have been used and not installed.
 A developer might install openssl via a package manager like apt when openssl is not natively available.
-This installation does not lead to a integration of secrets and has to be omitted.
+This installation does not lead to an integration of secrets and has to be omitted.
 Furthermore a concatenation of tools is possible and has to be considered by this module. 
-The concatenation looks exemplarely like the following.
+The concatenation looks exemplary like the following.
 \begin{lstlisting}
 	git clone https://github.com/blackbird71SR/Hello-World && wget https://lorempixel/secret.jpg
 \end{lstlisting}
@@ -123,7 +123,7 @@ These requirements lead to a potentially valid pattern derived from the metadata
 For each detected program the syntax must be taken into account. 
 Each program specifies an optional target path that must be extracted. 
 These form the next potential targets which must be considered by the scan module. 
-Special interrelation between folders like duplications have also to be considered when the targets are examined.
+Special interrelation between folders like duplicate have also to be considered when the targets are examined.
 
 If no optional endpoint is specified for a program, the current WORKDIR is used. This belongs to the COPY or ADD and to the RUN command.
 \graffito{The WORKDIR instruction sets the working directory for any RUN, COPY and ADD command in the Dockerfile}
@@ -146,7 +146,7 @@ This difference finally sets the target path(s) to scan.
 
 In general this scanning of certain areas enables a higher analysis speed and reduces the false-positive rate significantly.
 Unfortunately this advantage is also a disadvantage at the same time. 
-Secrets from upper base images can not be discovered because associated meta-informations are only available starting from the latest base image.
+Secrets from upper base images can not be discovered because associated meta-information is only available starting from the latest base image.
 That requires an already trusted base image.
 These base images are marked on container registries as official or trusted. 
 It is a must do to only use trustworthy base images since the key problems are not solely existing. 
@@ -170,9 +170,9 @@ This in fact would have reduced the number of folders in the folder chain to mou
 Due to this reason the ultimate goal of this module is to provide access to all folders of the image for the scan module. 
 Since Docker creates an overlay over the folders this module will achieve this as well. 
 This overlay leads to an access point for the scan module. 
-How lower directories are chained has to be examined through the local provided informations of the image.
+How lower directories are chained has to be examined through the local provided information of the image.
 This chain is the base to create an overlay mount point.
-As well a merged folder, a working folder for the union file system and a \textit{writeable} folder needs to be provided accordingly.
+As well a merged folder, a working folder for the union file system and a \textit{writable} folder needs to be provided accordingly.
 The according elements of an Overlay2 file system are described in section \ref{sec:intro:docker_image:unionfs}.
 If the mount process was successful the scan module is triggered in order to detect potential secrets. 
 This module will be explained in the following.

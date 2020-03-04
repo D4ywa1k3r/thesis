@@ -58,7 +58,7 @@ Helper functions are not listed as they are not necessary at this point.
 The function collect\_metadata is the first important method. 
 The function initializes the Docker environment in order to fetch the locally provided target image. 
 Afterwards the extraction of this fetched image is done through the equivalent Docker history command. 
-The history command provides metadata informations which is explained in section \ref{sec:intro:docker_image:docker_img:meta}. 
+The history command provides metadata information which is explained in section \ref{sec:intro:docker_image:docker_img:meta}. 
 This metadata is stored in an instance attribute to provide a global access to these metadata.
 
 The decision whether the target image has to be scanned or not is made in the method contains\_key\_actions.

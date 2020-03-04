@@ -27,12 +27,12 @@ A storage driver mainly handles the details about the way these layers interact 
 There are several storage drivers available like ZFS, BTRFS and many more which can be configured by the responsible system engineer or developer. 
 These storage drivers have advantages and disadvantages which should be carefully considered. 
 Docker uses in the latest version Overlay2 as storage driver per default \cite{docker_storage_driver}. 
-The Overlay2 informations about an image can be viewed by the Docker inspect command.
+The Overlay2 information about an image can be viewed by the Docker inspect command.
 \begin{lstlisting}
 	docker inspect ubuntu
 \end{lstlisting}
 The inspection only shows the part that is interesting for the Docker image architecture.
-\lstinputlisting[caption={Overlay2 informations about Docker image}, firstline=71, lastline=79, captionpos=b, label={sec:intro:docker_image:corresponding_unionfs}]{chapters/intro/listings/inspect_results.txt}
+\lstinputlisting[caption={Overlay2 information about Docker image}, firstline=71, lastline=79, captionpos=b, label={sec:intro:docker_image:corresponding_unionfs}]{chapters/intro/listings/inspect_results.txt}
 As seen in Listing \ref{sec:intro:docker_image:corresponding_unionfs} the introduced Overlay2 elements and mechanisms are completely used.
 This shows once again that Docker only uses the well-known Linux core functions instead of building own mechanisms.
 
@@ -91,13 +91,13 @@ It is totally up to the developer what do to with that inline command.
 
 At this time it is known what a Docker image is and how it can be built. 
 It is also known that static files can be integrated into an image in direct and indirect ways. 
-In the following the metadata informations of an image are introduced.
+In the following the metadata information of an image is introduced.
 
 \subsection{Image metadata}
 \label{sec:intro:docker_image:docker_img:meta}
 The metadata is another important part of an image. 
-Every Docker image saves informations of the image build process on a system.  
-These informations are locally stored and accessible for the root user. 
+Every Docker image saves information of the image build process on a system.  
+The information is locally stored and accessible for the root user. 
 In this work it is assumed that no manipulation of the metadata is performed locally. 
 
 The metadata is programmatically accessible through the Docker history command. 
@@ -115,7 +115,7 @@ Dockerfile keywords and corresponding parameters can be extracted as well.
 Most of all Dockerfile instructions like COPY, ADD and RUN are useful since they are responsible for integrating static files into the image.
 In this example only an ADD command as Dockerfile keyword is used.
 A special fact applies to the RUN command. 
-RUN commands are not directly listed in the meta-informations.
+RUN commands are not directly listed in the meta-information.
 Instead only the executable command that follows a RUN command is listed.
 A COPY instruction is not used in this example.
 
